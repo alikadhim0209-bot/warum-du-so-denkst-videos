@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-30 -130 660 1990" width="660" height="1990">
+<svg aria-label="James" xmlns="http://www.w3.org/2000/svg" viewBox="-30 -130 660 1990" width="660" height="1990">
   <defs>
     <filter id="sticker" x="-10%" y="-5%" width="120%" height="110%">
       <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="d"/>
@@ -16,7 +16,7 @@
       .fold{fill:none;stroke:#49423f;stroke-width:5;stroke-linecap:round}
     </style>
   </defs>
-  <g filter="url(#sticker)">
+  <g id="james" filter="url(#sticker)">
 
   <g id="mantel-hinten">
     <path class="o dred" d="M240 800 L440 800 L580 1225 L512 1322 L190 1330 L60 1250 Z"/>
