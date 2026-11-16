@@ -1,18 +1,22 @@
-<svg aria-label="James" xmlns="http://www.w3.org/2000/svg" viewBox="-100 -130 830 1730" width="830" height="1730">
+<svg aria-label="James" xmlns="http://www.w3.org/2000/svg" viewBox="-170 -320 970 1920" width="970" height="1920">
   <defs>
-    <filter id="sticker" x="-10%" y="-5%" width="120%" height="110%">
-      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="d"/>
+    <filter id="sticker" x="-15%" y="-10%" width="130%" height="120%">
+      <feOffset in="SourceAlpha" dx="-24" dy="-16" result="off"/>
+      <feComposite in="SourceAlpha" in2="off" operator="out" result="rand"/>
+      <feFlood flood-color="#000" flood-opacity="0.2"/><feComposite in2="rand" operator="in" result="schatten"/>
+      <feMerge result="fig"><feMergeNode in="SourceGraphic"/><feMergeNode in="schatten"/></feMerge>
+      <feMorphology in="SourceAlpha" operator="dilate" radius="11" result="d"/>
       <feFlood flood-color="#fff"/><feComposite in2="d" operator="in" result="o"/>
-      <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feMerge><feMergeNode in="o"/><feMergeNode in="fig"/></feMerge>
     </filter>
     <clipPath id="unterHut"><rect x="-100" y="140" width="900" height="700"/></clipPath>
     <style>
-      .o{stroke:#17110f;stroke-width:7;stroke-linejoin:round;stroke-linecap:round}
+      .o{stroke:#17110f;stroke-width:10;stroke-linejoin:round;stroke-linecap:round}
       .blk{fill:#2b2627}.red{fill:#c9222b}.dred{fill:#8f1521}.gold{fill:#f3a91e}
       .brn{fill:#5e3b22}.wht{fill:#fff}
       .trim{fill:none;stroke:#f3a91e;stroke-width:11;stroke-linejoin:round;stroke-linecap:round}
       .trimo{fill:none;stroke:#17110f;stroke-width:19;stroke-linejoin:round;stroke-linecap:round}
-      .ln{fill:none;stroke:#17110f;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+      .ln{fill:none;stroke:#17110f;stroke-width:6.5;stroke-linecap:round;stroke-linejoin:round}
       .fold{fill:none;stroke:#49423f;stroke-width:5;stroke-linecap:round}
     </style>
   </defs>
@@ -76,7 +80,7 @@
     </g>
   </g>
   <g id="hals"><rect class="o wht" x="304" y="452" width="26" height="86" rx="6"/></g>
-  <g id="kopf">
+  <g id="kopf" transform="translate(316 486) scale(1.28) translate(-316 -486)">
     <path id="haare-hinten" clip-path="url(#unterHut)" class="o" fill="#1d191a" d="M222,446 Q155,477 118,476 Q147,435 166,402 Q86,413 46,404 Q90,370 122,340 Q57,322 36,300 Q77,284 106,268 Q60,222 56,188 Q100,192 134,190 Q104,125 108,88 Q159,109 202,120 Q207,54 230,28 Q262,60 292,80 Q317,20 342,4 Q366,43 392,70 Q442,29 474,28 Q475,74 482,110 Q539,94 564,108 Q545,147 536,180 Q585,208 592,250 Q558,262 536,272 Q584,319 588,362 Q548,360 520,360 Q551,416 542,452 Q486,437 440,430 Z"/>
     <circle class="o wht" cx="316" cy="327" r="144"/>
     <g id="gesicht">
@@ -86,6 +90,7 @@
       <path class="o wht" d="M222 404 Q320 440 426 376 Q424 452 338 474 Q250 478 222 404 Z"/>
       <path class="ln" style="stroke-width:4" d="M236 430 Q330 458 420 404 M268 420 L264 462 M306 428 L306 476 M346 424 L350 472 M384 406 L392 446"/>
     </g>
+    <circle cx="262" cy="352" r="9" fill="#fff"/><circle cx="366" cy="350" r="9" fill="#fff"/><ellipse cx="204" cy="384" rx="20" ry="12" fill="#f4979d" opacity=".75"/><ellipse cx="432" cy="372" rx="20" ry="12" fill="#f4979d" opacity=".75"/>
     <path id="pony" fill="#1d191a" stroke="#17110f" stroke-width="5" stroke-linejoin="round" d="M172 356 Q184 230 250 196 L400 188 Q456 230 462 352 Q452 300 428 272 Q424 302 402 322 Q398 272 372 242 Q352 294 322 326 Q312 272 282 242 Q264 292 232 320 Q226 292 206 276 Q190 302 172 356 Z"/>
     <path fill="none" stroke="#4a4446" stroke-width="5" stroke-linecap="round" d="M230 110 Q262 150 280 200 M330 80 Q346 130 350 190 M440 110 Q420 150 414 200 M120 240 Q160 250 196 270 M530 236 Q496 248 466 270 M150 400 Q170 380 180 360"/>
     <g id="strohhut" transform="rotate(-6 316 150)">

@@ -1,16 +1,20 @@
-<svg aria-label="Eddy" xmlns="http://www.w3.org/2000/svg" viewBox="-310 -20 970 1880" width="970" height="1880">
+<svg aria-label="Eddy" xmlns="http://www.w3.org/2000/svg" viewBox="-380 -210 1110 2070" width="1110" height="2070">
   <defs>
-    <filter id="sticker" x="-10%" y="-5%" width="120%" height="110%">
-      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="d"/>
+    <filter id="sticker" x="-15%" y="-10%" width="130%" height="120%">
+      <feOffset in="SourceAlpha" dx="-24" dy="-16" result="off"/>
+      <feComposite in="SourceAlpha" in2="off" operator="out" result="rand"/>
+      <feFlood flood-color="#000" flood-opacity="0.2"/><feComposite in2="rand" operator="in" result="schatten"/>
+      <feMerge result="fig"><feMergeNode in="SourceGraphic"/><feMergeNode in="schatten"/></feMerge>
+      <feMorphology in="SourceAlpha" operator="dilate" radius="11" result="d"/>
       <feFlood flood-color="#fff"/><feComposite in2="d" operator="in" result="o"/>
-      <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feMerge><feMergeNode in="o"/><feMergeNode in="fig"/></feMerge>
     </filter>
     <style>
-      .o{stroke:#17110f;stroke-width:7;stroke-linejoin:round;stroke-linecap:round}
+      .o{stroke:#17110f;stroke-width:10;stroke-linejoin:round;stroke-linecap:round}
       .blk{fill:#262223}.gold{fill:#f0b429}.wht{fill:#fff}.crm{fill:#f2e0b4}.grn{fill:#2f8f3c}
       .trim{fill:none;stroke:#f0b429;stroke-width:11;stroke-linejoin:round;stroke-linecap:round}
       .trimo{fill:none;stroke:#17110f;stroke-width:19;stroke-linejoin:round;stroke-linecap:round}
-      .ln{fill:none;stroke:#17110f;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+      .ln{fill:none;stroke:#17110f;stroke-width:6.5;stroke-linecap:round;stroke-linejoin:round}
       .fold{fill:none;stroke:#4a4442;stroke-width:5;stroke-linecap:round}
       .swirl{fill:none;stroke:#2f8f3c;stroke-width:11;stroke-linecap:round}
     </style>
@@ -124,7 +128,7 @@
     <circle cx="424" cy="586" r="8" fill="#f0b429" stroke="#17110f" stroke-width="4"/>
   </g>
 
-  <g id="kopf">
+  <g id="kopf" transform="translate(316 486) scale(1.28) translate(-316 -486)">
     <path id="haare-hinten" class="o grn" d="M190,380 Q154,420 150,436 Q159,387 158,344 Q109,358 98,362 Q125,326 140,292 Q84,279 68,270 Q105,252 130,232 Q86,193 78,170 Q119,169 150,162 Q125,112 128,90 Q170,105 205,110 Q202,56 215,38 Q249,65 280,80 Q300,24 322,8 Q341,45 362,70 Q399,28 424,24 Q425,63 432,92 Q478,65 502,70 Q493,110 492,142 Q538,135 552,152 Q527,180 512,202 Q556,221 562,252 Q528,260 506,266 Q539,299 532,332 Q496,326 472,322 Q496,364 482,392 Q459,379 446,372 Z"/>
     <circle class="o wht" cx="316" cy="327" r="144"/>
     <g id="gesicht">
@@ -134,6 +138,7 @@
       <path class="ln" style="stroke-width:9" d="M352 352 Q392 348 432 326"/>
       <path class="ln" style="stroke-width:6" d="M404 262 Q392 340 396 420"/>
     </g>
+    <circle cx="279" cy="343" r="6" fill="#fff"/><ellipse cx="226" cy="402" rx="22" ry="12" fill="#f4979d" opacity=".75"/><ellipse cx="414" cy="400" rx="22" ry="12" fill="#f4979d" opacity=".75"/>
     <path id="pony" class="grn" stroke="#17110f" stroke-width="5" stroke-linejoin="round" d="M176 310 Q196 200 316 178 Q432 194 458 306 L432 250 L412 292 L382 234 L352 282 L322 226 L290 282 L262 236 L236 292 L212 250 Z"/>
     <path fill="none" stroke="#1d5f27" stroke-width="5" stroke-linecap="round" d="M230 110 Q262 150 280 200 M330 80 Q346 130 350 190 M440 110 Q420 150 414 200 M130 250 Q160 256 190 272 M520 240 Q490 250 466 268"/>
   </g>
