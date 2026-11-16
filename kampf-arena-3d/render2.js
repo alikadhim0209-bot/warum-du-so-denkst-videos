@@ -52,23 +52,23 @@ function shout(t0,d,o){const n0=Math.floor(t0*SR),n=Math.floor(d*SR),sc=o.sc||1,
 const J=(t,d,f0a,f0b,v,vol=.5,x={})=>shout(t,d,Object.assign({f0:[f0a,f0b],v,vol,sc:1.08,drive:3},x));
 const E=(t,d,f0a,f0b,v,vol=.5,x={})=>shout(t,d,Object.assign({f0:[f0a,f0b],v,vol,sc:.9,drive:3,muffle:true},x));
 const laugh=(t0,n,f0,vol,sc=1.08,gap=.15)=>{for(let i=0;i<n;i++)shout(t0+i*gap,gap*.8,{f0:[f0*(1.1-i*.03),f0*(.9-i*.03)],v:'a',vol,sc,drive:2.5});};
-// James: kurze Schreie bei Schlägen, langes Brüllen bei großen Angriffen, Lachen in der Gummi-Form
-J(3.18,.22,260,230,'a',.45);J(3.48,.22,270,235,'a',.45);J(4.12,.3,280,220,'ae-a',.5);J(5.22,.45,250,300,'u-a',.55);J(8.18,.55,230,320,'u-o-a',.6);
-for(let i=0;i<5;i++)J(10.5+i*.13,.11,300+i*8,280,'a',.4);J(13.5,.75,220,330,'o-a',.65,{swell:true});
-laugh(16.55,6,250,.45);laugh(17.6,5,270,.45);J(19.35,.35,320,380,'u-o',.45);J(21.65,.3,200,180,'m-a',.4);J(22.85,.55,240,320,'a',.6);
-laugh(34.6,6,150,.55,.9,.2);J(37.85,.5,160,210,'o-a',.65,{sc:.92});J(39.45,.5,165,215,'o-a',.65,{sc:.92});J(41.3,.8,150,230,'u-o-a',.75,{sc:.92,swell:true});
-J(46.5,2.9,240,330,'u-o-a',.6,{swell:true,curve:.6});J(49.05,.42,330,380,'a',.75);
+// James: am Anfang witzig und verspielt (hoch, hüpfend), ab der Riesenfaust ernst (tiefer, kräftig), in der Gummi-Form und später lachend
+J(3.18,.2,330,400,'a',.45);J(3.48,.22,360,300,'e-a',.45);J(4.12,.32,300,420,'u-a',.5,{curve:.5});J(5.22,.45,320,450,'u-a',.5);J(8.18,.55,280,420,'u-o-a',.55);
+for(let i=0;i<5;i++)J(10.5+i*.13,.11,360+i*15,330,'a',.4);J(13.5,.75,190,240,'o-a',.65,{swell:true,drive:4});
+laugh(16.55,7,240,.5,1.08,.14);laugh(17.6,6,265,.5,1.08,.13);J(19.35,.4,340,460,'u-o',.45,{curve:.5});J(21.65,.3,180,165,'m-a',.4);J(22.85,.55,200,250,'a',.65,{drive:4});
+laugh(34.6,7,140,.6,.9,.19);J(37.85,.5,150,190,'o-a',.7,{sc:.92,drive:4});J(39.45,.5,150,195,'o-a',.7,{sc:.92,drive:4});J(41.3,.8,140,210,'u-o-a',.8,{sc:.92,swell:true,drive:4.5});
+laugh(44.6,5,230,.4,1.08,.15);J(46.5,2.9,190,260,'u-o-a',.65,{swell:true,curve:.6,drive:4.5});J(49.05,.42,260,300,'a',.8,{drive:4.5});
 // James wird getroffen
-J(12.0,.18,330,260,'ae',.35);J(12.62,.18,320,250,'ae',.35);J(33.42,.35,300,200,'u-a',.45);
-// Eddy: gedämpfte Schreie (Schwert im Mund), Dämonen-Brüllen
-[5.86,6.16,6.5,6.95,7.3,12.0,12.58,12.92].forEach((t,i)=>E(t-.04,.2,150-i%3*8,125,'m',.5));E(3.28,.18,140,120,'m',.35);
-E(8.6,.3,170,110,'m-u',.45);E(14.2,.32,165,105,'m-u',.45);for(let i=0;i<7;i++)E(19.58+i*.3,.16,140,120,'m',.4);E(23.4,.4,170,100,'m-u',.5);
-E(24.95,1.35,95,70,'m-o-a',.75,{growl:1,drive:6,muffle:false,swell:true,breath:.25});E(25.0,1.3,47,36,'o-a',.45,{growl:1,drive:6,muffle:false,breath:.3});
-[[120,.9],[95,.8],[140,.75]].forEach(([f,s],k)=>E(26.45+k*.05,.75,f,f*.7,'m-a',.4,{sc:s,growl:.8,drive:5,muffle:false}));
-for(let i=0;i<9;i++)E(30.1+i*.3,.18,[135,120,150][i%3],[110,100,125][i%3],'m',.45,{growl:.4,drive:4});
-[[110,.9],[95,.85],[125,.8]].forEach(([f,s],k)=>E(33.25+k*.03,.45,f,f*.75,'m-a',.45,{sc:s,growl:.7,drive:5}));
-E(41.75,.55,120,90,'m-a',.6,{growl:.8,drive:5});E(43.7,.5,110,95,'m',.3);
-E(46.5,2.9,100,130,'m-o-a',.6,{growl:.9,drive:5,swell:true,curve:.6});E(46.5,2.9,50,65,'o-a',.35,{growl:1,drive:6,muffle:false});E(49.1,.4,140,110,'m-a',.7,{growl:.8,drive:5});
+J(12.0,.18,360,280,'ae',.35);J(12.62,.18,350,270,'ae',.35);J(33.42,.35,260,180,'u-a',.45);
+// Eddy: durchgehend tief und ernst, kaum Tonhöhenänderung, gedämpft durch das Schwert im Mund
+[5.86,6.16,6.5,6.95,7.3,12.0,12.58,12.92].forEach((t,i)=>E(t-.04,.2,98-i%2*4,90,'m',.55,{drive:4}));E(3.28,.18,92,86,'m',.35);
+E(8.6,.3,105,80,'m-u',.45);E(14.2,.32,102,78,'m-u',.45);for(let i=0;i<7;i++)E(19.58+i*.3,.16,95,88,'m',.42,{drive:4});E(23.4,.4,104,76,'m-u',.5);
+E(24.95,1.35,70,52,'m-o-a',.8,{growl:1,drive:7,muffle:false,swell:true,breath:.25});E(25.0,1.3,36,28,'o-a',.5,{growl:1,drive:7,muffle:false,breath:.3});
+[[88,.9],[76,.85],[96,.82]].forEach(([f,s],k)=>E(26.45+k*.05,.75,f,f*.8,'m-a',.42,{sc:s,growl:.8,drive:6,muffle:false}));
+for(let i=0;i<9;i++)E(30.1+i*.3,.18,[94,86,100][i%3],[86,80,92][i%3],'m',.45,{growl:.4,drive:5});
+[[84,.88],[74,.84],[92,.8]].forEach(([f,s],k)=>E(33.25+k*.03,.45,f,f*.85,'m-a',.48,{sc:s,growl:.7,drive:6}));
+E(41.75,.55,88,74,'m-a',.62,{growl:.8,drive:6});E(43.7,.5,82,78,'m',.32);
+E(46.5,2.9,78,92,'m-o-a',.65,{growl:.9,drive:6,swell:true,curve:.6});E(46.5,2.9,39,46,'o-a',.38,{growl:1,drive:7,muffle:false});E(49.1,.4,96,82,'m-a',.72,{growl:.8,drive:6});
 // ---------- Schwarzbild am Ende ----------
 const endBoom=(t,v)=>{const n0=Math.floor(t*SR);let lp=0;for(let i=0;i<SR*2.2&&n0+i<N;i++){const x=i/SR;lp+=(nz()-lp)*.05;endB[n0+i]+=(Math.sin(2*Math.PI*(30+20*Math.exp(-x*5))*x)*Math.exp(-x*1.4)+lp*Math.exp(-x*2.5))*v;}};
 const pad=(t0,d,f,v)=>{const n0=Math.floor(t0*SR);for(let i=0;i<SR*d&&n0+i<N;i++){const x=i/SR,u=i/(SR*d);endB[n0+i]+=(Math.sin(2*Math.PI*f*x)+.5*Math.sin(2*Math.PI*f*2.003*x)+.3*Math.sin(2*Math.PI*f*3.01*x))*Math.min(1,x/.6)*Math.min(1,(1-u)*3)*v;}};
