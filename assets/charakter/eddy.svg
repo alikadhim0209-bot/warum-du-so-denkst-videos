@@ -1,0 +1,141 @@
+<svg aria-label="Eddy" xmlns="http://www.w3.org/2000/svg" viewBox="-310 -20 970 1880" width="970" height="1880">
+  <defs>
+    <filter id="sticker" x="-10%" y="-5%" width="120%" height="110%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="d"/>
+      <feFlood flood-color="#fff"/><feComposite in2="d" operator="in" result="o"/>
+      <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <style>
+      .o{stroke:#17110f;stroke-width:7;stroke-linejoin:round;stroke-linecap:round}
+      .blk{fill:#262223}.gold{fill:#f0b429}.wht{fill:#fff}.crm{fill:#f2e0b4}.grn{fill:#2f8f3c}
+      .trim{fill:none;stroke:#f0b429;stroke-width:11;stroke-linejoin:round;stroke-linecap:round}
+      .trimo{fill:none;stroke:#17110f;stroke-width:19;stroke-linejoin:round;stroke-linecap:round}
+      .ln{fill:none;stroke:#17110f;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+      .fold{fill:none;stroke:#4a4442;stroke-width:5;stroke-linecap:round}
+      .swirl{fill:none;stroke:#2f8f3c;stroke-width:11;stroke-linecap:round}
+    </style>
+  </defs>
+  <g id="eddy" filter="url(#sticker)">
+
+  <g id="schwerter">
+    <g transform="translate(232 870) rotate(-36)">
+      <rect class="o" fill="#1f1c1d" x="-17" y="-250" width="34" height="250" rx="6"/>
+      <rect class="o" fill="#2f8f3c" x="-16" y="-470" width="32" height="212"/>
+      <path fill="none" stroke="#f0b429" stroke-width="5" stroke-linejoin="round" d="M-15 -466 L15 -453 L-15 -440 M-15 -440 L15 -427 L-15 -414 M-15 -414 L15 -401 L-15 -388 M-15 -388 L15 -375 L-15 -362 M-15 -362 L15 -349 L-15 -336 M-15 -336 L15 -323 L-15 -310 M-15 -310 L15 -297 L-15 -284 M-15 -284 L15 -271 L-15 -258 "/>
+      <ellipse class="o gold" cx="0" cy="-254" rx="36" ry="15"/>
+      <path class="o gold" d="M-20 -470 L20 -470 L26 -500 L44 -508 L30 -522 L40 -548 L14 -538 L6 -562 L-8 -536 L-36 -540 L-24 -512 L-44 -492 Z"/><circle cx="6" cy="-512" r="5" fill="#17110f"/>
+    </g>
+    <g transform="translate(225 965) rotate(-45)">
+      <rect class="o" fill="#1f1c1d" x="-17" y="-250" width="34" height="250" rx="6"/>
+      <rect class="o" fill="#b3201f" x="-16" y="-470" width="32" height="212"/>
+      <path fill="none" stroke="#17110f" stroke-width="5" stroke-linejoin="round" d="M-15 -466 L15 -453 L-15 -440 M-15 -440 L15 -427 L-15 -414 M-15 -414 L15 -401 L-15 -388 M-15 -388 L15 -375 L-15 -362 M-15 -362 L15 -349 L-15 -336 M-15 -336 L15 -323 L-15 -310 M-15 -310 L15 -297 L-15 -284 M-15 -284 L15 -271 L-15 -258 "/>
+      <ellipse class="o gold" cx="0" cy="-254" rx="36" ry="15"/>
+      <path class="o gold" d="M-20 -470 L20 -470 L24 -500 Q0 -522 -24 -500 Z"/>
+    </g>
+    <g transform="translate(190 1020) rotate(-60)">
+      <rect class="o" fill="#1f1c1d" x="-17" y="-250" width="34" height="250" rx="6"/>
+      <rect class="o" fill="#f4f4f4" x="-16" y="-470" width="32" height="212"/>
+      <path fill="none" stroke="#17110f" stroke-width="5" stroke-linejoin="round" d="M-15 -466 L15 -453 L-15 -440 M-15 -440 L15 -427 L-15 -414 M-15 -414 L15 -401 L-15 -388 M-15 -388 L15 -375 L-15 -362 M-15 -362 L15 -349 L-15 -336 M-15 -336 L15 -323 L-15 -310 M-15 -310 L15 -297 L-15 -284 M-15 -284 L15 -271 L-15 -258 "/>
+      <ellipse class="o gold" cx="0" cy="-254" rx="36" ry="15"/>
+      <path class="o gold" d="M-20 -470 L20 -470 L24 -500 Q0 -522 -24 -500 Z"/>
+    </g>
+  </g>
+
+  <g id="umhang-hinten">
+    <path class="o" fill="#d9c28e" d="M240 800 L440 800 L600 1250 L520 1345 L190 1355 L20 1262 Z"/>
+  </g>
+
+  <g id="stiefel-links">
+    <path class="o blk" d="M96 1410 L198 1410 L206 1735 L210 1792 L28 1802 Q10 1742 56 1712 Q98 1690 96 1650 Z"/>
+    <path class="o" fill="#141112" d="M26 1790 L211 1780 L212 1818 L30 1830 Q20 1812 26 1790 Z"/>
+    <path class="trim" style="stroke-width:7" d="M32 1794 L207 1784 M98 1530 L148 1508 L200 1526 M60 1716 Q110 1690 150 1650"/>
+  </g>
+  <g id="stiefel-rechts">
+    <path class="o blk" d="M356 1410 L468 1410 L472 1650 Q480 1700 540 1716 Q594 1740 580 1800 L322 1802 L334 1700 Z"/>
+    <path class="o" fill="#141112" d="M320 1790 L582 1788 Q588 1812 576 1830 L322 1830 Z"/>
+    <path class="trim" style="stroke-width:7" d="M326 1794 L576 1792 M358 1526 L412 1506 L468 1526 M536 1720 Q490 1696 474 1650"/>
+  </g>
+
+  <g id="hose">
+    <path class="o blk" d="M245 870 L345 870 L332 1085 Q304 1300 274 1400 Q276 1440 250 1448 Q160 1472 80 1436 Q58 1422 74 1390 Q60 1250 130 1100 Z"/>
+    <path class="o blk" d="M330 870 L442 870 Q486 1100 480 1388 Q494 1428 466 1442 Q380 1468 300 1442 Q278 1426 292 1398 L318 1085 Z"/>
+    <path class="fold" d="M110 1340 q10 30 4 56 M170 1352 q6 26 0 54 M232 1348 q-4 30 4 54 M340 1350 q6 26 0 54 M400 1356 q4 26 0 52 M452 1346 q-6 28 0 52 M150 1150 Q140 1230 160 1300"/>
+  </g>
+
+  <g id="tunika">
+    <path class="o blk" d="M258 530 L402 530 L442 880 L238 880 Z"/>
+    <path class="o blk" d="M236 880 L444 880 L476 1110 L336 1190 L206 1110 Z"/>
+    <path class="trim" style="stroke-width:8" d="M214 1100 L336 1172 L468 1100"/>
+    <path class="ln" d="M336 930 L336 1160"/>
+    <rect class="o gold" x="300" y="760" width="56" height="18" rx="8"/>
+  </g>
+
+  <g id="schaerpe">
+    <path class="o" fill="#257530" d="M392 900 L432 900 L446 1196 L408 1206 Z"/>
+    <path class="o grn" d="M428 896 L470 896 L496 1176 L458 1190 Z"/>
+    <path class="o gold" d="M396 1010 L436 1006 L438 1034 L398 1038 Z M436 1004 L480 1000 L483 1028 L439 1032 Z"/>
+    <path class="o grn" d="M226 846 L452 834 L458 916 L230 930 Z"/>
+    <path fill="none" stroke="#1d5f27" stroke-width="5" stroke-linecap="round" d="M240 876 Q330 862 400 866 M246 904 Q330 890 396 896"/>
+    <ellipse class="o grn" cx="420" cy="878" rx="38" ry="34"/>
+    <path fill="none" stroke="#1d5f27" stroke-width="5" stroke-linecap="round" d="M400 870 Q420 890 442 868"/>
+  </g>
+
+  <g id="umhang-links">
+    <path class="o crm" d="M146 780 L264 640 L262 850 L234 1010 L192 1342 L-30 1270 L-24 1168 Q78 1000 146 780 Z"/>
+    <path class="swirl" d="M10 1180 q20 -50 60 -30 q24 22 -4 40 q-26 6 -22 -18 M96 1220 q12 -52 56 -40 q26 20 2 42 q-24 8 -24 -16 M150 1130 q4 -40 36 -44"/>
+    <path class="trimo" d="M254 700 L250 850 L222 1010 L182 1322 L-22 1256"/>
+    <path class="trim" d="M254 700 L250 850 L222 1010 L182 1322 L-22 1256"/>
+  </g>
+  <g id="umhang-rechts">
+    <path class="o crm" d="M486 770 L394 640 L424 850 L474 1010 L516 1330 L612 1240 L604 1190 Q552 1000 486 770 Z"/>
+    <path class="swirl" d="M530 1200 q8 -48 44 -36 q22 20 -2 38 q-22 4 -20 -16 M510 1120 q0 -36 28 -44"/>
+    <path class="trimo" d="M408 700 L436 850 L486 1010 L522 1310 L600 1236"/>
+    <path class="trim" d="M408 700 L436 850 L486 1010 L522 1310 L600 1236"/>
+  </g>
+
+  <g id="schultern">
+    <path class="o crm" d="M316 478 Q176 488 108 580 Q84 640 118 706 L250 650 L322 560 L394 650 L504 696 Q532 630 506 570 Q446 488 316 478 Z"/>
+    <path class="o blk" d="M296 524 Q270 580 268 660 L322 690 L388 656 Q376 576 348 524 Q322 514 296 524 Z"/>
+    <path class="trim" style="stroke-width:8" d="M124 694 L250 640 M392 640 L498 686"/>
+  </g>
+
+  <g id="arm-rechts">
+    <path class="trimo" style="stroke-width:60" d="M474 752 L262 704"/>
+    <path fill="none" stroke="#fff" stroke-width="46" stroke-linecap="round" d="M474 752 L262 704"/>
+    <path class="ln" style="stroke-width:4" d="M300 692 l-8 40 M340 700 l-8 42 M380 710 l-8 42"/>
+    <path class="o blk" d="M420 700 Q470 670 512 690 Q530 740 510 786 Q460 800 418 780 Q404 740 420 700 Z"/>
+  </g>
+  <g id="arm-links">
+    <path class="trimo" style="stroke-width:60" d="M190 770 L412 738"/>
+    <path fill="none" stroke="#fff" stroke-width="46" stroke-linecap="round" d="M190 770 L412 738"/>
+    <path class="ln" style="stroke-width:4" d="M262 738 l6 44 M302 732 l6 44 M342 726 l6 44 M380 720 l6 44"/>
+    <path class="o wht" d="M404 708 Q446 698 462 724 Q468 756 436 764 Q408 766 400 744 Z"/>
+    <path class="ln" d="M426 712 q12 14 2 30 M444 716 q8 12 0 24"/>
+    <path class="o blk" d="M148 716 Q194 690 238 712 Q252 760 234 806 Q186 820 144 800 Q130 758 148 716 Z"/>
+    <path class="trim" style="stroke-width:7" d="M236 720 Q246 760 232 800"/>
+  </g>
+
+  <g id="hals"><rect class="o wht" x="304" y="452" width="26" height="70" rx="6"/></g>
+  <g id="schal">
+    <path class="o blk" d="M190 590 Q196 512 316 500 Q436 512 446 590 Q452 628 400 644 Q316 612 238 646 Q184 628 190 590 Z"/>
+    <path class="fold" d="M216 574 Q316 536 422 572 M226 612 Q316 580 408 610"/>
+    <circle class="o gold" cx="424" cy="586" r="32"/>
+    <path fill="none" stroke="#17110f" stroke-width="4" d="M424 564 V608 M402 586 H446 M408 570 L440 602 M440 570 L408 602"/>
+    <circle cx="424" cy="586" r="8" fill="#f0b429" stroke="#17110f" stroke-width="4"/>
+  </g>
+
+  <g id="kopf">
+    <path id="haare-hinten" class="o grn" d="M190,380 Q154,420 150,436 Q159,387 158,344 Q109,358 98,362 Q125,326 140,292 Q84,279 68,270 Q105,252 130,232 Q86,193 78,170 Q119,169 150,162 Q125,112 128,90 Q170,105 205,110 Q202,56 215,38 Q249,65 280,80 Q300,24 322,8 Q341,45 362,70 Q399,28 424,24 Q425,63 432,92 Q478,65 502,70 Q493,110 492,142 Q538,135 552,152 Q527,180 512,202 Q556,221 562,252 Q528,260 506,266 Q539,299 532,332 Q496,326 472,322 Q496,364 482,392 Q459,379 446,372 Z"/>
+    <circle class="o wht" cx="316" cy="327" r="144"/>
+    <g id="gesicht">
+      <path class="o wht" style="stroke-width:6" d="M222 352 Q270 316 322 350 Q276 392 222 352 Z"/>
+      <circle cx="286" cy="350" r="17" fill="#17110f"/>
+      <path class="ln" style="stroke-width:14" d="M214 316 L326 340"/>
+      <path class="ln" style="stroke-width:9" d="M352 352 Q392 348 432 326"/>
+      <path class="ln" style="stroke-width:6" d="M404 262 Q392 340 396 420"/>
+    </g>
+    <path id="pony" class="grn" stroke="#17110f" stroke-width="5" stroke-linejoin="round" d="M176 310 Q196 200 316 178 Q432 194 458 306 L432 250 L412 292 L382 234 L352 282 L322 226 L290 282 L262 236 L236 292 L212 250 Z"/>
+    <path fill="none" stroke="#1d5f27" stroke-width="5" stroke-linecap="round" d="M230 110 Q262 150 280 200 M330 80 Q346 130 350 190 M440 110 Q420 150 414 200 M130 250 Q160 256 190 272 M520 240 Q490 250 466 268"/>
+  </g>
+  </g>
+</svg>
