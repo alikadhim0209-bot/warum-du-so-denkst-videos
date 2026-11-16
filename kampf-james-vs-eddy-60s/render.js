@@ -56,6 +56,6 @@ whoosh(52,2,.5);clink(54.0,.6,2500);impact(54.0,1.6);impact(54.05,1.2);clink(56.
 // einfacher Hall auf der Musik, dann mischen
 const wet=new Float32Array(N);for(const [d,g] of [[.0297,.8],[.0371,.79],[.0411,.78],[.0437,.77]]){const D=Math.floor(d*SR*6),c=new Float32Array(N);for(let i=0;i<N;i++){c[i]=mus[i]+(i>=D?c[i-D]*g*.82:0);wet[i]+=c[i]*.06;}}
 const pcm=Buffer.alloc(44+N*2);pcm.write('RIFF',0);pcm.writeUInt32LE(36+N*2,4);pcm.write('WAVEfmt ',8);pcm.writeUInt32LE(16,16);pcm.writeUInt16LE(1,20);pcm.writeUInt16LE(1,22);pcm.writeUInt32LE(SR,24);pcm.writeUInt32LE(SR*2,28);pcm.writeUInt16LE(2,32);pcm.writeUInt16LE(16,34);pcm.write('data',36);pcm.writeUInt32LE(N*2,40);
-for(let i=0;i<N;i++){const duck=(i/SR>54.2&&i/SR<56.8)||(i/SR>48&&i/SR<50)?.6:1;pcm.writeInt16LE(Math.round(Math.tanh((mus[i]*1.5+wet[i]*1.6)*duck+sfx[i]*.7)*32000),44+i*2);}
+for(let i=0;i<N;i++){const duck=(i/SR>54.2&&i/SR<56.8)||(i/SR>48&&i/SR<50)?.6:1;pcm.writeInt16LE(Math.round(Math.tanh(((mus[i]*1.5+wet[i]*1.6)*duck+sfx[i]*.7)*.42)*31000),44+i*2);}
 fs.writeFileSync(path.join(TMP,'ton.wav'),pcm);if(only==='audio'){console.log('ton fertig');return;}
-execSync(`ffmpeg -y -loglevel error -framerate ${FPS} -i "${TMP}/f%04d.jpg" -i "${TMP}/ton.wav" -c:v libx264 -pix_fmt yuv420p -crf 19 -preset medium -c:a aac -b:a 192k -shortest -movflags +faststart "${path.join(__dirname,'video.mp4')}"`);console.log('fertig');})();
+execSync(`ffmpeg -y -loglevel error -framerate ${FPS} -i "${TMP}/f%04d.jpg" -i "${TMP}/ton.wav" -c:v libx264 -pix_fmt yuv420p -crf 23 -preset medium -c:a aac -b:a 192k -shortest -movflags +faststart "${path.join(__dirname,'video.mp4')}"`);console.log('fertig');})();
