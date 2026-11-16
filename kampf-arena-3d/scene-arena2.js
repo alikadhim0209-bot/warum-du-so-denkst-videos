@@ -85,7 +85,7 @@ function gameL(G){const GI=(G>=34.5&&G<43)?G-34.5:-1,post=G>=43;let g=G<34.5?G:(
  torch.forEach((f,i)=>f.scale.setScalar(1+.18*Math.sin(g*17+i*2.1)));
  return {jx:WP?WP.j.x:jx,jy,ex,ey,ez,hpJ,hpE,w,dems,g,GI};}
 function renderTK2(t){tkSetup();tk2Setup();tk3Setup();reset();nG=nA=nC=0;rings2.concat(arcs2,demons,weapons,pools).forEach(m=>m.visible=false);cuts.forEach(c=>c.style.opacity=0);SH=FL=SPD=BAR=0;INV=capOn=false;LJ=false;show(Jm,true);eds.forEach(c=>{if(c.eye)c.eye[0].visible=c.eye[1].visible=false;});
- let G,mode='fight';if(t<49.5)G=t;else if(t<51.1)G=49.5+(t-49.5)*.45;else if(t<51.9)G=50.22+(t-51.1);else if(t<54.5){G=49+(t-51.9)*.4;mode='replay';}else{G=51.5+(t-54.5);mode='win';}
+ if(t>=49.62){renderEnd(t);return;}let G=t,mode='fight';
  const s=gameL(G),g=s.g,mx=(s.jx+s.ex)/2,sep=Math.abs(s.ex-s.jx),my=2.3+Math.max(s.jy,s.ey)*.45;let p,q,roll=0;
  if(mode=='replay'){const a=.5+(t-51.9)*.2;p=[11*Math.sin(a),1.6,12*Math.cos(a)];q=[0,2.7,0];BAR=120;}
  else if(mode=='win'){const a=(t-54.5)*.2;p=[4*Math.sin(a),7,19];q=[0,1,0];}
@@ -110,7 +110,6 @@ function renderTK2(t){tkSetup();tk2Setup();tk3Setup();reset();nG=nA=nC=0;rings2.
  const cj=combo2(HE3,g),ce=combo2(HJ3,g),cb=(c,col,side)=>`<div style="position:absolute;${side}:40px;top:330px;text-align:${side};font-style:italic;color:${col};-webkit-text-stroke:9px #14101c;paint-order:stroke fill"><span style="font-size:96px">${c[0]}</span><span style="font-size:48px"> HITS</span><div style="font-size:36px;color:#fff">${c[1]} SCHADEN</div></div>`;
  if(cj[0]>1&&g<41)h+=cb(cj,'#ffe36a','left');if(ce[0]>1&&g<41)h+=cb(ce,'#ff5a4a','right');
  if(t>=.5&&t<1.6)h+=big('RUNDE 1',(t-.5)/1.1,'#fff',170);if(t>=1.8&&t<2.6)h+=big('KÄMPFT!',(t-1.8)/.8,'#ffb21f',210);
- if(mode=='fight'&&g>=41)h+=big('DOPPEL-K.O.',cl((t-49.5)/2.6),'#ff3b2e',128);
  if(mode=='replay')h+=`<div style="position:absolute;left:40px;top:260px;font-size:64px;font-style:italic;color:#fff;-webkit-text-stroke:9px #14101c;paint-order:stroke fill;opacity:${Math.floor(t*3)%2?1:.35}">▶ WIEDERHOLUNG</div>`;
  if(mode=='win')h+=big('UNENTSCHIEDEN',cl((t-54.6)/12),'#ffe36a',84,620);
  $('tk').innerHTML=h;}
@@ -169,3 +168,14 @@ function giantPhase(s,ex){const T0=T;T=s;A0=0;const back=1-ease(cl((s-7.6)/.8));
    if(s>=t4-.3)cut=ease(cl((s-(t4-.14))/.16));if(s>=t4){push=1.6*eo(cl((s-t4)/.3))*(1-ease(cl((s-t4-.4)/.6)));if(s<t4+.4)for(let q=0;q<2;q++)arc(V(tg.x+.4,2.6,.5),[0,0,PI*.55+(q?.6:-.6)],2+(s-t4)*8,1-(s-t4)/.4);}}});
  for(let k=0;k<5;k++)pf(V(jx,0,0),1.0+k*.3,10,4+k,k*13);shock(V(jx,0,0),1.0,18,1.2);shock(V(jx,0,0),1.8,22,1.2);shake(1.0,1.4,.15);cap('RIESEN-FORM!',1.2,1.2);cap('WAFFEN AUS DEM BODEN!',2.5,1.6);cap('DÄMONEN-BLOCK!',7.45,1.0);
  T=T0;return {j,dead,push,cut};}
+
+function renderEnd(t){const pop=(t0,d=.35)=>{const u=cl((t-t0)/d);return 'opacity:'+Math.min(1,u*3)+';transform:translateX(-50%) scale('+(1+.6*(1-eo(u))).toFixed(3)+')';},T0=50.35,blink=Math.floor(t*2.5)%2;
+ const st='position:absolute;left:50%;white-space:nowrap;text-align:center;font-style:italic;-webkit-text-stroke:14px #000;paint-order:stroke fill;';
+ const card=(x,img,name,col,t0)=>{const u=eo(cl((t-t0)/.4));return '<div style="position:absolute;left:'+x+'px;top:860px;width:400px;text-align:center;opacity:'+u+';transform:translateY('+((1-u)*60).toFixed(0)+'px)"><img src="'+img+'" style="height:520px;filter:drop-shadow(0 0 30px '+col+')"><div style="font-size:96px;font-style:italic;color:#fff;-webkit-text-stroke:12px #000;paint-order:stroke fill;text-shadow:0 0 28px '+col+'">'+name+'</div></div>';};
+ let h='<div style="position:absolute;inset:0;background:#000"></div>';
+ if(t>=T0)h+='<div style="'+st+'top:330px;font-size:150px;color:#fff;'+pop(T0)+'">WER HAT</div><div style="'+st+'top:500px;font-size:128px;color:#ffd23f;'+pop(T0+.25)+'">GEWONNEN?</div>';
+ if(t>=51.45)h+=card(70,PJ,'JAMES','#ff3b2e',51.45);if(t>=51.7)h+=card(610,PE,'EDDY','#3fd97a',51.7);
+ if(t>=51.6)h+='<div style="'+st+'top:1120px;font-size:110px;color:#ff3b2e;'+pop(51.6,.3)+'">VS</div>';
+ if(t>=52.5){h+='<div style="'+st+'top:1560px;font-size:64px;color:#fff;'+pop(52.5)+'">IHR ENTSCHEIDET</div><div style="'+st+'top:1640px;font-size:64px;color:#fff;'+pop(52.65)+'">IN DEN KOMMENTAREN!</div>';
+  if(t>=52.9)h+='<div style="position:absolute;left:510px;top:'+(1750+(blink?10:0))+'px;width:0;height:0;border-left:30px solid transparent;border-right:30px solid transparent;border-top:44px solid #ffd23f"></div>';}
+ $('tk').innerHTML=h;}

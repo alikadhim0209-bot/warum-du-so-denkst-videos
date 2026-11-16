@@ -1,12 +1,13 @@
 // Langer 3D-Arena-Kampf rendern: node render2.js  (braucht three@0.160.0, playwright, ffmpeg). node render2.js 17.5,26 -> Testbilder
 const fs=require('fs'),path=require('path'),{execSync}=require('child_process');const {chromium}=require('playwright');
 const TMP=process.env.KAMPF_TMP||path.join(require('os').tmpdir(),'kampf-arena2');fs.mkdirSync(TMP,{recursive:true});
-const THREE_JS=process.env.THREE_JS||require.resolve('three/build/three.min.js');const FPS=30,DUR=57.5;
+const THREE_JS=process.env.THREE_JS||require.resolve('three/build/three.min.js');const FPS=30,DUR=55;
 (async()=>{const only=process.argv[2];
 if(only!=='audio'){const b=await chromium.launch({args:['--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist','--enable-webgl']});
  const p=await b.newPage({viewport:{width:1080,height:1920}});p.on('pageerror',e=>console.log('PAGEERR',e.message));
  await p.setContent('<body style="margin:0;background:#000;overflow:hidden"><div id="gl"></div></body>');await p.addScriptTag({path:THREE_JS});
  for(const f of ['../kampf-james-vs-eddy-3d/scene.js','../kampf-james-vs-eddy-60s/scene60.js','scene-arena.js','scene-arena2.js'])await p.addScriptTag({path:path.join(__dirname,f)});
+ const pic=n=>'data:image/png;base64,'+fs.readFileSync(path.join(__dirname,'../assets/charakter/'+n+'.png')).toString('base64');await p.addScriptTag({content:'window.PJ='+JSON.stringify(pic('james-federumhang'))+';window.PE='+JSON.stringify(pic('eddy-pelzumhang'))+';'});
  if(only){for(const t of only.split(',')){await p.evaluate(t=>renderTK2(t),+t);await p.screenshot({path:path.join(TMP,'t'+(+t).toFixed(2)+'.jpg'),type:'jpeg',quality:70});}await b.close();return;}
  for(let i=0;i<Math.round(FPS*DUR);i++){await p.evaluate(t=>renderTK2(t),i/FPS);await p.screenshot({path:path.join(TMP,'f'+String(i).padStart(4,'0')+'.jpg'),type:'jpeg',quality:92});}
  await p.evaluate(t=>renderTK2(t),27.6);await p.screenshot({path:path.join(__dirname,'cover-lang.png')});await b.close();}
@@ -23,7 +24,7 @@ const drone=(t0,d,n,v)=>{saw(mus,t0,d,hz(n),v,.12,.1,8,.03);saw(mus,t0,d,hz(n+12
 saw(mus,.5,1,hz(40),.12,.3,.05);nois(mus,.5,.5,.2,false);saw(mus,1.8,.7,hz(52),.14,.5,.1);nois(mus,1.8,.4,.3,false);kick(1.8,.7);
 beat(2.6,7.74,2);beat(7.74,16.2,3);drone(16.2,3.2,40,.1);for(const n of [64,67,71])drone(17,2.4,n,.03);riser(17.2,2.2,.4);beat(19.4,24.2,4);
 drone(24.2,4.3,27,.18);drone(24.2,4.3,28,.12);for(let t=24.4;t<28.4;t+=.86){kick(t,.6);kick(t+.2,.4);}riser(26.6,1.9,.5);beat(28.5,34.0,4);
-drone(34,9,28,.14);beat(34.5,43,2);riser(35.0,1.4,.4);drone(42.5,4,28,.14);for(let t=44.5;t<46.5;t+=.25)kick(t,.2+.2*(t-44.5));riser(44.1,2.4,.55);beat(46.5,49.5,4);drone(49.6,2.3,28,.14);beat(51.9,54.5,0);for(const n of [52,55,59,64])drone(54.5,2.8,n,.045);kick(54.5,.8);nois(mus,54.5,.6,.25,false);
+drone(34,9,28,.14);beat(34.5,43,2);riser(35.0,1.4,.4);drone(42.5,4,28,.14);for(let t=44.5;t<46.5;t+=.25)kick(t,.2+.2*(t-44.5));riser(44.1,2.4,.55);beat(46.5,49.5,4);
 const thud=(t,v)=>{nois(sfx,t,.12,.5*v,false,3);const n0=Math.floor(t*SR);for(let i=0;i<SR*.18&&n0+i<N;i++){const x=i/SR;sfx[n0+i]+=Math.sin(2*Math.PI*(160-600*x)*x)*Math.exp(-x*22)*.6*v;}nois(sfx,t,.03,.3*v,true);};
 const clink=(t,v,f)=>{const n0=Math.floor(t*SR);for(let i=0;i<SR*.16&&n0+i<N;i++){const x=i/SR;sfx[n0+i]+=(Math.sin(2*Math.PI*f*x)+.5*Math.sin(2*Math.PI*f*1.51*x)+.3*Math.sin(2*Math.PI*f*2.76*x))*Math.exp(-x*28)*v;}};
 const whoosh=(t,d,v)=>{const n0=Math.floor(t*SR);let lp=0;for(let i=0;i<SR*d&&n0+i<N;i++){const u=i/(SR*d);lp+=(nz()-lp)*(.05+.3*Math.sin(Math.PI*u));sfx[n0+i]+=lp*Math.sin(Math.PI*u)*v;}};
@@ -34,9 +35,46 @@ const boing=(t,v)=>{const n0=Math.floor(t*SR);for(let i=0;i<SR*.3&&n0+i<N;i++){c
 boom(18.2,.6);boing(18.4,.3);for(let i=0;i<7;i++){thud(19.6+i*.3,.8);boing(19.6+i*.3,.25);}boom(22.4,.7);whoosh(22.95,.3,.6);boom(23.4,1.1);
 boom(25.0,.9);saw(sfx,25.0,2.6,hz(31),.2,.2,.08,12,.5);whoosh(26.4,.5,.7);whoosh(26.5,.5,.6);boom(26.4,.5);
 for(let i=0;i<9;i++){const g=30.2+i*.3;whoosh(g-.12,.16,.6);thud(g,.9);clink(g,.2,2500+(i%3)*200);}whoosh(33.2,.25,.9);boom(33.4,1);clink(33.4,.4,2700);thud(33.9,.7);
-boom(35.5,.9);boom(36.3,.7);[[37.25,38.5],[38.85,40.1],[40.5,42.05]].forEach(([a,b],i)=>{boom(a,.6);whoosh(a,.5,.5);whoosh(b-.55,.5,.8);boom(b,i==2?1.4:1);thud(b,1.2);if(i==2)clink(b,.5,2700);});clink(44.1,.3,2200);whoosh(43.7,.4,.4);whoosh(46.5,3,.45);whoosh(49.1,.3,.9);thud(49.5,1.6);clink(49.5,.5,2700);boom(49.5,1.6);boom(49.55,1.2);const tr=51.9+.5/.4;whoosh(tr-.3,.35,.5);thud(tr,1);boom(tr,.8);thud(49.5+.9/.45,.8);thud(49.5+.9/.45+.06,.7);
-const wet=new Float32Array(N);for(const [d,gn] of [[.031,.78],[.039,.77],[.047,.76]]){const D=Math.floor(d*SR*5),c=new Float32Array(N);for(let i=0;i<N;i++){c[i]=mus[i]*.6+sfx[i]*.5+(i>=D?c[i-D]*gn*.8:0);wet[i]+=c[i]*.07;}}
+boom(35.5,.9);boom(36.3,.7);[[37.25,38.5],[38.85,40.1],[40.5,42.05]].forEach(([a,b],i)=>{boom(a,.6);whoosh(a,.5,.5);whoosh(b-.55,.5,.8);boom(b,i==2?1.4:1);thud(b,1.2);if(i==2)clink(b,.5,2700);});clink(44.1,.3,2200);whoosh(43.7,.4,.4);whoosh(46.5,3,.45);whoosh(49.1,.3,.9);thud(49.5,1.6);clink(49.5,.5,2700);boom(49.5,1.6);boom(49.55,1.2);
+// ---------- Kampfschreie (Formant-Synthese, ohne Worte) ----------
+const vox=new Float32Array(N),endB=new Float32Array(N);
+const VOW={a:[800,1200,2700],ae:[680,1750,2550],o:[480,850,2650],u:[340,760,2450],e:[480,2000,2650],m:[260,1050,2300]};
+function shout(t0,d,o){const n0=Math.floor(t0*SR),n=Math.floor(d*SR),sc=o.sc||1,vs=(o.v||'a').split('-').map(k=>VOW[k]),st=[0,0,0,0,0,0],dr=o.drive||2.5;let ph=0,sub=0;
+ for(let i=0;i<n&&n0+i<N;i++){if(n0+i<0)continue;const u=i/n,t=i/SR;const f0=(o.f0[0]+(o.f0[1]-o.f0[0])*Math.pow(u,o.curve||1))*(1+.012*Math.sin(2*Math.PI*5.5*t)+.008*nz());ph+=f0/SR;if(ph>=1){ph-=1;sub^=1;}
+  let src=(1-2*ph)*.8+nz()*(o.breath||.12);if(o.growl)src*=1+o.growl*(sub?1:-1)*.6+o.growl*.3*Math.sin(2*Math.PI*31*t);if(t<.05&&!o.noH)src+=nz()*(1-t/.05)*1.2;
+  const seg=u*(vs.length-1),k=Math.min(vs.length-2,Math.floor(seg)),fr=vs.length>1?seg-k:0,F=vs.length>1?vs[k].map((f,j)=>f+(vs[k+1][j]-f)*fr):vs[0];let y=0;
+  for(let j=0;j<3;j++){const w0=2*Math.PI*F[j]*sc/SR,Q=F[j]*sc/[90,110,150][j],al=Math.sin(w0)/(2*Q),cw=Math.cos(w0),a0=1+al;const x0=src;const out=(al*x0-al*st[j*2+1]*0+0)/a0;
+   const yy=(al/a0)*x0-(al/a0)*st[j*2+1]+(2*cw/a0)*st[j*2]-((1-al)/a0)*(st[j*2+1+6]||0);}
+  // einfacher Resonator je Formant (Zustandsvariablen-Filter)
+  for(let j=0;j<3;j++){const f=2*Math.sin(Math.PI*Math.min(F[j]*sc,8000)/SR),q=1/([6,7,9][j]);const lpS=st[j*2],bpS=st[j*2+1];const lp=lpS+f*bpS,hp=src-lp-q*bpS,bp=f*hp+bpS;st[j*2]=lp;st[j*2+1]=bp;y+=bp*[1,.55,.3][j];}
+  let env=Math.min(1,t/.018)*(u<.7?1:Math.pow(1-(u-.7)/.3,1.6))*(o.swell?(.7+.3*Math.sin(Math.PI*Math.min(1,u*1.5))):1);if(o.muffle)y*=.7;
+  const s=Math.tanh(y*dr*.35)*env*o.vol;vox[n0+i]+=s;if(o.muffle&&i>0)vox[n0+i]=vox[n0+i]*.6+vox[n0+i-1]*.4;}}
+const J=(t,d,f0a,f0b,v,vol=.5,x={})=>shout(t,d,Object.assign({f0:[f0a,f0b],v,vol,sc:1.08,drive:3},x));
+const E=(t,d,f0a,f0b,v,vol=.5,x={})=>shout(t,d,Object.assign({f0:[f0a,f0b],v,vol,sc:.9,drive:3,muffle:true},x));
+const laugh=(t0,n,f0,vol,sc=1.08,gap=.15)=>{for(let i=0;i<n;i++)shout(t0+i*gap,gap*.8,{f0:[f0*(1.1-i*.03),f0*(.9-i*.03)],v:'a',vol,sc,drive:2.5});};
+// James: kurze Schreie bei Schlägen, langes Brüllen bei großen Angriffen, Lachen in der Gummi-Form
+J(3.18,.22,260,230,'a',.45);J(3.48,.22,270,235,'a',.45);J(4.12,.3,280,220,'ae-a',.5);J(5.22,.45,250,300,'u-a',.55);J(8.18,.55,230,320,'u-o-a',.6);
+for(let i=0;i<5;i++)J(10.5+i*.13,.11,300+i*8,280,'a',.4);J(13.5,.75,220,330,'o-a',.65,{swell:true});
+laugh(16.55,6,250,.45);laugh(17.6,5,270,.45);J(19.35,.35,320,380,'u-o',.45);J(21.65,.3,200,180,'m-a',.4);J(22.85,.55,240,320,'a',.6);
+laugh(34.6,6,150,.55,.9,.2);J(37.85,.5,160,210,'o-a',.65,{sc:.92});J(39.45,.5,165,215,'o-a',.65,{sc:.92});J(41.3,.8,150,230,'u-o-a',.75,{sc:.92,swell:true});
+J(46.5,2.9,240,330,'u-o-a',.6,{swell:true,curve:.6});J(49.05,.42,330,380,'a',.75);
+// James wird getroffen
+J(12.0,.18,330,260,'ae',.35);J(12.62,.18,320,250,'ae',.35);J(33.42,.35,300,200,'u-a',.45);
+// Eddy: gedämpfte Schreie (Schwert im Mund), Dämonen-Brüllen
+[5.86,6.16,6.5,6.95,7.3,12.0,12.58,12.92].forEach((t,i)=>E(t-.04,.2,150-i%3*8,125,'m',.5));E(3.28,.18,140,120,'m',.35);
+E(8.6,.3,170,110,'m-u',.45);E(14.2,.32,165,105,'m-u',.45);for(let i=0;i<7;i++)E(19.58+i*.3,.16,140,120,'m',.4);E(23.4,.4,170,100,'m-u',.5);
+E(24.95,1.35,95,70,'m-o-a',.75,{growl:1,drive:6,muffle:false,swell:true,breath:.25});E(25.0,1.3,47,36,'o-a',.45,{growl:1,drive:6,muffle:false,breath:.3});
+[[120,.9],[95,.8],[140,.75]].forEach(([f,s],k)=>E(26.45+k*.05,.75,f,f*.7,'m-a',.4,{sc:s,growl:.8,drive:5,muffle:false}));
+for(let i=0;i<9;i++)E(30.1+i*.3,.18,[135,120,150][i%3],[110,100,125][i%3],'m',.45,{growl:.4,drive:4});
+[[110,.9],[95,.85],[125,.8]].forEach(([f,s],k)=>E(33.25+k*.03,.45,f,f*.75,'m-a',.45,{sc:s,growl:.7,drive:5}));
+E(41.75,.55,120,90,'m-a',.6,{growl:.8,drive:5});E(43.7,.5,110,95,'m',.3);
+E(46.5,2.9,100,130,'m-o-a',.6,{growl:.9,drive:5,swell:true,curve:.6});E(46.5,2.9,50,65,'o-a',.35,{growl:1,drive:6,muffle:false});E(49.1,.4,140,110,'m-a',.7,{growl:.8,drive:5});
+// ---------- Schwarzbild am Ende ----------
+const endBoom=(t,v)=>{const n0=Math.floor(t*SR);let lp=0;for(let i=0;i<SR*2.2&&n0+i<N;i++){const x=i/SR;lp+=(nz()-lp)*.05;endB[n0+i]+=(Math.sin(2*Math.PI*(30+20*Math.exp(-x*5))*x)*Math.exp(-x*1.4)+lp*Math.exp(-x*2.5))*v;}};
+const pad=(t0,d,f,v)=>{const n0=Math.floor(t0*SR);for(let i=0;i<SR*d&&n0+i<N;i++){const x=i/SR,u=i/(SR*d);endB[n0+i]+=(Math.sin(2*Math.PI*f*x)+.5*Math.sin(2*Math.PI*f*2.003*x)+.3*Math.sin(2*Math.PI*f*3.01*x))*Math.min(1,x/.6)*Math.min(1,(1-u)*3)*v;}};
+endBoom(50.35,.9);endBoom(51.45,.6);endBoom(51.7,.6);pad(50.35,4.65,55,.12);pad(51.45,3.55,82.4,.06);pad(52.5,2.5,110,.05);
+const wet=new Float32Array(N);for(const [d,gn] of [[.031,.78],[.039,.77],[.047,.76]]){const D=Math.floor(d*SR*5),c=new Float32Array(N);for(let i=0;i<N;i++){c[i]=mus[i]*.6+sfx[i]*.5+vox[i]*.45+(i>=D?c[i-D]*gn*.8:0);wet[i]+=c[i]*.07;}}
 const pcm=Buffer.alloc(44+N*2);pcm.write('RIFF',0);pcm.writeUInt32LE(36+N*2,4);pcm.write('WAVEfmt ',8);pcm.writeUInt32LE(16,16);pcm.writeUInt16LE(1,20);pcm.writeUInt16LE(1,22);pcm.writeUInt32LE(SR,24);pcm.writeUInt32LE(SR*2,28);pcm.writeUInt16LE(2,32);pcm.writeUInt16LE(16,34);pcm.write('data',36);pcm.writeUInt32LE(N*2,40);
-for(let i=0;i<N;i++){const t=i/SR,duck=t>51.9&&t<54.5?.45:1;pcm.writeInt16LE(Math.round(Math.tanh((mus[i]*1.1*duck+sfx[i]*.55+wet[i])*.8)*29000),44+i*2);}
+for(let i=0;i<N;i++){const t=i/SR,cut=t<49.6?1:Math.max(0,1-(t-49.6)/.7);pcm.writeInt16LE(Math.round(Math.tanh(((mus[i]*1.1+sfx[i]*.55+vox[i]*1.0+wet[i])*cut+endB[i])*.8)*29000),44+i*2);}
 fs.writeFileSync(path.join(TMP,'ton.wav'),pcm);if(only==='audio'){console.log('ton fertig');return;}
 execSync(`ffmpeg -y -loglevel error -framerate ${FPS} -i "${TMP}/f%04d.jpg" -i "${TMP}/ton.wav" -c:v libx264 -pix_fmt yuv420p -crf 23 -preset medium -c:a aac -b:a 192k -shortest -movflags +faststart "${path.join(__dirname,'video-lang.mp4')}"`);console.log('fertig');})();
