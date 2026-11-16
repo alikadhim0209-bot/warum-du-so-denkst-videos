@@ -1,0 +1,39 @@
+// 3D-Arena-Kampf rendern: node render.js  (braucht three@0.160.0, playwright, ffmpeg). node render.js 3.6,8.5 -> Testbilder
+const fs=require('fs'),path=require('path'),{execSync}=require('child_process');const {chromium}=require('playwright');
+const TMP=process.env.KAMPF_TMP||path.join(require('os').tmpdir(),'kampf-arena');fs.mkdirSync(TMP,{recursive:true});
+const THREE_JS=process.env.THREE_JS||require.resolve('three/build/three.min.js');const FPS=30,DUR=27;
+(async()=>{const only=process.argv[2];
+if(only!=='audio'){const b=await chromium.launch({args:['--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist','--enable-webgl']});
+ const p=await b.newPage({viewport:{width:1080,height:1920}});p.on('pageerror',e=>console.log('PAGEERR',e.message));
+ await p.setContent('<body style="margin:0;background:#000;overflow:hidden"><div id="gl"></div></body>');await p.addScriptTag({path:THREE_JS});
+ for(const f of ['../kampf-james-vs-eddy-3d/scene.js','../kampf-james-vs-eddy-60s/scene60.js','scene-arena.js'])await p.addScriptTag({path:path.join(__dirname,f)});
+ if(only){for(const t of only.split(',')){await p.evaluate(t=>renderTK(t),+t);await p.screenshot({path:path.join(TMP,'t'+(+t).toFixed(2)+'.jpg'),type:'jpeg',quality:70});}await b.close();return;}
+ for(let i=0;i<FPS*DUR;i++){await p.evaluate(t=>renderTK(t),i/FPS);await p.screenshot({path:path.join(TMP,'f'+String(i).padStart(4,'0')+'.jpg'),type:'jpeg',quality:92});}
+ await p.evaluate(t=>renderTK(t),18.52);await p.screenshot({path:path.join(__dirname,'cover.png')});await b.close();}
+// ---------------- Musik (treibender Elektro-Beat) + Effekte, alles synthetisch ----------------
+const SR=44100,N=SR*DUR,mus=new Float32Array(N),sfx=new Float32Array(N);let seed=5;const nz=()=>{seed=(seed*16807)%2147483647;return seed/1073741823-1;},hz=n=>440*Math.pow(2,(n-69)/12),B=60/140;
+function kick(t0,v){const n0=Math.floor(t0*SR);for(let i=0;i<SR*.3&&n0+i<N;i++){const t=i/SR;mus[n0+i]+=Math.sin(2*Math.PI*(45*t+ (120-45)*(1-Math.exp(-t*28))/28))*Math.exp(-t*9)*v;}}
+function nois(buf,t0,d,v,hp,dec=2){const n0=Math.floor(t0*SR);let lp=0;for(let i=0;i<SR*d&&n0+i<N;i++){const x=nz();lp+=(x-lp)*.25;buf[n0+i]+=(hp?x-lp:lp)*Math.pow(1-i/(SR*d),dec)*v;}}
+function saw(buf,t0,d,f,v,cut0=.5,cut1=.05,H=10){const n0=Math.floor(t0*SR);let lp=0;for(let i=0;i<SR*d&&n0+i<N;i++){const t=i/SR,u=i/(SR*d);let s=0;for(let h=1;h<=H;h++)s+=Math.sin(2*Math.PI*f*h*t)/h;lp+=(s-lp)*(cut0+(cut1-cut0)*u);buf[n0+i]+=lp*v*Math.min(1,i/80)*Math.min(1,(1-u)*14);}}
+const BASS=[28,28,31,28,28,33,31,26],CH=[[52,55,59],[52,55,59],[55,59,62],[50,54,57]];
+function beat(t0,t1,lvl){for(let t=t0,i=0;t<t1-1e-6;t+=B/4,i++){const k=i%16,bar=Math.floor(i/16);if(k%4==0)kick(t,lvl>1?.5:.38);if(lvl>1&&k%4==2)nois(mus,t,.05,.1,true);if(lvl>1&&(k==4||k==12)){nois(mus,t,.14,.2,false);nois(mus,t,.1,.1,true);}
+ if(lvl>0&&k%2==0||lvl>1)saw(mus,t,B/4*.9,hz(BASS[(bar*2+Math.floor(k/8))%8]+(k%4==3?12:0)),.13,.35,.04,8);if(lvl>2&&k%2==1)nois(mus,t,.03,.05,true);
+ if(lvl>1&&k==0)CH[bar%4].forEach(n=>{saw(mus,t,B*1.5,hz(n+12)*1.004,.028,.3,.08);saw(mus,t,B*1.5,hz(n+12)*.996,.028,.3,.08);});if(lvl>2&&k%4==0)saw(mus,t,B/4*.8,hz(CH[bar%4][(i/4)%3|0]+24),.03,.6,.2,6);}}
+function riser(t0,d,v){const n0=Math.floor(t0*SR);let lp=0;for(let i=0;i<SR*d&&n0+i<N;i++){const u=i/(SR*d);lp+=(nz()-lp)*(.02+.5*u*u);mus[n0+i]+=lp*u*u*v;}}
+saw(mus,.5,1,hz(40),.12,.3,.05);nois(mus,.5,.5,.2,false);saw(mus,1.8,.7,hz(52),.14,.5,.1);nois(mus,1.8,.4,.3,false);kick(1.8,.7);
+beat(2.6,7.74,2);beat(7.74,16.31,3);riser(15.4,1.1,.3);saw(mus,16.5,1.2,hz(28),.2,.2,.03);saw(mus,16.5,1.2,hz(29),.12,.2,.03);riser(16.8,.8,.35);beat(17.6,20.0,3);
+saw(mus,20.48,2.6,hz(28),.16,.12,.02);beat(22.2,24.6,0);[52,56,59,64].forEach((n,i)=>{saw(mus,24.6,2.2,hz(n)*1.004,.05,.4,.08);saw(mus,24.6,2.2,hz(n)*.996,.05,.4,.08);});kick(24.6,.8);nois(mus,24.6,.6,.25,false);
+const g2t=g=>g<=20?g:20+(g-20)/.42;
+const thud=(t,v)=>{nois(sfx,t,.12,.5*v,false,3);const n0=Math.floor(t*SR);for(let i=0;i<SR*.18&&n0+i<N;i++){const x=i/SR;sfx[n0+i]+=Math.sin(2*Math.PI*(160-600*x)*x)*Math.exp(-x*22)*.6*v;}nois(sfx,t,.03,.3*v,true);};
+const clink=(t,v,f)=>{const n0=Math.floor(t*SR);for(let i=0;i<SR*.16&&n0+i<N;i++){const x=i/SR;sfx[n0+i]+=(Math.sin(2*Math.PI*f*x)+.5*Math.sin(2*Math.PI*f*1.51*x)+.3*Math.sin(2*Math.PI*f*2.76*x))*Math.exp(-x*28)*v;}};
+const whoosh=(t,d,v)=>{const n0=Math.floor(t*SR);let lp=0;for(let i=0;i<SR*d&&n0+i<N;i++){const u=i/(SR*d);lp+=(nz()-lp)*(.05+.3*Math.sin(Math.PI*u));sfx[n0+i]+=lp*Math.sin(Math.PI*u)*v;}};
+const boom=(t,v)=>{const n0=Math.floor(t*SR);let lp=0;for(let i=0;i<SR*1.8&&n0+i<N;i++){const x=i/SR;lp+=(nz()-lp)*.06;sfx[n0+i]+=(Math.sin(2*Math.PI*(34+24*Math.exp(-x*6))*x)*Math.exp(-x*2)+lp*Math.exp(-x*3)*1.2)*v;}};
+[[3.3,'b'],[3.6],[4.3],[8.6,'B'],[10.6,'b'],[10.75,'b'],[10.9],[11.05],[14.2,'B']].forEach(([g,k])=>{if(k=='b')clink(g,.35,2100);else{thud(g,k?1.4:1);if(k)boom(g,.5);}});
+[5.9,6.2,6.55,7.0,7.35,12.0,12.6,12.95,17.9,18.2,18.5,18.8,19.1,19.4].forEach(g=>{whoosh(g-.1,.14,.5);thud(g,.9);clink(g,.18,2600);});
+whoosh(5.25,.3,.4);whoosh(5.35,.25,.5);whoosh(8.3,.3,.5);whoosh(13.6,.5,.4);whoosh(14.05,.2,.8);whoosh(17.6,.3,.8);clink(16.9,.35,2400);
+const tk=g2t(20.2);whoosh(tk-.25,.3,.9);thud(tk,1.6);clink(tk,.5,2700);boom(tk,1.5);const tr=22.2+(20.2-19.7)/.4;whoosh(tr-.3,.35,.5);thud(tr,1);boom(tr,.8);thud(g2t(20.504)+(.45/.9),.8);
+const wet=new Float32Array(N);for(const [d,gn] of [[.031,.78],[.039,.77],[.047,.76]]){const D=Math.floor(d*SR*5),c=new Float32Array(N);for(let i=0;i<N;i++){c[i]=mus[i]*.6+sfx[i]*.5+(i>=D?c[i-D]*gn*.8:0);wet[i]+=c[i]*.07;}}
+const pcm=Buffer.alloc(44+N*2);pcm.write('RIFF',0);pcm.writeUInt32LE(36+N*2,4);pcm.write('WAVEfmt ',8);pcm.writeUInt32LE(16,16);pcm.writeUInt16LE(1,20);pcm.writeUInt16LE(1,22);pcm.writeUInt32LE(SR,24);pcm.writeUInt32LE(SR*2,28);pcm.writeUInt16LE(2,32);pcm.writeUInt16LE(16,34);pcm.write('data',36);pcm.writeUInt32LE(N*2,40);
+for(let i=0;i<N;i++){const t=i/SR,duck=t>22.2&&t<24.6?.45:1;pcm.writeInt16LE(Math.round(Math.tanh((mus[i]*1.1*duck+sfx[i]*.55+wet[i])*.8)*29000),44+i*2);}
+fs.writeFileSync(path.join(TMP,'ton.wav'),pcm);if(only==='audio'){console.log('ton fertig');return;}
+execSync(`ffmpeg -y -loglevel error -framerate ${FPS} -i "${TMP}/f%04d.jpg" -i "${TMP}/ton.wav" -c:v libx264 -pix_fmt yuv420p -crf 22 -preset medium -c:a aac -b:a 192k -shortest -movflags +faststart "${path.join(__dirname,'video.mp4')}"`);console.log('fertig');})();
