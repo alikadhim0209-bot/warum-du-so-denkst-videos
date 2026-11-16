@@ -52,29 +52,35 @@ function shout(t0,d,o){const n0=Math.floor(t0*SR),n=Math.floor(d*SR),sc=o.sc||1,
 const J=(t,d,f0a,f0b,v,vol=.5,x={})=>shout(t,d,Object.assign({f0:[f0a,f0b],v,vol,sc:1.08,drive:3},x));
 const E=(t,d,f0a,f0b,v,vol=.5,x={})=>shout(t,d,Object.assign({f0:[f0a,f0b],v,vol,sc:.9,drive:3,muffle:true},x));
 const laugh=(t0,n,f0,vol,sc=1.08,gap=.15)=>{for(let i=0;i<n;i++)shout(t0+i*gap,gap*.8,{f0:[f0*(1.1-i*.03),f0*(.9-i*.03)],v:'a',vol,sc,drive:2.5});};
-// James: am Anfang witzig und verspielt (hoch, hüpfend), ab der Riesenfaust ernst (tiefer, kräftig), in der Gummi-Form und später lachend
-J(3.18,.2,330,400,'a',.45);J(3.48,.22,360,300,'e-a',.45);J(4.12,.32,300,420,'u-a',.5,{curve:.5});J(5.22,.45,320,450,'u-a',.5);J(8.18,.55,280,420,'u-o-a',.55);
-for(let i=0;i<5;i++)J(10.5+i*.13,.11,360+i*15,330,'a',.4);J(13.5,.75,190,240,'o-a',.65,{swell:true,drive:4});
-laugh(16.55,7,240,.5,1.08,.14);laugh(17.6,6,265,.5,1.08,.13);J(19.35,.4,340,460,'u-o',.45,{curve:.5});J(21.65,.3,180,165,'m-a',.4);J(22.85,.55,200,250,'a',.65,{drive:4});
-laugh(34.6,7,140,.6,.9,.19);J(37.85,.5,150,190,'o-a',.7,{sc:.92,drive:4});J(39.45,.5,150,195,'o-a',.7,{sc:.92,drive:4});J(41.3,.8,140,210,'u-o-a',.8,{sc:.92,swell:true,drive:4.5});
-laugh(44.6,5,230,.4,1.08,.15);J(46.5,2.9,190,260,'u-o-a',.65,{swell:true,curve:.6,drive:4.5});J(49.05,.42,260,300,'a',.8,{drive:4.5});
-// James wird getroffen
-J(12.0,.18,360,280,'ae',.35);J(12.62,.18,350,270,'ae',.35);J(33.42,.35,260,180,'u-a',.45);
-// Eddy: durchgehend tief und ernst, kaum Tonhöhenänderung, gedämpft durch das Schwert im Mund
-[5.86,6.16,6.5,6.95,7.3,12.0,12.58,12.92].forEach((t,i)=>E(t-.04,.2,98-i%2*4,90,'m',.55,{drive:4}));E(3.28,.18,92,86,'m',.35);
-E(8.6,.3,105,80,'m-u',.45);E(14.2,.32,102,78,'m-u',.45);for(let i=0;i<7;i++)E(19.58+i*.3,.16,95,88,'m',.42,{drive:4});E(23.4,.4,104,76,'m-u',.5);
-E(24.95,1.35,70,52,'m-o-a',.8,{growl:1,drive:7,muffle:false,swell:true,breath:.25});E(25.0,1.3,36,28,'o-a',.5,{growl:1,drive:7,muffle:false,breath:.3});
-[[88,.9],[76,.85],[96,.82]].forEach(([f,s],k)=>E(26.45+k*.05,.75,f,f*.8,'m-a',.42,{sc:s,growl:.8,drive:6,muffle:false}));
-for(let i=0;i<9;i++)E(30.1+i*.3,.18,[94,86,100][i%3],[86,80,92][i%3],'m',.45,{growl:.4,drive:5});
-[[84,.88],[74,.84],[92,.8]].forEach(([f,s],k)=>E(33.25+k*.03,.45,f,f*.85,'m-a',.48,{sc:s,growl:.7,drive:6}));
-E(41.75,.55,88,74,'m-a',.62,{growl:.8,drive:6});E(43.7,.5,82,78,'m',.32);
-E(46.5,2.9,78,92,'m-o-a',.65,{growl:.9,drive:6,swell:true,curve:.6});E(46.5,2.9,39,46,'o-a',.38,{growl:1,drive:7,muffle:false});E(49.1,.4,96,82,'m-a',.72,{growl:.8,drive:6});
+// Kampfschreie aus ElevenLabs-Aufnahmen (stimmen/james.mp3: Stimme „Kalle“, stimmen/eddy.mp3: Stimme „Obsidian“), zerschnitten an den Pausen
+const loadV=f=>{const b=require('child_process').execSync(`ffmpeg -loglevel error -i "${f}" -f f32le -ac 1 -ar ${SR} -`,{maxBuffer:2e8});return new Float32Array(b.buffer.slice(b.byteOffset,b.byteOffset+b.length));};
+const VJ=loadV(path.join(__dirname,'stimmen/james.mp3')),VE=loadV(path.join(__dirname,'stimmen/eddy.mp3'));
+// James: 1 Ha 2 Hah 3 Hyaaah 4 Wuhuu 5 Salve 6 RAAAH 7 Lachen 8 Hngh 9 Haaaa 10 Ugh 11 Aargh 12 Schlachtruf 13 HAAAA
+const SJ=[0,[0,.48],[1.99,2.46],[3.22,4.15],[4.79,5.97],[6.58,8.12],[8.81,10.65],[11.32,14.81],[15.54,16.19],[17.14,18.24],[18.92,19.38],[20.26,21.08],[22.06,24.2],[25.03,26.44]];
+// Eddy: 1 Hmph 2 Hah 3 Hrrgh 4 Haaa 5 Ngh 6 Gah 7 kurz 8 Dämonen-Knurren 9 Schlachtruf 10 HAAAA 11 Hmm
+const SE=[0,[0,.54],[1.81,2.2],[3.2,5.35],[6.14,6.76],[7.72,8.66],[9.02,9.55],[10.47,11.15],[12.18,16.77],[17.63,20.0],[20.72,22.37],[23.4,23.92]];
+function put(src,seg,t0,g,o={}){const rate=o.rate||1,a=Math.max(0,seg[0]-.04)*SR,e=Math.min(src.length-2,(seg[1]+.06)*SR),n0=Math.floor(t0*SR),len=(e-a)/rate;let lp=0;
+ for(let i=0;i<len&&n0+i<N;i++){if(n0+i<0)continue;const p=a+i*rate,k=Math.floor(p),fr=p-k;let s=src[k]*(1-fr)+src[k+1]*fr;if(o.muffle){lp+=(s-lp)*.22;s=lp*1.5;}
+  const env=Math.min(1,i/(SR*.01))*Math.min(1,(len-i)/(SR*.03));vox[n0+i]+=s*g*env;}}
+const JV=(k,t,g=1,o)=>put(VJ,SJ[k],t,g,o),EV=(k,t,g=1,o={})=>put(VE,SE[k],t,g,Object.assign({muffle:true},o));
+// James: anfangs verspielt, ab der Riesenfaust ernst, später lachend
+JV(1,3.18,.8);JV(2,3.48,.8);JV(3,4.1);JV(4,5.2);JV(3,8.15,1,{rate:.94});JV(5,10.42,.9);JV(6,13.45);JV(7,16.5);JV(4,19.32,.9);JV(8,21.65,.8);JV(9,22.8);
+JV(7,34.55,1.1,{rate:.78});JV(9,37.8,1,{rate:.86});JV(6,39.4,1,{rate:.86});JV(6,41.2,1.1,{rate:.8});JV(7,44.5,.8);JV(12,47.1);JV(13,49.0);
+JV(10,12.0,.7);JV(11,12.6,.7);JV(11,33.4,.8);
+// Eddy: tief und ernst, gedämpft durch das Schwert im Mund; Dämonen-Knurren offen und tiefer gedoppelt
+[5.82,6.12,6.46,6.91,7.26,11.96,12.54,12.88].forEach((t,i)=>EV([1,2,4,7,2][i%5],t,.9));EV(1,3.24,.6);
+EV(5,8.58,.85);EV(6,14.18,.85);for(let i=0;i<7;i++)EV([1,7][i%2],19.55+i*.3,.6);EV(5,23.38,.9);
+EV(8,24.9,1.1,{muffle:false});EV(8,24.9,.7,{muffle:false,rate:.75});
+[.92,1,1.08].forEach((r,k)=>EV(3,26.42+k*.04,.7,{rate:r}));
+for(let i=0;i<9;i++)EV([2,4,7][i%3],30.06+i*.3,.75,{rate:[.94,1,1.06][i%3]});
+[.92,1,1.08].forEach((r,k)=>EV(10,33.2+k*.03,.6,{rate:r}));
+EV(3,41.7,.9);EV(11,43.65,.8,{muffle:false});EV(9,47.0,1);EV(9,47.0,.5,{rate:.8,muffle:false});EV(10,49.05,1);
 // ---------- Schwarzbild am Ende ----------
 const endBoom=(t,v)=>{const n0=Math.floor(t*SR);let lp=0;for(let i=0;i<SR*2.2&&n0+i<N;i++){const x=i/SR;lp+=(nz()-lp)*.05;endB[n0+i]+=(Math.sin(2*Math.PI*(30+20*Math.exp(-x*5))*x)*Math.exp(-x*1.4)+lp*Math.exp(-x*2.5))*v;}};
 const pad=(t0,d,f,v)=>{const n0=Math.floor(t0*SR);for(let i=0;i<SR*d&&n0+i<N;i++){const x=i/SR,u=i/(SR*d);endB[n0+i]+=(Math.sin(2*Math.PI*f*x)+.5*Math.sin(2*Math.PI*f*2.003*x)+.3*Math.sin(2*Math.PI*f*3.01*x))*Math.min(1,x/.6)*Math.min(1,(1-u)*3)*v;}};
 endBoom(50.35,.9);endBoom(51.45,.6);endBoom(51.7,.6);pad(50.35,4.65,55,.12);pad(51.45,3.55,82.4,.06);pad(52.5,2.5,110,.05);
 const wet=new Float32Array(N);for(const [d,gn] of [[.031,.78],[.039,.77],[.047,.76]]){const D=Math.floor(d*SR*5),c=new Float32Array(N);for(let i=0;i<N;i++){c[i]=mus[i]*.6+sfx[i]*.5+vox[i]*.45+(i>=D?c[i-D]*gn*.8:0);wet[i]+=c[i]*.07;}}
 const pcm=Buffer.alloc(44+N*2);pcm.write('RIFF',0);pcm.writeUInt32LE(36+N*2,4);pcm.write('WAVEfmt ',8);pcm.writeUInt32LE(16,16);pcm.writeUInt16LE(1,20);pcm.writeUInt16LE(1,22);pcm.writeUInt32LE(SR,24);pcm.writeUInt32LE(SR*2,28);pcm.writeUInt16LE(2,32);pcm.writeUInt16LE(16,34);pcm.write('data',36);pcm.writeUInt32LE(N*2,40);
-for(let i=0;i<N;i++){const t=i/SR,cut=t<49.6?1:Math.max(0,1-(t-49.6)/.7);pcm.writeInt16LE(Math.round(Math.tanh(((mus[i]*1.1+sfx[i]*.55+vox[i]*1.0+wet[i])*cut+endB[i])*.8)*29000),44+i*2);}
+for(let i=0;i<N;i++){const t=i/SR,cut=t<49.6?1:Math.max(0,1-(t-49.6)/.7);pcm.writeInt16LE(Math.round(Math.tanh(((mus[i]*1.1+sfx[i]*.55+vox[i]*1.7+wet[i])*cut+endB[i])*.8)*29000),44+i*2);}
 fs.writeFileSync(path.join(TMP,'ton.wav'),pcm);if(only==='audio'){console.log('ton fertig');return;}
 execSync(`ffmpeg -y -loglevel error -framerate ${FPS} -i "${TMP}/f%04d.jpg" -i "${TMP}/ton.wav" -c:v libx264 -pix_fmt yuv420p -crf 23 -preset medium -c:a aac -b:a 192k -shortest -movflags +faststart "${path.join(__dirname,'video-lang.mp4')}"`);console.log('fertig');})();
