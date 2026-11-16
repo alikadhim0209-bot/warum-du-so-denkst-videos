@@ -6,7 +6,7 @@ const VIEWS={james:[['Vorne',0,''],['Halbprofil',.7,''],['Seite',1.57,''],['Hint
 (async()=>{const b=await chromium.launch({args:['--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist','--enable-webgl']});
 const p=await b.newPage({viewport:{width:1080,height:1920}});p.on('pageerror',e=>console.log('PAGEERR',e.message));
 await p.setContent('<body style="margin:0;overflow:hidden"><div id="gl"></div></body>');await p.addScriptTag({path:THREE_JS});await p.addScriptTag({path:path.join(__dirname,'scene.js')});
-await p.evaluate(()=>{scene.background=new THREE.Color(0xf3e3bf);scene.fog=null;scene.children.forEach(m=>{if(m.isMesh&&m.geometry&&(m.geometry.type=='ConeGeometry'||m.geometry.type=='DodecahedronGeometry'||(m.geometry.type=='SphereGeometry'&&m.geometry.parameters.radius==9)))m.visible=false;if(m.isMesh&&m.geometry.type=='CircleGeometry')m.material.color.set(0xe6d2a4);});
+await p.evaluate(()=>{scene.background=new THREE.Color(0xf3e3bf);scene.fog=null;scene.children.forEach(m=>{if(m.isMesh&&m.geometry&&(m.geometry.type=='ConeGeometry'||m.geometry.type=='DodecahedronGeometry'||(m.geometry.type=='SphereGeometry'&&m.geometry.parameters.radius==9)))m.visible=false;if(m.isMesh&&m.geometry.type=='PlaneGeometry')m.material.color.set(0xe6d2a4);});
  window.shot=(kind,yaw,act)=>{sparks.concat(balls,dusts,rings,arcs,gatF).forEach(m=>m.visible=false);gatA.forEach(a=>a.vis(false));aura.forEach(a=>a.material.opacity=0);pl.forEach(l=>l.intensity=0);
   const J=kind=='james',c=J?Jm:Ed,o=J?Ed:Jm;const q={x:0,y:0,yaw,lean:0,wide:.1};const hd=(dx,dy,dz)=>side(c,q,0,dx,dy,dz);
   q.h=[hd(-1.02,-.25,.25),hd(1.02,-.25,.25)];let d=[V(-.3,-1,.4),V(.3,-1,.4)],cam=[0,2.5,9.6],look=[0,2.35,0];
