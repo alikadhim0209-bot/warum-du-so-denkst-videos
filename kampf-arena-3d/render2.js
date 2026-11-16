@@ -59,28 +59,39 @@ const VJ=loadV(path.join(__dirname,'stimmen/james.mp3')),VE=loadV(path.join(__di
 const SJ=[0,[0,.48],[1.99,2.46],[3.22,4.15],[4.79,5.97],[6.58,8.12],[8.81,10.65],[11.32,14.81],[15.54,16.19],[17.14,18.24],[18.92,19.38],[20.26,21.08],[22.06,24.2],[25.03,26.44]];
 // Eddy: 1 Hmph 2 Hah 3 Hrrgh 4 Haaa 5 Ngh 6 Gah 7 kurz 8 Dämonen-Knurren 9 Schlachtruf 10 HAAAA 11 Hmm
 const SE=[0,[0,.54],[1.81,2.2],[3.2,5.35],[6.14,6.76],[7.72,8.66],[9.02,9.55],[10.47,11.15],[12.18,16.77],[17.63,20.0],[20.72,22.37],[23.4,23.92]];
-function put(src,seg,t0,g,o={}){const rate=o.rate||1,a=Math.max(0,seg[0]-.04)*SR,e=Math.min(src.length-2,(seg[1]+.06)*SR),n0=Math.floor(t0*SR),len=(e-a)/rate;let lp=0;
+function put(src,seg,t0,g,o={}){const rate=o.rate||1,a=Math.max(0,seg[0]-.04)*SR,e=Math.min(src.length-2,(seg[1]+.06)*SR),n0=Math.floor(t0*SR),len=Math.min((e-a)/rate,o.max?o.max*SR:1e12);let lp=0;
  for(let i=0;i<len&&n0+i<N;i++){if(n0+i<0)continue;const p=a+i*rate,k=Math.floor(p),fr=p-k;let s=src[k]*(1-fr)+src[k+1]*fr;if(o.muffle){lp+=(s-lp)*.22;s=lp*1.5;}
   const env=Math.min(1,i/(SR*.01))*Math.min(1,(len-i)/(SR*.03));vox[n0+i]+=s*g*env;}}
 const JV=(k,t,g=1,o)=>put(VJ,SJ[k],t,g,o),EV=(k,t,g=1,o={})=>put(VE,SE[k],t,g,Object.assign({muffle:true},o));
+// Angesagte Attacken (stimmen/james-namen.mp3, stimmen/eddy-namen.mp3)
+const NJ=loadV(path.join(__dirname,'stimmen/james-namen.mp3')),NE=loadV(path.join(__dirname,'stimmen/eddy-namen.mp3')),spk=new Float32Array(N);
+// James: 1 Riesenfaust 2 Weiße Gummi-Form 3 Gummiball 4 Maulwurf-Faust 5 Gummi-Hammer 6 Riesen-Form 7 Waffen aus dem Boden 8 Alles oder nichts
+const AJ=[0,[0,1.33],[2.65,4.7],[5.84,6.53],[7.65,8.94],[10.07,10.89],[12.03,14.28],[15.36,16.75],[17.81,19.84]];
+// Eddy: 1 Dämonen-Form 2 Verdreifachung 3 Dämonen-Sturm 4 Dämonen-Block 5 Jetzt wird es ernst 6 Alles oder nichts
+const AE=[0,[0,1.55],[3.13,4.35],[5.58,7.1],[8.04,9.4],[10.61,12.04],[13.21,14.88]];
+function say(src,seg,t0,g,soft){const a=Math.max(0,seg[0]-.04)*SR,e=Math.min(src.length-2,(seg[1]+.08)*SR),n0=Math.floor(t0*SR);let lp=0;
+ for(let i=0;a+i<e&&n0+i<N;i++){let s=src[Math.floor(a+i)];if(soft){lp+=(s-lp)*.45;s=s*.45+lp*.75;}const env=Math.min(1,i/(SR*.01))*Math.min(1,(e-a-i)/(SR*.04));spk[n0+i]+=s*g*env;}}
+const SJn=(k,t,g=1)=>say(NJ,AJ[k],t,g,false),SEn=(k,t,g=1)=>say(NE,AE[k],t,g,true);
 // James: anfangs verspielt, ab der Riesenfaust ernst, später lachend
-JV(1,3.18,.8);JV(2,3.48,.8);JV(3,4.1);JV(4,5.2);JV(3,8.15,1,{rate:.94});JV(5,10.42,.9);JV(6,13.45);JV(7,16.5);JV(4,19.32,.9);JV(8,21.65,.8);JV(9,22.8);
-JV(7,34.55,1.1,{rate:.78});JV(9,37.8,1,{rate:.86});JV(6,39.4,1,{rate:.86});JV(6,41.2,1.1,{rate:.8});JV(7,44.5,.8);JV(12,47.1);JV(13,49.0);
+JV(1,3.18,.8);JV(2,3.48,.8);JV(3,4.1);JV(4,5.2);JV(3,8.15,1,{rate:.94});JV(5,10.42,.9);SJn(1,12.95);
+SJn(2,16.25);SJn(3,19.3);SJn(4,21.55);SJn(5,22.75);
+JV(7,34.4,1.1,{rate:.78,max:1.0});SJn(6,35.3);SJn(7,37.6);JV(6,39.4,1,{rate:.86});JV(6,40.75,1.1,{rate:.8,max:.85});
+SJn(8,45.95);JV(13,49.0);
 JV(10,12.0,.7);JV(11,12.6,.7);JV(11,33.4,.8);
-// Eddy: tief und ernst, gedämpft durch das Schwert im Mund; Dämonen-Knurren offen und tiefer gedoppelt
+// Eddy: tief und ernst, gedämpft durch das Schwert im Mund
 [5.82,6.12,6.46,6.91,7.26,11.96,12.54,12.88].forEach((t,i)=>EV([1,2,4,7,2][i%5],t,.9));EV(1,3.24,.6);
 EV(5,8.58,.85);EV(6,14.18,.85);for(let i=0;i<7;i++)EV([1,7][i%2],19.55+i*.3,.6);EV(5,23.38,.9);
-EV(8,24.9,1.1,{muffle:false});EV(8,24.9,.7,{muffle:false,rate:.75});
-[.92,1,1.08].forEach((r,k)=>EV(3,26.42+k*.04,.7,{rate:r}));
-for(let i=0;i<9;i++)EV([2,4,7][i%3],30.06+i*.3,.75,{rate:[.94,1,1.06][i%3]});
+SEn(1,24.6,1.1);EV(8,25.4,.75,{muffle:false});EV(8,25.4,.5,{muffle:false,rate:.75});SEn(2,26.45,1.1);
+SEn(3,28.55,1.1);for(let i=0;i<9;i++)EV([2,4,7][i%3],30.06+i*.3,.75,{rate:[.94,1,1.06][i%3]});
 [.92,1,1.08].forEach((r,k)=>EV(10,33.2+k*.03,.6,{rate:r}));
-EV(3,41.7,.9);EV(11,43.65,.8,{muffle:false});EV(9,47.0,1);EV(9,47.0,.5,{rate:.8,muffle:false});EV(10,49.05,1);
+SEn(4,41.75,1.1);SEn(5,43.55,1.1);SEn(6,44.55,1.1);EV(9,47.5,.85);EV(9,47.5,.45,{rate:.8,muffle:false});EV(10,49.05,1);
 // ---------- Schwarzbild am Ende ----------
 const endBoom=(t,v)=>{const n0=Math.floor(t*SR);let lp=0;for(let i=0;i<SR*2.2&&n0+i<N;i++){const x=i/SR;lp+=(nz()-lp)*.05;endB[n0+i]+=(Math.sin(2*Math.PI*(30+20*Math.exp(-x*5))*x)*Math.exp(-x*1.4)+lp*Math.exp(-x*2.5))*v;}};
 const pad=(t0,d,f,v)=>{const n0=Math.floor(t0*SR);for(let i=0;i<SR*d&&n0+i<N;i++){const x=i/SR,u=i/(SR*d);endB[n0+i]+=(Math.sin(2*Math.PI*f*x)+.5*Math.sin(2*Math.PI*f*2.003*x)+.3*Math.sin(2*Math.PI*f*3.01*x))*Math.min(1,x/.6)*Math.min(1,(1-u)*3)*v;}};
 endBoom(50.35,.9);endBoom(51.45,.6);endBoom(51.7,.6);pad(50.35,4.65,55,.12);pad(51.45,3.55,82.4,.06);pad(52.5,2.5,110,.05);
-const wet=new Float32Array(N);for(const [d,gn] of [[.031,.78],[.039,.77],[.047,.76]]){const D=Math.floor(d*SR*5),c=new Float32Array(N);for(let i=0;i<N;i++){c[i]=mus[i]*.6+sfx[i]*.5+vox[i]*.45+(i>=D?c[i-D]*gn*.8:0);wet[i]+=c[i]*.07;}}
+const duckE=new Float32Array(N);{let e=0;for(let i=0;i<N;i++){const x=Math.min(1,Math.abs(spk[i])*6);e=x>e?e+(x-e)*.01:e*.99995;duckE[i]=e;}}
+const wet=new Float32Array(N);for(const [d,gn] of [[.031,.78],[.039,.77],[.047,.76]]){const D=Math.floor(d*SR*5),c=new Float32Array(N);for(let i=0;i<N;i++){c[i]=mus[i]*.6+sfx[i]*.5+vox[i]*.45+spk[i]*.3+(i>=D?c[i-D]*gn*.8:0);wet[i]+=c[i]*.07;}}
 const pcm=Buffer.alloc(44+N*2);pcm.write('RIFF',0);pcm.writeUInt32LE(36+N*2,4);pcm.write('WAVEfmt ',8);pcm.writeUInt32LE(16,16);pcm.writeUInt16LE(1,20);pcm.writeUInt16LE(1,22);pcm.writeUInt32LE(SR,24);pcm.writeUInt32LE(SR*2,28);pcm.writeUInt16LE(2,32);pcm.writeUInt16LE(16,34);pcm.write('data',36);pcm.writeUInt32LE(N*2,40);
-for(let i=0;i<N;i++){const t=i/SR,cut=t<49.6?1:Math.max(0,1-(t-49.6)/.7);pcm.writeInt16LE(Math.round(Math.tanh(((mus[i]*1.1+sfx[i]*.55+vox[i]*1.7+wet[i])*cut+endB[i])*.8)*29000),44+i*2);}
+for(let i=0;i<N;i++){const t=i/SR,dk=duckE[i],cut=t<49.6?1:Math.max(0,1-(t-49.6)/.7);pcm.writeInt16LE(Math.round(Math.tanh(((mus[i]*1.1*(1-.55*dk)+sfx[i]*.55*(1-.3*dk)+vox[i]*1.7+spk[i]*1.9+wet[i])*cut+endB[i])*.8)*29000),44+i*2);}
 fs.writeFileSync(path.join(TMP,'ton.wav'),pcm);if(only==='audio'){console.log('ton fertig');return;}
 execSync(`ffmpeg -y -loglevel error -framerate ${FPS} -i "${TMP}/f%04d.jpg" -i "${TMP}/ton.wav" -c:v libx264 -pix_fmt yuv420p -crf 23 -preset medium -c:a aac -b:a 192k -shortest -movflags +faststart "${path.join(__dirname,'video-lang.mp4')}"`);console.log('fertig');})();
