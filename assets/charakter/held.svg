@@ -1,10 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-30 -20 660 1880" width="660" height="1880">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-30 -130 660 1990" width="660" height="1990">
   <defs>
     <filter id="sticker" x="-10%" y="-5%" width="120%" height="110%">
       <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="d"/>
       <feFlood flood-color="#fff"/><feComposite in2="d" operator="in" result="o"/>
       <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
+    <clipPath id="unterHut"><rect x="-100" y="140" width="900" height="700"/></clipPath>
     <style>
       .o{stroke:#17110f;stroke-width:7;stroke-linejoin:round;stroke-linecap:round}
       .blk{fill:#2b2627}.red{fill:#c9222b}.dred{fill:#8f1521}.gold{fill:#f3a91e}
@@ -121,7 +122,7 @@
   </g>
 
   <g id="kopf">
-    <path id="haare-hinten" class="o" fill="#1d191a" d="M222,446 Q155,477 118,476 Q147,435 166,402 Q86,413 46,404 Q90,370 122,340 Q57,322 36,300 Q77,284 106,268 Q60,222 56,188 Q100,192 134,190 Q104,125 108,88 Q159,109 202,120 Q207,54 230,28 Q262,60 292,80 Q317,20 342,4 Q366,43 392,70 Q442,29 474,28 Q475,74 482,110 Q539,94 564,108 Q545,147 536,180 Q585,208 592,250 Q558,262 536,272 Q584,319 588,362 Q548,360 520,360 Q551,416 542,452 Q486,437 440,430 Z"/>
+    <path id="haare-hinten" clip-path="url(#unterHut)" class="o" fill="#1d191a" d="M222,446 Q155,477 118,476 Q147,435 166,402 Q86,413 46,404 Q90,370 122,340 Q57,322 36,300 Q77,284 106,268 Q60,222 56,188 Q100,192 134,190 Q104,125 108,88 Q159,109 202,120 Q207,54 230,28 Q262,60 292,80 Q317,20 342,4 Q366,43 392,70 Q442,29 474,28 Q475,74 482,110 Q539,94 564,108 Q545,147 536,180 Q585,208 592,250 Q558,262 536,272 Q584,319 588,362 Q548,360 520,360 Q551,416 542,452 Q486,437 440,430 Z"/>
     <circle class="o wht" cx="316" cy="327" r="144"/>
     <g id="gesicht">
       <path fill="#17110f" d="M240 318 L298 346 Q300 400 270 400 Q240 396 240 318 Z"/>
@@ -132,6 +133,14 @@
     </g>
     <path id="pony" fill="#1d191a" stroke="#17110f" stroke-width="5" stroke-linejoin="round" d="M172 356 Q184 230 250 196 L400 188 Q456 230 462 352 Q452 300 428 272 Q424 302 402 322 Q398 272 372 242 Q352 294 322 326 Q312 272 282 242 Q264 292 232 320 Q226 292 206 276 Q190 302 172 356 Z"/>
     <path fill="none" stroke="#4a4446" stroke-width="5" stroke-linecap="round" d="M230 110 Q262 150 280 200 M330 80 Q346 130 350 190 M440 110 Q420 150 414 200 M120 240 Q160 250 196 270 M530 236 Q496 248 466 270 M150 400 Q170 380 180 360"/>
+    <g id="strohhut" transform="rotate(-6 316 150)">
+      <ellipse class="o" fill="#e9c35c" cx="316" cy="150" rx="312" ry="74"/>
+      <path fill="none" stroke="#c2932f" stroke-width="5" stroke-linecap="round" d="M40 160 Q316 250 592 160 M90 186 Q316 262 542 186"/>
+      <path class="o" fill="#e9c35c" d="M150 140 Q146 -84 316 -88 Q486 -84 482 140 Q316 188 150 140 Z"/>
+      <path fill="none" stroke="#c2932f" stroke-width="5" stroke-linecap="round" d="M176 30 Q316 66 456 30 M196 -24 Q316 6 436 -24 M240 -64 Q316 -48 392 -64"/>
+      <path class="o blk" d="M152 82 Q316 132 480 82 L482 140 Q316 188 150 140 Z"/>
+      <path class="trim" style="stroke-width:7" d="M156 96 Q316 146 478 96"/>
+    </g>
   </g>
   </g>
 </svg>
