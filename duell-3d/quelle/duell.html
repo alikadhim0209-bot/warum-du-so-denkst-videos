@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+  html,body{margin:0;background:#000;overflow:hidden}
+  #buehne{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:"Inter",sans-serif}
+  canvas{position:absolute;inset:0;display:block}
+  #titel{position:absolute;left:0;right:0;top:150px;text-align:center;color:#fff;font-weight:800;font-size:64px;
+    line-height:1.12;letter-spacing:-.01em;padding:0 70px;-webkit-text-stroke:14px #1a120c;paint-order:stroke fill}
+  #sub{position:absolute;left:0;right:0;top:1330px;text-align:center;color:#fff;font-weight:800;font-size:60px;
+    line-height:1.16;padding:0 80px;-webkit-text-stroke:14px #14100c;paint-order:stroke fill}
+  #sub b{color:#ffd23f;font-weight:800}
+  #tafel{position:absolute;left:60px;right:60px;top:170px;background:rgba(20,16,12,.86);border-radius:28px;
+    padding:38px 40px 44px;color:#fff;box-sizing:border-box}
+  #tafel h3{margin:0 0 26px;font-size:40px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;color:#ffd23f}
+  .zeile{margin-top:26px}
+  .zeile .name{font-size:36px;font-weight:700;margin-bottom:12px}
+  .spur{position:relative;height:74px;background:rgba(255,255,255,.1);border-radius:12px;overflow:hidden}
+  .balken{position:absolute;top:0;bottom:0;display:flex;align-items:center;justify-content:center;
+    font-size:30px;font-weight:800;white-space:nowrap;overflow:hidden;color:#14100c}
+  .b-rot{background:#e2533f}.b-blau{background:#58b7c9}.b-grau{background:#9a9388}
+  #fazit{margin-top:30px;font-size:38px;font-weight:800;color:#ffd23f;min-height:48px}
+  #blende{position:absolute;inset:0;background:#000;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="buehne">
+  <canvas id="c" width="1080" height="1920"></canvas>
+  <div id="titel"></div>
+  <div id="tafel">
+    <h3>Gleiche Bewegung, gemessen</h3>
+    <div class="zeile"><div class="name">Zieht zuerst (entscheidet selbst)</div>
+      <div class="spur"><div class="balken b-rot" id="bA"></div></div></div>
+    <div class="zeile"><div class="name">Zieht danach (reagiert)</div>
+      <div class="spur"><div class="balken b-grau" id="bW"></div><div class="balken b-blau" id="bB"></div></div></div>
+    <div id="fazit"></div>
+  </div>
+  <div id="sub"></div>
+  <div id="blende"></div>
+</div>
+
+<script type="module">
+import * as THREE from "../node_modules/three/build/three.module.js";
+
+/* ---------- Hilfen ---------- */
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, t) => a + (b - a) * t;
+const sm = t => { t = clamp(t); return t * t * (3 - 2 * t); };
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const outBack = t => { t = clamp(t) - 1; return 1 + 2.4 * t * t * t + 1.4 * t * t; };
+function rng(seed){ let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+const DEG = Math.PI / 180;
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+
+/* ---------- Grundaufbau ---------- */
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("c"), antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(1080, 1920, false);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const scene = new THREE.Scene();
+const cam = new THREE.PerspectiveCamera(46, 1080 / 1920, 0.1, 400);
+
+// Himmel als Verlauf
+{
+  const cv = document.createElement("canvas"); cv.width = 4; cv.height = 512;
+  const g = cv.getContext("2d"), gr = g.createLinearGradient(0, 0, 0, 512);
+  gr.addColorStop(0, "#2f7fd6"); gr.addColorStop(.5, "#7cc0ee"); gr.addColorStop(.74, "#f6dcae"); gr.addColorStop(1, "#f1b97a");
+  g.fillStyle = gr; g.fillRect(0, 0, 4, 512);
+  const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace;
+  scene.background = tex;
+}
+scene.fog = new THREE.Fog(0xf0c896, 38, 150);
+scene.add(new THREE.HemisphereLight(0xbfe0ff, 0xd9a066, 1.25));
+const sonne = new THREE.DirectionalLight(0xfff0d0, 2.6);
+sonne.position.set(-14, 22, 16); sonne.castShadow = true;
+sonne.shadow.mapSize.set(2048, 2048);
+Object.assign(sonne.shadow.camera, { left: -24, right: 24, top: 24, bottom: -24, near: 1, far: 80 });
+sonne.shadow.bias = -0.0006; sonne.shadow.normalBias = 0.03;
+scene.add(sonne);
+
+const M = (c, o = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: .85, flatShading: true, ...o });
+function box(w, h, d, mat, x, y, z, parent = scene){
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+  m.position.set(x, y, z); m.castShadow = m.receiveShadow = true; parent.add(m); return m;
+}
+
+/* ---------- Kulisse: Strasse entlang der x-Achse ---------- */
+{
+  const boden = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), M(0xe2bd84, { flatShading: false, roughness: 1 }));
+  boden.rotation.x = -Math.PI / 2; boden.receiveShadow = true; scene.add(boden);
+  const strasse = new THREE.Mesh(new THREE.PlaneGeometry(400, 8.4), M(0xd8ae72, { flatShading: false, roughness: 1 }));
+  strasse.rotation.x = -Math.PI / 2; strasse.position.y = .01; strasse.receiveShadow = true; scene.add(strasse);
+
+  const R = rng(11);
+  const farben = [0x9c4a36, 0x4f6f8f, 0xb98a4e, 0x6d8a5a, 0x8a5a7a, 0xc7a36a, 0x5b4a3e, 0xa9623a];
+  const holz = M(0x5a3d28), dunkel = M(0x2a1f18), hell = M(0xefe2c4), dach = M(0x4a3426);
+  for (const seite of [-1, 1]) {
+    let x = -46;
+    while (x < 50) {
+      const w = 4.2 + R() * 2.6, h = 3.4 + R() * 2.2, d = 5.5, z = seite * (5.2 + d / 2);
+      const farbe = M(farben[Math.floor(R() * farben.length)]);
+      const g = new THREE.Group(); g.position.set(x + w / 2, 0, z); scene.add(g);
+      box(w, h, d, farbe, 0, h / 2, 0, g);
+      const fz = -seite * (d / 2 + .06);                       // Fassade zur Strasse
+      box(w + .3, 1.3 + R() * .8, .25, farbe, 0, h + .5, fz, g); // Scheinfassade
+      box(w + .5, .16, .4, hell, 0, h + 1.25, fz, g);
+      box(w + .2, .14, 2.0, dach, 0, 2.75, -seite * (d / 2 + 1.0), g); // Vordach
+      for (const px of [-w / 2 + .15, w / 2 - .15]) box(.16, 2.7, .16, holz, px, 1.35, -seite * (d / 2 + 1.85), g);
+      box(w + .2, .18, 2.0, holz, 0, .09, -seite * (d / 2 + 1.0), g);  // Holzsteg
+      box(1.0, 2.0, .1, dunkel, -w * .18, 1.1, fz, g);         // Tuer
+      box(1.2, 1.1, .1, M(0x9fc4d6, { roughness: .3 }), w * .22, 1.6, fz, g);
+      if (h > 4.3) for (const px of [-w * .22, w * .22]) box(.9, .9, .1, M(0x9fc4d6, { roughness: .3 }), px, h - .9, fz, g);
+      box(w * .6, .5, .1, hell, 0, h + .55, fz - seite * -.16 * -1, g); // Schild
+      x += w + .25 + R() * .5;
+    }
+  }
+  // Tafelberge am Horizont
+  const fels = M(0xc9703e), fels2 = M(0xb65f38);
+  for (const [x, z, w, h] of [[70, -14, 26, 13], [84, 12, 18, 9], [-74, 10, 30, 12], [-88, -16, 20, 8], [60, 30, 16, 7], [-58, -34, 18, 8]]) {
+    box(w, h, w * .6, fels, x, h / 2, z).castShadow = false;
+    box(w * .7, h * .28, w * .45, fels2, x + 1, h * 1.12, z).castShadow = false;
+  }
+  // Kakteen, Faesser, Wolken
+  const gruen = M(0x4f8a4a), fass = M(0x7a4f2c);
+  for (const [x, z] of [[-9, 3.9], [-2, -3.9], [12, 4.0], [-15, -4.0]]) {
+    const f = new THREE.Mesh(new THREE.CylinderGeometry(.42, .36, 1.0, 10), fass);
+    f.position.set(x, .5, z); f.castShadow = true; scene.add(f);
+  }
+  for (const [x, z, s] of [[26, 1.5, 1.2], [-30, -1.2, 1]]) {
+    const k = new THREE.Group(); k.position.set(x, 0, z); k.scale.setScalar(s); scene.add(k);
+    const st = new THREE.Mesh(new THREE.CapsuleGeometry(.3, 2.2, 3, 8), gruen); st.position.y = 1.4; st.castShadow = true; k.add(st);
+    const a1 = new THREE.Mesh(new THREE.CapsuleGeometry(.2, .8, 3, 8), gruen); a1.position.set(0, 1.9, .55); k.add(a1);
+    const a2 = new THREE.Mesh(new THREE.CapsuleGeometry(.2, .6, 3, 8), gruen); a2.position.set(0, 1.5, -.5); k.add(a2);
+  }
+  const wolke = new THREE.MeshBasicMaterial({ color: 0xffffff, fog: false });
+  for (const [x, y, z, s] of [[60, 34, -40, 5], [80, 44, 30, 7], [-70, 38, 36, 6], [-60, 46, -30, 5], [30, 50, -70, 6]]) {
+    for (const [dx, dy, r] of [[0, 0, 1], [1.2, .2, .8], [-1.2, .1, .7], [.4, .6, .7]]) {
+      const w = new THREE.Mesh(new THREE.SphereGeometry(r * s, 12, 8), wolke);
+      w.position.set(x + dx * s, y + dy * s, z); w.scale.y = .55; scene.add(w);
+    }
+  }
+}
+
+/* ---------- Strichfigur ---------- */
+function figur({ farbe, hutFarbe, tuch }) {
+  const mat = M(farbe, { flatShading: false, roughness: .7 });
+  const wurzel = new THREE.Group();          // dreht beim Umfallen um die Fuesse
+  const koerper = new THREE.Group(); wurzel.add(koerper);
+  const glied = (len, r = .075) => {
+    const m = new THREE.Mesh(new THREE.CapsuleGeometry(r, len, 4, 10), mat);
+    m.position.y = -len / 2; m.castShadow = true; return m;
+  };
+  const gelenk = (parent, x, y, z) => { const g = new THREE.Group(); g.position.set(x, y, z); parent.add(g); return g; };
+
+  const huefte = gelenk(koerper, 0, 1.12, 0);
+  const rumpf = gelenk(huefte, 0, 0, 0);
+  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(.1, .78, 4, 10), mat); torso.position.y = .42; torso.castShadow = true; rumpf.add(torso);
+  const hals = gelenk(rumpf, 0, .92, 0);
+  const kopf = new THREE.Mesh(new THREE.SphereGeometry(.36, 24, 18), mat); kopf.position.y = .34; kopf.castShadow = true; hals.add(kopf);
+  // Gesicht zeigt nach +x
+  const weiss = new THREE.MeshBasicMaterial({ color: 0xffffff }), schwarz = new THREE.MeshBasicMaterial({ color: 0x111111 });
+  const augen = [];
+  for (const z of [-.14, .14]) {
+    const a = new THREE.Mesh(new THREE.SphereGeometry(.085, 14, 10), weiss); a.position.set(.31, .4, z); a.scale.set(.5, 1, 1); hals.add(a);
+    const p = new THREE.Mesh(new THREE.SphereGeometry(.04, 10, 8), schwarz); p.position.set(.04, 0, 0); a.add(p);
+    const lid = new THREE.Mesh(new THREE.SphereGeometry(.1, 14, 10), mat); lid.scale.set(1.6, 1, 1.15); a.add(lid);
+    augen.push({ a, p, lid, z });
+  }
+  const mund = new THREE.Mesh(new THREE.BoxGeometry(.03, .035, .2), weiss); mund.position.set(.345, .2, 0); hals.add(mund);
+  const halstuch = new THREE.Mesh(new THREE.ConeGeometry(.2, .3, 4), M(tuch)); halstuch.position.set(.06, -.06, 0); halstuch.rotation.x = Math.PI; hals.add(halstuch);
+
+  const arm = z => { const s = gelenk(rumpf, 0, .82, z); s.add(glied(.48)); const e = gelenk(s, 0, -.5, 0); e.add(glied(.46)); return { s, e }; };
+  const armR = arm(.2), armL = arm(-.2);
+  const bein = z => { const h = gelenk(huefte, 0, 0, z); h.add(glied(.52, .08)); const k = gelenk(h, 0, -.55, 0); k.add(glied(.5, .08));
+    const fuss = new THREE.Mesh(new THREE.BoxGeometry(.3, .1, .16), M(0x3a2a1e)); fuss.position.set(.08, -.56, 0); fuss.castShadow = true; k.add(fuss); return { h, k }; };
+  const beinR = bein(.12), beinL = bein(-.12);
+
+  // Guertel, Holster, Revolver
+  const guertel = new THREE.Mesh(new THREE.CylinderGeometry(.14, .14, .09, 12), M(0x5a3d28)); guertel.position.y = .03; rumpf.add(guertel);
+  const holster = new THREE.Mesh(new THREE.BoxGeometry(.12, .3, .08), M(0x5a3d28)); holster.position.set(.02, -.2, .2); huefte.add(holster);
+  const waffe = () => { const g = new THREE.Group(), stahl = M(0x8d949b, { metalness: .6, roughness: .35 });
+    const lauf = new THREE.Mesh(new THREE.BoxGeometry(.07, .34, .07), stahl); lauf.position.y = -.2; g.add(lauf);
+    const griff = new THREE.Mesh(new THREE.BoxGeometry(.16, .09, .07), M(0x3a2a1e)); griff.position.set(-.06, -.02, 0); g.add(griff);
+    g.traverse(o => o.castShadow = true); return g; };
+  const wHand = waffe(); wHand.position.y = -.5; armR.e.add(wHand);
+  const wHolster = waffe(); wHolster.position.set(.02, .0, .25); wHolster.scale.setScalar(.9); huefte.add(wHolster);
+
+  // Hut bleibt eigenstaendig in der Szene, damit er wegfliegen kann
+  const hut = new THREE.Group(), hm = M(hutFarbe);
+  const krempe = new THREE.Mesh(new THREE.CylinderGeometry(.62, .66, .05, 22), hm);
+  const krone = new THREE.Mesh(new THREE.CylinderGeometry(.3, .36, .34, 16), hm); krone.position.y = .19;
+  const band = new THREE.Mesh(new THREE.CylinderGeometry(.365, .365, .07, 16), M(tuch)); band.position.y = .07;
+  hut.add(krempe, krone, band); hut.traverse(o => o.castShadow = true); scene.add(hut);
+
+  return { wurzel, set(p) {
+    wurzel.position.set(p.x, 0, p.z || 0);
+    wurzel.rotation.set(0, p.dreh || 0, 0);
+    koerper.rotation.z = (p.fall || 0) * 90 * DEG;
+    koerper.position.y = -(p.hock || 0) * .18 - (p.fall || 0) * .0;
+    huefte.position.y = 1.12 - (p.hock || 0) * .1 + Math.sin(p.atem || 0) * .008;
+    rumpf.rotation.z = -(p.lean || 0) * DEG;
+    hals.rotation.set(0, (p.kopfDreh || 0) * DEG, -(p.nick || 0) * DEG);
+    armR.s.rotation.z = (p.schR ?? 6) * DEG; armR.e.rotation.z = (p.elR ?? 12) * DEG;
+    armR.s.rotation.x = (p.schRx ?? -4) * DEG;
+    armL.s.rotation.z = (p.schL ?? -4) * DEG; armL.e.rotation.z = (p.elL ?? 14) * DEG; armL.s.rotation.x = 5 * DEG;
+    beinR.h.rotation.z = (p.thR ?? 10) * DEG; beinR.k.rotation.z = -(p.knR ?? 8) * DEG; beinR.h.rotation.x = -5 * DEG;
+    beinL.h.rotation.z = (p.thL ?? -12) * DEG; beinL.k.rotation.z = -(p.knL ?? 6) * DEG; beinL.h.rotation.x = 5 * DEG;
+    wHand.visible = !!p.waffe; wHolster.visible = !p.waffe;
+    const auf = p.auge ?? 1, lidW = p.lid ?? .25;
+    for (const { a, p: pu, lid, z } of augen) {
+      a.scale.set(.5, auf, auf); lid.position.set(-.1, lerp(.17, .075, lidW), -Math.sign(z) * (p.boese || 0) * .012); lid.rotation.x = Math.sign(z) * (p.boese || 0) * 30 * DEG;
+      pu.position.z = (p.blickZ || 0) * .03;
+    }
+    mund.scale.set(1, 1 + (p.mundAuf || 0) * 5, p.mundW ?? 1);
+    wurzel.updateMatrixWorld(true);
+    if (p.hut) { hut.position.copy(p.hut.pos); hut.rotation.set(p.hut.rx, p.hut.ry, p.hut.rz); }
+    else { hals.localToWorld(hut.position.set(-.02, .66, 0)); hut.quaternion.setFromRotationMatrix(hals.matrixWorld); }
+  }, muendung() { return wHand.localToWorld(V(0, -.42, 0)); }, kopf() { return hals.localToWorld(V(0, .34, 0)); } };
+}
+const A = figur({ farbe: 0x18181c, hutFarbe: 0x2b2420, tuch: 0xd8432e });   // zieht zuerst
+const B = figur({ farbe: 0x18181c, hutFarbe: 0xe9d7a8, tuch: 0x2f9db3 });   // reagiert
+scene.add(A.wurzel, B.wurzel);
+
+/* Ziehen: 0 = Arm haengt, .35 = Hand am Holster, 1 = Waffe im Anschlag */
+function zieh(d) {
+  const a = sm(prog(d, 0, .35)), b = outBack(prog(d, .35, 1));
+  return { schR: lerp(lerp(6, -20, a), 88, b), elR: lerp(lerp(12, 58, a), 3, b), waffe: d > .3, lean: lerp(0, 9, sm(d)), schRx: lerp(-4, -1, b) };
+}
+/* Umfallen nach hinten mit kleinem Nachfedern */
+function fall(u) {
+  if (u <= 0) return 0;
+  const k = clamp(u); const f = k < .72 ? Math.pow(k / .72, 2.2) : 1 - .06 * Math.sin((k - .72) / .28 * Math.PI);
+  return f;
+}
+function hutflug(start, t0, t, richtung) {
+  const u = t - t0; if (u < 0) return null;
+  const y = start.y + 5.2 * u - 6.5 * u * u;
+  const boden = .05;
+  const tLand = (5.2 + Math.sqrt(5.2 * 5.2 + 4 * 6.5 * (start.y - boden))) / 13;
+  const uu = Math.min(u, tLand);
+  return { pos: V(start.x + richtung * 2.6 * uu, Math.max(boden, y), start.z + .9 * uu), rx: u < tLand ? uu * 7 : 0, ry: uu * 3, rz: u < tLand ? uu * 5 : 0 };
+}
+
+/* ---------- Effekte ---------- */
+const blitz = new THREE.Mesh(new THREE.IcosahedronGeometry(.13, 1), new THREE.MeshBasicMaterial({ color: 0xffe07a, transparent: true }));
+const blitzLicht = new THREE.PointLight(0xffc860, 0, 14);
+const spur = new THREE.Mesh(new THREE.CylinderGeometry(.02, .02, 1, 6), new THREE.MeshBasicMaterial({ color: 0xfff2c0, transparent: true }));
+scene.add(blitz, blitzLicht, spur);
+function schuss(t, t0, von, nach) {
+  const u = t - t0;
+  const an = u >= 0 && u < .1;
+  blitz.visible = an; blitzLicht.intensity = an ? 9 * (1 - u / .1) : 0;
+  if (an) { blitz.position.copy(von); blitz.scale.setScalar(1.4 - u * 9); blitz.rotation.set(u * 40, u * 30, 0); blitzLicht.position.copy(von); }
+  const s = u >= 0 && u < .14; spur.visible = s;
+  if (s) { const mitte = von.clone().lerp(nach, .5); spur.position.copy(mitte); spur.scale.set(1, von.distanceTo(nach), 1);
+    spur.quaternion.setFromUnitVectors(V(0, 1, 0), nach.clone().sub(von).normalize()); spur.material.opacity = 1 - u / .14; }
+}
+// Staub: Wolken beim Aufprall + treibende Koernchen
+const staubMat = new THREE.MeshBasicMaterial({ color: 0xead2a8, transparent: true, depthWrite: false });
+const wolken = Array.from({ length: 14 }, () => { const m = new THREE.Mesh(new THREE.SphereGeometry(.3, 10, 8), staubMat.clone()); scene.add(m); return m; });
+function staub(t, t0, x, z) {
+  const R = rng(5), u = t - t0;
+  wolken.forEach(m => {
+    const w = R() * 6.28, v = .8 + R() * 1.6, l = .7 + R() * .5;
+    m.visible = u >= 0 && u < l;
+    if (m.visible) { const k = u / l; m.position.set(x + Math.cos(w) * v * (1 - (1 - k) ** 2), .2 + k * .5, z + Math.sin(w) * v * (1 - (1 - k) ** 2));
+      m.scale.setScalar(.6 + k * 2.2); m.material.opacity = .65 * (1 - k); }
+  });
+}
+const koernchen = (() => {
+  const n = 160, R = rng(3), pos = new Float32Array(n * 3), basis = [];
+  for (let i = 0; i < n; i++) basis.push([R() * 60 - 30, R() * 5 + .2, R() * 12 - 6, R() * 6.28, .3 + R() * .8]);
+  const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  const p = new THREE.Points(geo, new THREE.PointsMaterial({ color: 0xfff0d0, size: 3, sizeAttenuation: false, transparent: true, opacity: .6 })); scene.add(p);
+  return t => { for (let i = 0; i < n; i++) { const [x, y, z, ph, v] = basis[i];
+      pos[i * 3] = ((x + t * v + 30) % 60) - 30; pos[i * 3 + 1] = y + Math.sin(t * .7 + ph) * .3; pos[i * 3 + 2] = z + Math.cos(t * .5 + ph) * .4; }
+    geo.attributes.position.needsUpdate = true; };
+})();
+const busch = new THREE.Mesh(new THREE.IcosahedronGeometry(.55, 1), new THREE.MeshStandardMaterial({ color: 0x8a6a3a, wireframe: true }));
+busch.castShadow = true; scene.add(busch);
+
+/* ---------- Ablauf ---------- */
+const SUB = [
+  [0.4, 4.9, "Im Western verliert immer der,<br>der <b>zuerst</b> zieht."],
+  [5.2, 9.4, "Der Physiker <b>Niels Bohr</b><br>fragte sich: nur Zufall?"],
+  [9.7, 14.9, "Seine Idee: Wer nur <b>reagiert</b>,<br>bewegt sich schneller."],
+  [15.3, 21.4, "2010 im Labor gemessen:<br>Reagieren ist rund<br><b>21 Millisekunden</b> schneller."],
+  [21.8, 28.3, "Der Haken: Bis das Gehirn<br>überhaupt reagiert, vergehen<br>etwa <b>200 Millisekunden</b>."],
+  [28.7, 34.6, "Im echten Duell gewinnt<br>also doch, wer <b>zuerst</b> zieht."],
+];
+const DAUER = 35;
+const el = id => document.getElementById(id);
+const fenster = (t, a, b, f = .25) => Math.min(sm((t - a) / f), sm((b - t) / f));
+
+function kamera(pos, ziel, fov = 46) { cam.position.copy(pos); cam.fov = fov; cam.updateProjectionMatrix(); cam.lookAt(ziel); }
+
+window.DAUER = DAUER;
+window.frame = function (t) {
+  const atem = t * 2.2;
+  let a = { x: -5, atem, lid: .35 }, b = { x: 5, dreh: Math.PI, atem: atem + 1, lid: .35 };
+  let tafel = 0, titel = 0, beben = 0;
+  schuss(t, -9, V(0, 0, 0), V(0, 0, 0)); staub(t, -9, 0, 0);
+
+  if (t < 5) {                                   // 1: Kran hinunter hinter den Schuetzen
+    const k = sm(prog(t, 0, 4.4));
+    kamera(V(lerp(-19, -8.6, k), lerp(8.5, 1.55, k), lerp(.2, 1.25, k)), V(5, lerp(1.2, 1.5, k), 0), 46);
+    titel = fenster(t, .3, 4.6);
+    a.schR = 10 + Math.sin(t * 9) * 2 * prog(t, 3, 5); a.elR = 24;
+  } else if (t < 7.3) {                          // 2a: Nahaufnahme A
+    const k = prog(t, 5, 7.3);
+    kamera(V(-1.5 + k * .3, 2.0, 1.5), V(-5, 1.72, 0), 30);
+    a.lid = lerp(.35, .62, sm(k * 2)); a.boese = sm(k * 2); a.blickZ = Math.sin(t * 3) * .3; a.schR = 10; a.elR = 24;
+  } else if (t < 9.5) {                          // 2b: Nahaufnahme B
+    const k = prog(t, 7.3, 9.5);
+    kamera(V(1.5 - k * .3, 2.0, -1.5), V(5, 1.72, 0), 30);
+    b.lid = lerp(.3, .5, sm(k * 2)); b.mundW = .7; b.kopfDreh = Math.sin(t * 1.4) * 4;
+  } else if (t < 15) {                           // 3: Filmduell - der Zweite gewinnt
+    const tA = 10.6, tB = 11.15, tSchuss = 11.55;
+    a = { ...a, ...zieh(prog(t, tA, tA + .62)) };
+    b = { ...b, ...zieh(prog(t, tB, tB + .36)) };
+    a.boese = 1; a.lid = .6;
+    if (t < 12.1) {
+      const k = prog(t, 9.5, 12.1);
+      kamera(V(6.75 - k * .1, 1.12, -.5), V(-5, .9, .45), 40);
+    } else {
+      const k = prog(t, 12.1, 15);
+      kamera(V(-4.3 + k * .3, 1.7, 3.0), V(-6.2, .1, 0), 52);
+    }
+    if (t >= tSchuss) {
+      const u = t - tSchuss;
+      a.fall = fall(prog(t, tSchuss + .12, tSchuss + .95)); a.auge = 1.25; a.lid = 0; a.boese = 0; a.mundAuf = 1; a.mundW = .6;
+      a.schR = lerp(88, 150, sm(u * 3)); a.schL = lerp(-4, 120, sm(u * 3)); a.thR = 40 * a.fall; a.knR = 20 * a.fall;
+      A.set({ ...a, hut: null });
+      a.hut = hutflug(A.kopf().add(V(0, .34, 0)).setY(2.9), tSchuss, t, -1);
+      beben = Math.max(0, .12 - u) * 1.2;
+    }
+    B.set(b); A.set(a);
+    schuss(t, tSchuss, B.muendung(), V(-5, 2.6, 0));
+    staub(t, tSchuss + .82, -6.6, 0);
+  } else if (t < 28.5) {                         // 4+5: Messung, Figuren nah beieinander
+    const zyk = (t - 15.4) % 3.3, lauf = Math.floor((t - 15.4) / 3.3);
+    const mitWarten = t > 21.6;
+    const startB = mitWarten ? .95 : .25;
+    a = { ...a, x: 0, z: -1.9, dreh: -Math.PI / 2, ...zieh(prog(zyk, .25, .25 + 1.0)) };
+    b = { ...b, x: 0, z: 1.9, dreh: Math.PI / 2, ...zieh(prog(zyk, startB, startB + .86)) };
+    if (zyk > 2.9) { const r = 1 - prog(zyk, 2.9, 3.3); a = { ...a, ...zieh(r) }; b = { ...b, ...zieh(r) }; }
+    kamera(V(-15, 1.7, 0), V(0, 1.75, 0), 38);
+    tafel = fenster(t, 15.1, 28.4, .35);
+    // Balken: 1 s Zyklus = 210 ms dargestellt
+    const wA = prog(zyk, .25, 1.25) * 62, warte = mitWarten ? prog(zyk, .25, .95) * 34 : 0;
+    const wB = prog(zyk, startB, startB + .86) * 53;
+    const halt = zyk > 2.9 ? 0 : 1;
+    el("bA").style.cssText = `left:0;width:${wA * halt}%`; el("bA").textContent = wA > 40 ? "Bewegung" : "";
+    el("bW").style.cssText = `left:0;width:${warte * halt}%`; el("bW").textContent = warte > 28 ? "~200 ms" : "";
+    el("bB").style.cssText = `left:${(mitWarten ? 34 : 0)}%;width:${wB * halt}%`; el("bB").textContent = wB > 40 ? "Bewegung" : "";
+    el("fazit").textContent = !mitWarten ? (zyk > 1.3 && zyk < 2.9 ? "→ 21 ms kürzer" : "")
+                                         : (zyk > 1.9 && zyk < 2.9 ? "→ trotzdem zu spät" : "");
+  } else {                                       // 6: echtes Duell - der Erste gewinnt
+    const tA = 29.5, tB = 30.0, tSchuss = 30.2;
+    a = { ...a, ...zieh(prog(t, tA, tA + .6)), boese: 1, lid: .55 };
+    b = { ...b, ...zieh(prog(Math.min(t, tSchuss), tB, tB + .5)) };
+    if (t < 31.0) {
+      const k = prog(t, 28.5, 31);
+      kamera(V(-8.7 + k * .2, 2.0, 1.0), V(5, .7, -.5), 40);
+    } else {
+      const k = prog(t, 31, 35);
+      kamera(V(4.3 - k * .3, 1.7, -3.0), V(6.2, .1, 0), 52);
+    }
+    if (t >= tSchuss) {
+      const u = t - tSchuss;
+      b.fall = fall(prog(t, tSchuss + .12, tSchuss + .95)); b.auge = 1.25; b.lid = 0; b.mundAuf = 1; b.mundW = .6;
+      b.schL = lerp(-4, 120, sm(u * 3)); b.schR = lerp(b.schR, 140, sm(u * 3)); b.thR = 40 * b.fall; b.knR = 20 * b.fall;
+      B.set({ ...b, hut: null });
+      b.hut = hutflug(B.kopf().setY(2.9), tSchuss, t, 1);
+      beben = Math.max(0, .12 - u) * 1.2;
+      a.lid = .3; a.boese = .3;
+    }
+    A.set(a); B.set(b);
+    schuss(t, tSchuss, A.muendung(), V(5, 2.6, 0));
+    staub(t, tSchuss + .82, 6.6, 0);
+  }
+  A.set(a); B.set(b);
+  if (beben) { cam.position.x += Math.sin(t * 190) * beben; cam.position.y += Math.cos(t * 230) * beben; }
+
+  koernchen(t);
+  busch.position.set(lerp(18, 7, prog(t, 0, 5)) , .55 + Math.abs(Math.sin(t * 5)) * .3, lerp(6, -7, prog(t, .5, 5)));
+  busch.rotation.set(t * 4, 0, t * 3); busch.visible = t < 5;
+
+  el("titel").style.opacity = titel;
+  el("titel").innerHTML = "Warum im Western immer<br>der Zweite gewinnt";
+  el("tafel").style.opacity = tafel;
+  let text = "", alpha = 0;
+  for (const [s, e, txt] of SUB) if (t >= s && t <= e) { text = txt; alpha = fenster(t, s, e, .18); }
+  el("sub").innerHTML = text; el("sub").style.opacity = alpha;
+  el("sub").style.transform = `scale(${lerp(.92, 1, alpha)})`;
+  el("blende").style.opacity = Math.max(1 - prog(t, 0, .35), prog(t, DAUER - .45, DAUER - .05));
+  renderer.render(scene, cam);
+};
+window.frame(0);
+window.bereit = true;
+</script>
+</body>
+</html>
