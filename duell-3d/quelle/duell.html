@@ -142,84 +142,126 @@ function box(w, h, d, mat, x, y, z, parent = scene){
   }
 }
 
-/* ---------- Strichfigur ---------- */
-function figur({ farbe, hutFarbe, tuch }) {
-  const mat = M(farbe, { flatShading: false, roughness: .7 });
-  const wurzel = new THREE.Group();          // dreht beim Umfallen um die Fuesse
+/* ---------- Comicfigur: weisser Kugelkopf, Cap nach hinten, Hoodie, Cargohose, Sneaker ---------- */
+const stufen = new THREE.DataTexture(new Uint8Array([150, 212, 255]), 3, 1, THREE.RedFormat);
+stufen.minFilter = stufen.magFilter = THREE.NearestFilter; stufen.needsUpdate = true;
+const toon = c => new THREE.MeshToonMaterial({ color: c, gradientMap: stufen });
+const umrissMat = w => new THREE.ShaderMaterial({ side: THREE.BackSide, uniforms: { w: { value: w } },
+  vertexShader: "uniform float w; void main(){ gl_Position = projectionMatrix * modelViewMatrix * vec4(position + normal * w, 1.0); }",
+  fragmentShader: "void main(){ gl_FragColor = vec4(0.045, 0.04, 0.05, 1.0); }" });
+function teil(geo, mat, parent, x = 0, y = 0, z = 0, w = .028) {      // Koerperteil mit schwarzer Comic-Kontur
+  const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.castShadow = true; parent.add(m);
+  if (w) m.add(new THREE.Mesh(geo, umrissMat(w)));
+  return m;
+}
+
+function gesicht(g, p) {                    // 2D-Gesicht auf 512er Leinwand, wird auf den Kopf gelegt
+  g.clearRect(0, 0, 512, 512);
+  const auf = p.auge ?? 1, lid = p.lid ?? .25, boese = p.boese || 0, offen = p.mundAuf || 0;
+  g.lineCap = "round"; g.lineJoin = "round";
+  for (const s of [-1, 1]) {
+    const ex = 256 + s * 84 + (p.blickZ || 0) * 6, ey = 236, rx = 31, ry = 48 * auf, oben = ey - ry;
+    g.fillStyle = "#0d0c0f"; g.beginPath(); g.ellipse(ex, ey, rx, ry, 0, 0, 7); g.fill();
+    const innen = oben + ry * 2 * (lid * .42 + boese * .42), aussen = oben + ry * 2 * lid * .42 - boese * 6;
+    g.globalCompositeOperation = "destination-out";                    // Lid schneidet das Auge schraeg an
+    g.beginPath(); g.moveTo(ex - s * 60, innen); g.lineTo(ex + s * 60, aussen); g.lineTo(ex + s * 60, oben - 40); g.lineTo(ex - s * 60, oben - 40); g.fill();
+    g.globalCompositeOperation = "source-over";
+    g.strokeStyle = "#0d0c0f"; g.lineWidth = 17; g.beginPath();        // Augenbraue
+    if (offen > .3) { g.moveTo(ex - s * 30, oben - 34); g.quadraticCurveTo(ex, oben - 52, ex + s * 34, oben - 30); }
+    else { g.moveTo(ex - s * 50, innen - 4); g.lineTo(ex + s * 46, aussen - 16); }
+    g.stroke();
+  }
+  if (offen > .3) {
+    g.fillStyle = "#0d0c0f"; g.beginPath(); g.ellipse(256, 372, 30, 40, 0, 0, 7); g.fill();
+    g.fillStyle = "#d8322b"; g.beginPath(); g.ellipse(256, 388, 18, 20, 0, 0, 7); g.fill();
+  } else {
+    const w = p.mundW ?? 1; g.strokeStyle = "#0d0c0f"; g.lineWidth = 12; g.beginPath();
+    g.moveTo(204, 350); g.quadraticCurveTo(262, 350 + 46 * w, 318, 336 - 8 * w); g.stroke();
+  }
+}
+
+function figur({ hoodie, cap, band }) {
+  const weiss = toon(0xf4f1ee), rot = toon(hoodie), schwarz = toon(0x26252b), rotTon = toon(0xd22a26);
+  const wurzel = new THREE.Group();
   const koerper = new THREE.Group(); wurzel.add(koerper);
-  const glied = (len, r = .075) => {
-    const m = new THREE.Mesh(new THREE.CapsuleGeometry(r, len, 4, 10), mat);
-    m.position.y = -len / 2; m.castShadow = true; return m;
-  };
   const gelenk = (parent, x, y, z) => { const g = new THREE.Group(); g.position.set(x, y, z); parent.add(g); return g; };
 
-  const huefte = gelenk(koerper, 0, 1.12, 0);
+  const huefte = gelenk(koerper, 0, .86, 0);
   const rumpf = gelenk(huefte, 0, 0, 0);
-  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(.1, .78, 4, 10), mat); torso.position.y = .42; torso.castShadow = true; rumpf.add(torso);
-  const hals = gelenk(rumpf, 0, .92, 0);
-  const kopf = new THREE.Mesh(new THREE.SphereGeometry(.36, 24, 18), mat); kopf.position.y = .34; kopf.castShadow = true; hals.add(kopf);
-  // Gesicht zeigt nach +x
-  const weiss = new THREE.MeshBasicMaterial({ color: 0xffffff }), schwarz = new THREE.MeshBasicMaterial({ color: 0x111111 });
-  const augen = [];
-  for (const z of [-.14, .14]) {
-    const a = new THREE.Mesh(new THREE.SphereGeometry(.085, 14, 10), weiss); a.position.set(.31, .4, z); a.scale.set(.5, 1, 1); hals.add(a);
-    const p = new THREE.Mesh(new THREE.SphereGeometry(.04, 10, 8), schwarz); p.position.set(.04, 0, 0); a.add(p);
-    const lid = new THREE.Mesh(new THREE.SphereGeometry(.1, 14, 10), mat); lid.scale.set(1.6, 1, 1.15); a.add(lid);
-    augen.push({ a, p, lid, z });
-  }
-  const mund = new THREE.Mesh(new THREE.BoxGeometry(.03, .035, .2), weiss); mund.position.set(.345, .2, 0); hals.add(mund);
-  const halstuch = new THREE.Mesh(new THREE.ConeGeometry(.2, .3, 4), M(tuch)); halstuch.position.set(.06, -.06, 0); halstuch.rotation.x = Math.PI; hals.add(halstuch);
+  teil(new THREE.SphereGeometry(.31, 20, 14), schwarz, huefte, 0, -.04, 0).scale.set(1, .62, 1.08);       // Hosenbund
+  teil(new THREE.CylinderGeometry(.325, .315, .12, 20), weiss, rumpf, 0, .08, 0, .02);                    // Shirtsaum
+  teil(new THREE.CapsuleGeometry(.33, .3, 6, 20), rot, rumpf, 0, .46, 0);                                  // Hoodie
+  teil(new THREE.SphereGeometry(.27, 18, 12), rot, rumpf, -.25, .76, 0).scale.set(.9, .62, 1.2);          // Kapuze
+  teil(new THREE.SphereGeometry(.2, 16, 10), rot, rumpf, .22, .3, 0, .02).scale.set(.5, .55, 1.25);       // Bauchtasche
+  for (const z of [-.07, .07]) teil(new THREE.CapsuleGeometry(.017, .17, 3, 6), weiss, rumpf, .325, .56, z, .012);
 
-  const arm = z => { const s = gelenk(rumpf, 0, .82, z); s.add(glied(.48)); const e = gelenk(s, 0, -.5, 0); e.add(glied(.46)); return { s, e }; };
-  const armR = arm(.2), armL = arm(-.2);
-  const bein = z => { const h = gelenk(huefte, 0, 0, z); h.add(glied(.52, .08)); const k = gelenk(h, 0, -.55, 0); k.add(glied(.5, .08));
-    const fuss = new THREE.Mesh(new THREE.BoxGeometry(.3, .1, .16), M(0x3a2a1e)); fuss.position.set(.08, -.56, 0); fuss.castShadow = true; k.add(fuss); return { h, k }; };
-  const beinR = bein(.12), beinL = bein(-.12);
+  const hals = gelenk(rumpf, 0, .8, 0);
+  const KOPF = .55;                                                    // Hoehe der Kopfmitte ueber dem Hals
+  teil(new THREE.SphereGeometry(.5, 40, 28), weiss, hals, 0, KOPF, 0, .03);
+  const cv = document.createElement("canvas"); cv.width = cv.height = 512;
+  const g2 = cv.getContext("2d"), tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace;
+  const maske = new THREE.Mesh(new THREE.SphereGeometry(.506, 32, 24, Math.PI - .95, 1.9, Math.PI / 2 - .9, 1.8),
+    new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false }));
+  maske.position.y = KOPF; hals.add(maske);
 
-  // Guertel, Holster, Revolver
-  const guertel = new THREE.Mesh(new THREE.CylinderGeometry(.14, .14, .09, 12), M(0x5a3d28)); guertel.position.y = .03; rumpf.add(guertel);
-  const holster = new THREE.Mesh(new THREE.BoxGeometry(.12, .3, .08), M(0x5a3d28)); holster.position.set(.02, -.2, .2); huefte.add(holster);
-  const waffe = () => { const g = new THREE.Group(), stahl = M(0x8d949b, { metalness: .6, roughness: .35 });
-    const lauf = new THREE.Mesh(new THREE.BoxGeometry(.07, .34, .07), stahl); lauf.position.y = -.2; g.add(lauf);
-    const griff = new THREE.Mesh(new THREE.BoxGeometry(.16, .09, .07), M(0x3a2a1e)); griff.position.set(-.06, -.02, 0); g.add(griff);
-    g.traverse(o => o.castShadow = true); return g; };
-  const wHand = waffe(); wHand.position.y = -.5; armR.e.add(wHand);
-  const wHolster = waffe(); wHolster.position.set(.02, .0, .25); wHolster.scale.setScalar(.9); huefte.add(wHolster);
+  const arm = z => { const s = gelenk(rumpf, 0, .66, z);
+    teil(new THREE.CapsuleGeometry(.125, .2, 5, 14), rot, s, 0, -.13, 0);
+    const e = gelenk(s, 0, -.3, 0);
+    teil(new THREE.CapsuleGeometry(.12, .18, 5, 14), rot, e, 0, -.12, 0);
+    teil(new THREE.SphereGeometry(.13, 16, 12), weiss, e, 0, -.31, 0);
+    return { s, e }; };
+  const armR = arm(.38), armL = arm(-.38);
+  const bein = z => { const h = gelenk(huefte, 0, -.02, z);
+    teil(new THREE.CapsuleGeometry(.165, .2, 5, 14), schwarz, h, 0, -.16, 0);
+    teil(new THREE.SphereGeometry(.1, 10, 8), schwarz, h, 0, -.2, Math.sign(z) * .15, .02).scale.set(1, 1.2, .5);   // Cargotasche
+    const k = gelenk(h, 0, -.36, 0);
+    teil(new THREE.CapsuleGeometry(.16, .16, 5, 14), schwarz, k, 0, -.13, 0);
+    teil(new THREE.SphereGeometry(.2, 18, 12), weiss, k, .1, -.38, 0).scale.set(1.45, .62, .92);                    // Sneaker
+    teil(new THREE.SphereGeometry(.13, 14, 10), rotTon, k, .27, -.39, 0, .018).scale.set(1.05, .62, 1.2);           // Kappe vorn
+    teil(new THREE.SphereGeometry(.12, 14, 10), rotTon, k, -.1, -.34, 0, .018).scale.set(.9, .9, 1.35);             // Ferse
+    return { h, k }; };
+  const beinR = bein(.18), beinL = bein(-.18);
 
-  // Hut bleibt eigenstaendig in der Szene, damit er wegfliegen kann
-  const hut = new THREE.Group(), hm = M(hutFarbe);
-  const krempe = new THREE.Mesh(new THREE.CylinderGeometry(.62, .66, .05, 22), hm);
-  const krone = new THREE.Mesh(new THREE.CylinderGeometry(.3, .36, .34, 16), hm); krone.position.y = .19;
-  const band = new THREE.Mesh(new THREE.CylinderGeometry(.365, .365, .07, 16), M(tuch)); band.position.y = .07;
-  hut.add(krempe, krone, band); hut.traverse(o => o.castShadow = true); scene.add(hut);
+  // Holster und Revolver
+  teil(new THREE.BoxGeometry(.13, .3, .09), toon(0x6b4630), huefte, .03, -.2, .38, .018);
+  const waffe = () => { const g = new THREE.Group(), stahl = toon(0x9aa2aa);
+    teil(new THREE.BoxGeometry(.08, .36, .08), stahl, g, 0, -.2, 0, .014);
+    teil(new THREE.BoxGeometry(.17, .1, .08), toon(0x4a3122), g, -.06, -.02, 0, .014); return g; };
+  const wHand = waffe(); wHand.position.y = -.33; armR.e.add(wHand);
+  const wHolster = waffe(); wHolster.position.set(.03, .02, .43); wHolster.scale.setScalar(.9); huefte.add(wHolster);
+
+  // Cap (Schirm nach hinten) bleibt eigenstaendig in der Szene, damit sie wegfliegen kann
+  const hut = new THREE.Group(), kippe = new THREE.Group(); kippe.rotation.z = 24 * DEG; hut.add(kippe);
+  const capMat = toon(cap);
+  teil(new THREE.SphereGeometry(.535, 32, 16, 0, Math.PI * 2, 0, Math.PI * .5), capMat, kippe, 0, 0, 0, .03);
+  teil(new THREE.SphereGeometry(.4, 20, 10), capMat, kippe, -.6, -.03, 0, .028).scale.set(1.05, .11, .95);  // Schirm
+  teil(new THREE.SphereGeometry(.05, 8, 6), capMat, kippe, 0, .54, 0, .012);                                 // Knopf
+  { const b = teil(new THREE.TorusGeometry(.535, .032, 8, 20, 1.1), toon(band), kippe, 0, .03, 0, .012); b.rotation.set(Math.PI / 2, 0, -.55); }                           // Verschlussband
+  scene.add(hut);
 
   return { wurzel, set(p) {
+    const f = p.fall || 0;
     wurzel.position.set(p.x, 0, p.z || 0);
     wurzel.rotation.set(0, p.dreh || 0, 0);
-    koerper.rotation.z = (p.fall || 0) * 90 * DEG;
-    koerper.position.y = -(p.hock || 0) * .18 - (p.fall || 0) * .0;
-    huefte.position.y = 1.12 - (p.hock || 0) * .1 + Math.sin(p.atem || 0) * .008;
+    koerper.rotation.z = f * 90 * DEG;
+    koerper.position.y = f * .3;
+    huefte.position.y = .86 - (p.hock || 0) * .1 + Math.sin(p.atem || 0) * .008;
     rumpf.rotation.z = -(p.lean || 0) * DEG;
     hals.rotation.set(0, (p.kopfDreh || 0) * DEG, -(p.nick || 0) * DEG);
     armR.s.rotation.z = (p.schR ?? 6) * DEG; armR.e.rotation.z = (p.elR ?? 12) * DEG;
-    armR.s.rotation.x = (p.schRx ?? -4) * DEG;
-    armL.s.rotation.z = (p.schL ?? -4) * DEG; armL.e.rotation.z = (p.elL ?? 14) * DEG; armL.s.rotation.x = 5 * DEG;
-    beinR.h.rotation.z = (p.thR ?? 10) * DEG; beinR.k.rotation.z = -(p.knR ?? 8) * DEG; beinR.h.rotation.x = -5 * DEG;
-    beinL.h.rotation.z = (p.thL ?? -12) * DEG; beinL.k.rotation.z = -(p.knL ?? 6) * DEG; beinL.h.rotation.x = 5 * DEG;
+    armR.s.rotation.x = (p.schRx ?? -6) * DEG;
+    armL.s.rotation.z = (p.schL ?? -4) * DEG; armL.e.rotation.z = (p.elL ?? 14) * DEG; armL.s.rotation.x = 6 * DEG;
+    beinR.h.rotation.z = (p.thR ?? 8) * DEG; beinR.k.rotation.z = -(p.knR ?? 6) * DEG; beinR.h.rotation.x = -4 * DEG;
+    beinL.h.rotation.z = (p.thL ?? -9) * DEG; beinL.k.rotation.z = -(p.knL ?? 5) * DEG; beinL.h.rotation.x = 4 * DEG;
     wHand.visible = !!p.waffe; wHolster.visible = !p.waffe;
-    const auf = p.auge ?? 1, lidW = p.lid ?? .25;
-    for (const { a, p: pu, lid, z } of augen) {
-      a.scale.set(.5, auf, auf); lid.position.set(-.1, lerp(.17, .075, lidW), -Math.sign(z) * (p.boese || 0) * .012); lid.rotation.x = Math.sign(z) * (p.boese || 0) * 30 * DEG;
-      pu.position.z = (p.blickZ || 0) * .03;
-    }
-    mund.scale.set(1, 1 + (p.mundAuf || 0) * 5, p.mundW ?? 1);
+    gesicht(g2, p); tex.needsUpdate = true;
     wurzel.updateMatrixWorld(true);
     if (p.hut) { hut.position.copy(p.hut.pos); hut.rotation.set(p.hut.rx, p.hut.ry, p.hut.rz); }
-    else { hals.localToWorld(hut.position.set(-.02, .66, 0)); hut.quaternion.setFromRotationMatrix(hals.matrixWorld); }
-  }, muendung() { return wHand.localToWorld(V(0, -.42, 0)); }, kopf() { return hals.localToWorld(V(0, .34, 0)); } };
+    else { hals.localToWorld(hut.position.set(0, KOPF, 0)); hut.quaternion.setFromRotationMatrix(hals.matrixWorld); }
+  }, muendung() { return wHand.localToWorld(V(0, -.42, 0)); }, kopf() { return hals.localToWorld(V(0, KOPF, 0)); } };
 }
-const A = figur({ farbe: 0x18181c, hutFarbe: 0x2b2420, tuch: 0xd8432e });   // zieht zuerst
-const B = figur({ farbe: 0x18181c, hutFarbe: 0xe9d7a8, tuch: 0x2f9db3 });   // reagiert
+const A = figur({ hoodie: 0xd3211d, cap: 0x222126, band: 0xe9e6e2 });     // zieht zuerst
+const B = figur({ hoodie: 0x2a6fd6, cap: 0x27406e, band: 0xe9e6e2 });     // reagiert
 scene.add(A.wurzel, B.wurzel);
 
 /* Ziehen: 0 = Arm haengt, .35 = Hand am Holster, 1 = Waffe im Anschlag */
@@ -309,11 +351,11 @@ window.frame = function (t) {
     a.schR = 10 + Math.sin(t * 9) * 2 * prog(t, 3, 5); a.elR = 24;
   } else if (t < 7.3) {                          // 2a: Nahaufnahme A
     const k = prog(t, 5, 7.3);
-    kamera(V(-1.5 + k * .3, 2.0, 1.5), V(-5, 1.72, 0), 30);
+    kamera(V(-.5 + k * .35, 2.15, 1.9), V(-5, 1.78, 0), 30);
     a.lid = lerp(.35, .62, sm(k * 2)); a.boese = sm(k * 2); a.blickZ = Math.sin(t * 3) * .3; a.schR = 10; a.elR = 24;
   } else if (t < 9.5) {                          // 2b: Nahaufnahme B
     const k = prog(t, 7.3, 9.5);
-    kamera(V(1.5 - k * .3, 2.0, -1.5), V(5, 1.72, 0), 30);
+    kamera(V(.5 - k * .35, 2.15, -1.9), V(5, 1.78, 0), 30);
     b.lid = lerp(.3, .5, sm(k * 2)); b.mundW = .7; b.kopfDreh = Math.sin(t * 1.4) * 4;
   } else if (t < 15) {                           // 3: Filmduell - der Zweite gewinnt
     const tA = 10.6, tB = 11.15, tSchuss = 11.55;
@@ -322,7 +364,7 @@ window.frame = function (t) {
     a.boese = 1; a.lid = .6;
     if (t < 12.1) {
       const k = prog(t, 9.5, 12.1);
-      kamera(V(6.75 - k * .1, 1.12, -.5), V(-5, .9, .45), 40);
+      kamera(V(6.8 - k * .1, 1.0, -.78), V(-5, .9, .45), 40);
     } else {
       const k = prog(t, 12.1, 15);
       kamera(V(-4.3 + k * .3, 1.7, 3.0), V(-6.2, .1, 0), 52);
@@ -332,11 +374,11 @@ window.frame = function (t) {
       a.fall = fall(prog(t, tSchuss + .12, tSchuss + .95)); a.auge = 1.25; a.lid = 0; a.boese = 0; a.mundAuf = 1; a.mundW = .6;
       a.schR = lerp(88, 150, sm(u * 3)); a.schL = lerp(-4, 120, sm(u * 3)); a.thR = 40 * a.fall; a.knR = 20 * a.fall;
       A.set({ ...a, hut: null });
-      a.hut = hutflug(A.kopf().add(V(0, .34, 0)).setY(2.9), tSchuss, t, -1);
+      a.hut = hutflug(A.kopf(), tSchuss, t, -1);
       beben = Math.max(0, .12 - u) * 1.2;
     }
     B.set(b); A.set(a);
-    schuss(t, tSchuss, B.muendung(), V(-5, 2.6, 0));
+    schuss(t, tSchuss, B.muendung(), V(-5, 2.55, 0));
     staub(t, tSchuss + .82, -6.6, 0);
   } else if (t < 28.5) {                         // 4+5: Messung, Figuren nah beieinander
     const zyk = (t - 15.4) % 3.3, lauf = Math.floor((t - 15.4) / 3.3);
@@ -372,12 +414,12 @@ window.frame = function (t) {
       b.fall = fall(prog(t, tSchuss + .12, tSchuss + .95)); b.auge = 1.25; b.lid = 0; b.mundAuf = 1; b.mundW = .6;
       b.schL = lerp(-4, 120, sm(u * 3)); b.schR = lerp(b.schR, 140, sm(u * 3)); b.thR = 40 * b.fall; b.knR = 20 * b.fall;
       B.set({ ...b, hut: null });
-      b.hut = hutflug(B.kopf().setY(2.9), tSchuss, t, 1);
+      b.hut = hutflug(B.kopf(), tSchuss, t, 1);
       beben = Math.max(0, .12 - u) * 1.2;
       a.lid = .3; a.boese = .3;
     }
     A.set(a); B.set(b);
-    schuss(t, tSchuss, A.muendung(), V(5, 2.6, 0));
+    schuss(t, tSchuss, A.muendung(), V(5, 2.55, 0));
     staub(t, tSchuss + .82, 6.6, 0);
   }
   A.set(a); B.set(b);
