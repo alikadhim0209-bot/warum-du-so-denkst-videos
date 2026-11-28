@@ -7,11 +7,11 @@ Leere Zeile = längere Pause.
 import json, re, sys, os
 
 VOICES = {
-    "papa":    {"voice": "de-DE-KillianNeural", "rate": "+0%",  "pitch": "-2Hz"},
-    "monster": {"voice": "de-DE-ConradNeural",  "rate": "-12%", "pitch": "-14Hz"},
-    "lea":     {"voice": "de-DE-GiselaNeural",  "rate": "+0%",  "pitch": "+0Hz"},
-    "polizei": {"voice": "de-DE-FlorianMultilingualNeural", "rate": "+0%", "pitch": "-4Hz"},
-    "notruf":  {"voice": "de-DE-KatjaNeural",   "rate": "+4%",  "pitch": "+0Hz"},
+    "papa":    {"voice": "de-AT-JonasNeural",   "rate": "+0%",  "pitch": "-4Hz"},
+    "monster": {"voice": "de-AT-JonasNeural",   "rate": "-14%", "pitch": "-20Hz"},
+    "lea":     {"voice": "de-DE-TanjaNeural",   "rate": "+4%",  "pitch": "+38Hz"},
+    "notruf":  {"voice": "de-AT-IngridNeural",  "rate": "+4%",  "pitch": "+0Hz"},
+    "polizei": {"voice": "de-CH-JanNeural",     "rate": "+0%",  "pitch": "-4Hz"},
 }
 
 TEXT = r"""

@@ -186,3 +186,13 @@ Der Slash-Befehl **`/dunkle-akte`** (`.claude/skills/dunkle-akte/SKILL.md`) fass
    - Danach `src/align.py` für die Wort-Timings ausführen.
    - ElevenLabs eignet sich auch für mehrere Dialogstimmen.
 2. **Ton des Originals:** Wenn die Videodatei einmal ins Repo gelegt wird (z.B. `referenz/original.mp4`), lassen sich Stimme, Musik und Lautstärken 1:1 abgleichen.
+
+## 11. Erkenntnisse aus „Papa ist nicht Papa“ (erste 6-Minuten-Folge)
+
+- **Text-Generator:** `src/papa/make_story.py` baut `story.json` aus Klartext (`tag @stimme > Text mit *rotem* Wort`). Untertitel werden automatisch satzweise in 1–3-Wort-Blöcke geteilt. Für neue Folgen kopieren.
+- **Edge-TTS-Stimmen in der Cloud:** nur `de-DE-ChristophNeural`, `de-DE-TanjaNeural`, `de-AT-JonasNeural`, `de-AT-IngridNeural`, `de-CH-JanNeural`, `de-CH-LeniNeural`. Rollen per Tonhöhe trennen (Wesen = Papa-Stimme −20 Hz, −14 %; Kind = Tanja +38 Hz).
+- **Figuren:** `src/papa/figure.js` (`makePapa` mit Posen per IK, dehnbarer Hals, Augen normal/zu/schwarz, Mund smile/grin/scream; `outfit: 'cop'`; `makeKid`). Wiederverwendbar für andere Wesen.
+- **THE END** ist jetzt eine Overlay-Ebene in `index.html` (`plan.theEnd` = Startzeit).
+- **Technik-Fallen:** Objekte in verschobenen Set-Gruppen brauchen *lokale* Positionen (`group.worldToLocal`). Posen, die zur Kamera schauen, erst nach dem Setzen der Kamera berechnen (Einstellung zweimal auswerten).
+- **Helligkeit:** Nacht-Außenszenen brauchen Belichtung ≈ 1,55, Mond ≈ 2,2 und einen warmen Gartenstrahler, sonst ist auf dem Handy nichts zu erkennen.
+- **Rendern:** 6 Min. ≈ 10.800 Bilder ≈ 55 Min. mit 3 Prozessen auf 4 Kernen.

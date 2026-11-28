@@ -25,6 +25,9 @@ Der Nutzer betreibt den Kanal **Dunkle_Akte** (youtube.com/@Dunkle_Akte0) und wi
 | `hand.js` | menschliche POV-Hände: `makeHand` (posierbar), `makeThumb` (Daumen-Bogen um Kanten), `placeHand`, Nägel |
 | `tts.py` | Edge-TTS-Sprecher mit Wort-Timings, erzeugt `timeline.json` mit Untertitel-Chunks |
 | `align.py` | Wort-Timings per Whisper für eine fertige Sprachaufnahme (z.B. ElevenLabs), gleiches `timeline.json`-Format |
+| `papa/make_story.py` | Klartext → `story.json` (Stimmen pro Rolle, automatische 1–3-Wort-Untertitel). Für neue Folgen kopieren |
+| `papa/figure.js` | Figuren: `makePapa` (Posen, dehnbarer Hals, schwarze Augen, Schrei-Mund, `outfit:'cop'`), `makeKid` |
+| `papa/scene.js` | Vorlage für 6-Min.-Folgen: mehrere Sets, Einstellungen aus `plan.shots`, Handy-Chat/Notruf-Bildschirme |
 
 ## 1. Auftrag klären (nur was fehlt, eine kurze Frage)
 - **Idee:** aus den Argumenten des Aufrufs. Fehlt sie, schlage 3 Hooks nach dem Muster „Alltag + Widerspruch“ vor und lass wählen. Keine Wiederholung bestehender Kanal-Themen; die Liste liefert `yt-dlp --flat-playlist` auf `@Dunkle_Akte0/videos` und `/shorts`.
@@ -41,6 +44,7 @@ Der Nutzer betreibt den Kanal **Dunkle_Akte** (youtube.com/@Dunkle_Akte0) und wi
   - Erzeugen mit `creative_generate_speech`. Das kostet Credits: bei langen Texten vorher kurz bestätigen lassen und nie doppelt starten.
   - Danach mit `align.py` die Wort-Timings erzeugen.
   - Ohne ElevenLabs: Edge-TTS `de-DE-ChristophNeural`, `rate +5%`, `pitch -5Hz` als Platzhalter, und das dem Nutzer sagen.
+  - Edge-TTS hat in der Cloud nur: Christoph, Tanja (de-DE), Jonas, Ingrid (de-AT), Jan, Leni (de-CH). Rollen über Tonhöhe trennen.
 
 ## 2. Geschichte schreiben (Regeln, siehe STIL.md §2)
 - **Du-Perspektive, Präsens, kurze Sätze** (3–8 Wörter). Kein Intro, kein Outro. Satz 1 ist der Hook.

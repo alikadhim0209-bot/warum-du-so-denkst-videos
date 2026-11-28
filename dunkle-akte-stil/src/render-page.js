@@ -45,6 +45,8 @@ window.renderFrame = (t) => {
   }
   // Schwarzblende am Ende
   blackEl.style.opacity = plan.black && t >= plan.black[0] ? '1' : '0';
+  const endEl = document.getElementById('theend');
+  if (endEl) endEl.style.opacity = plan.theEnd && t >= plan.theEnd ? String(Math.min(1, (t - plan.theEnd) / 0.25)) : '0';
   return true;
 };
 

@@ -30,6 +30,10 @@
     text-shadow: 0 5px 0 rgba(0,0,0,0.75), 0 0 22px rgba(0,0,0,0.55);
     transform-origin: 50% 50%; }
   #cap .r { color: #ec2f27; }
+  /* Ende: "THE END" mittig, THE weiss, END rot */
+  #theend { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); text-align: center; font-family: 'Anton';
+    font-size: 210px; letter-spacing: 4px; color: #fff; opacity: 0; -webkit-text-stroke: 10px #000; paint-order: stroke fill; }
+  #theend .r { color: #ec2f27; }
 </style>
 </head>
 <body>
@@ -38,6 +42,7 @@
   <div id="vignette"></div>
   <div id="cap"></div>
   <div id="black"></div>
+  <div id="theend">THE <span class="r">END</span></div>
   <div id="badge">FULL STORY</div>
 </div>
 <script type="importmap">

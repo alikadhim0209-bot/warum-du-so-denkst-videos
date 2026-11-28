@@ -105,9 +105,9 @@
    "gap_after": 0.32,
    "tag": "msg1",
    "quote": true,
-   "voice": "de-DE-KillianNeural",
+   "voice": "de-AT-JonasNeural",
    "rate": "+0%",
-   "pitch": "-2Hz",
+   "pitch": "-4Hz",
    "speaker": "papa"
   },
   {
@@ -139,9 +139,9 @@
    "gap_after": 0.32,
    "tag": "msg2",
    "quote": true,
-   "voice": "de-DE-KillianNeural",
+   "voice": "de-AT-JonasNeural",
    "rate": "+0%",
-   "pitch": "-2Hz",
+   "pitch": "-4Hz",
    "speaker": "papa"
   },
   {
@@ -153,9 +153,9 @@
    "gap_after": 0.32,
    "tag": "msg2",
    "quote": true,
-   "voice": "de-DE-KillianNeural",
+   "voice": "de-AT-JonasNeural",
    "rate": "+0%",
-   "pitch": "-2Hz",
+   "pitch": "-4Hz",
    "speaker": "papa"
   },
   {
@@ -167,9 +167,9 @@
    "gap_after": 0.7,
    "tag": "msg2",
    "quote": true,
-   "voice": "de-DE-KillianNeural",
+   "voice": "de-AT-JonasNeural",
    "rate": "+0%",
-   "pitch": "-2Hz",
+   "pitch": "-4Hz",
    "speaker": "papa"
   },
   {
@@ -228,9 +228,9 @@
    "gap_after": 0.32,
    "tag": "test1",
    "quote": true,
-   "voice": "de-DE-ConradNeural",
-   "rate": "-12%",
-   "pitch": "-14Hz",
+   "voice": "de-AT-JonasNeural",
+   "rate": "-14%",
+   "pitch": "-20Hz",
    "speaker": "monster"
   },
   {
@@ -288,9 +288,9 @@
    "gap_after": 0.7,
    "tag": "test1",
    "quote": true,
-   "voice": "de-DE-ConradNeural",
-   "rate": "-12%",
-   "pitch": "-14Hz",
+   "voice": "de-AT-JonasNeural",
+   "rate": "-14%",
+   "pitch": "-20Hz",
    "speaker": "monster"
   },
   {
@@ -387,9 +387,9 @@
    "gap_after": 0.32,
    "tag": "sofa",
    "quote": true,
-   "voice": "de-DE-ConradNeural",
-   "rate": "-12%",
-   "pitch": "-14Hz",
+   "voice": "de-AT-JonasNeural",
+   "rate": "-14%",
+   "pitch": "-20Hz",
    "speaker": "monster"
   },
   {
@@ -464,9 +464,9 @@
    "gap_after": 0.32,
    "tag": "count",
    "quote": true,
-   "voice": "de-DE-ConradNeural",
-   "rate": "-12%",
-   "pitch": "-14Hz",
+   "voice": "de-AT-JonasNeural",
+   "rate": "-14%",
+   "pitch": "-20Hz",
    "speaker": "monster"
   },
   {
@@ -477,9 +477,9 @@
    "gap_after": 0.32,
    "tag": "count",
    "quote": true,
-   "voice": "de-DE-ConradNeural",
-   "rate": "-12%",
-   "pitch": "-14Hz",
+   "voice": "de-AT-JonasNeural",
+   "rate": "-14%",
+   "pitch": "-20Hz",
    "speaker": "monster"
   },
   {
@@ -490,9 +490,9 @@
    "gap_after": 0.32,
    "tag": "count",
    "quote": true,
-   "voice": "de-DE-ConradNeural",
-   "rate": "-12%",
-   "pitch": "-14Hz",
+   "voice": "de-AT-JonasNeural",
+   "rate": "-14%",
+   "pitch": "-20Hz",
    "speaker": "monster"
   },
   {
@@ -503,9 +503,9 @@
    "gap_after": 0.32,
    "tag": "count",
    "quote": true,
-   "voice": "de-DE-ConradNeural",
-   "rate": "-12%",
-   "pitch": "-14Hz",
+   "voice": "de-AT-JonasNeural",
+   "rate": "-14%",
+   "pitch": "-20Hz",
    "speaker": "monster"
   },
   {
@@ -567,9 +567,9 @@
    "gap_after": 0.32,
    "tag": "voicemsg",
    "quote": true,
-   "voice": "de-DE-KillianNeural",
+   "voice": "de-AT-JonasNeural",
    "rate": "+0%",
-   "pitch": "-2Hz",
+   "pitch": "-4Hz",
    "speaker": "papa"
   },
   {
@@ -619,9 +619,9 @@
    "gap_after": 0.32,
    "tag": "msg3",
    "quote": true,
-   "voice": "de-DE-KillianNeural",
+   "voice": "de-AT-JonasNeural",
    "rate": "+0%",
-   "pitch": "-2Hz",
+   "pitch": "-4Hz",
    "speaker": "papa"
   },
   {
@@ -668,9 +668,9 @@
    "gap_after": 0.32,
    "tag": "betrayl",
    "quote": true,
-   "voice": "de-DE-GiselaNeural",
-   "rate": "+0%",
-   "pitch": "+0Hz",
+   "voice": "de-DE-TanjaNeural",
+   "rate": "+4%",
+   "pitch": "+38Hz",
    "speaker": "lea"
   },
   {
@@ -747,9 +747,9 @@
    "gap_after": 0.32,
    "tag": "kitchen",
    "quote": true,
-   "voice": "de-DE-ConradNeural",
-   "rate": "-12%",
-   "pitch": "-14Hz",
+   "voice": "de-AT-JonasNeural",
+   "rate": "-14%",
+   "pitch": "-20Hz",
    "speaker": "monster"
   },
   {
@@ -761,9 +761,9 @@
    "gap_after": 0.32,
    "tag": "kitchen",
    "quote": true,
-   "voice": "de-DE-ConradNeural",
-   "rate": "-12%",
-   "pitch": "-14Hz",
+   "voice": "de-AT-JonasNeural",
+   "rate": "-14%",
+   "pitch": "-20Hz",
    "speaker": "monster"
   },
   {
@@ -791,9 +791,9 @@
    "gap_after": 0.32,
    "tag": "kitchen",
    "quote": true,
-   "voice": "de-DE-ConradNeural",
-   "rate": "-12%",
-   "pitch": "-14Hz",
+   "voice": "de-AT-JonasNeural",
+   "rate": "-14%",
+   "pitch": "-20Hz",
    "speaker": "monster"
   },
   {
@@ -943,7 +943,7 @@
    "gap_after": 0.32,
    "tag": "call",
    "quote": true,
-   "voice": "de-DE-KatjaNeural",
+   "voice": "de-AT-IngridNeural",
    "rate": "+4%",
    "pitch": "+0Hz",
    "speaker": "notruf"
@@ -970,7 +970,7 @@
    "gap_after": 0.32,
    "tag": "call",
    "quote": true,
-   "voice": "de-DE-KatjaNeural",
+   "voice": "de-AT-IngridNeural",
    "rate": "+4%",
    "pitch": "+0Hz",
    "speaker": "notruf"
@@ -983,7 +983,7 @@
    "gap_after": 0.32,
    "tag": "call",
    "quote": true,
-   "voice": "de-DE-KatjaNeural",
+   "voice": "de-AT-IngridNeural",
    "rate": "+4%",
    "pitch": "+0Hz",
    "speaker": "notruf"
@@ -1042,9 +1042,9 @@
    "gap_after": 0.32,
    "tag": "call2",
    "quote": true,
-   "voice": "de-DE-ConradNeural",
-   "rate": "-12%",
-   "pitch": "-14Hz",
+   "voice": "de-AT-JonasNeural",
+   "rate": "-14%",
+   "pitch": "-20Hz",
    "speaker": "monster"
   },
   {
@@ -1162,7 +1162,7 @@
    "gap_after": 0.32,
    "tag": "cop",
    "quote": true,
-   "voice": "de-DE-FlorianMultilingualNeural",
+   "voice": "de-CH-JanNeural",
    "rate": "+0%",
    "pitch": "-4Hz",
    "speaker": "polizei"
@@ -1498,9 +1498,9 @@
    "gap_after": 0.32,
    "tag": "endp",
    "quote": true,
-   "voice": "de-DE-KillianNeural",
+   "voice": "de-AT-JonasNeural",
    "rate": "+0%",
-   "pitch": "-2Hz",
+   "pitch": "-4Hz",
    "speaker": "papa"
   },
   {
@@ -1522,9 +1522,9 @@
    "gap_after": 0.32,
    "tag": "endl",
    "quote": true,
-   "voice": "de-DE-GiselaNeural",
-   "rate": "+0%",
-   "pitch": "+0Hz",
+   "voice": "de-DE-TanjaNeural",
+   "rate": "+4%",
+   "pitch": "+38Hz",
    "speaker": "lea"
   },
   {
@@ -1552,9 +1552,9 @@
    "gap_after": 0.32,
    "tag": "endp",
    "quote": true,
-   "voice": "de-DE-KillianNeural",
+   "voice": "de-AT-JonasNeural",
    "rate": "+0%",
-   "pitch": "-2Hz",
+   "pitch": "-4Hz",
    "speaker": "papa"
   },
   {
