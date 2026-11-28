@@ -1,7 +1,7 @@
 // Demo "Der 13. Stock" – Low-Poly-3D in Ich-Perspektive (Dunkle_Akte-Stil)
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import { makeHand, placeHand, POSES } from '/hand.js';
+import { makeHand, makeThumb, placeHand, POSES } from '/hand.js';
 
 const W = 1080, H = 1920;
 
@@ -413,22 +413,30 @@ export async function build({ canvas, plan }) {
   const screenMesh = add(phoneG, new THREE.PlaneGeometry(0.0685, 0.148), new THREE.MeshBasicMaterial({ map: scr.tex, transparent: true, toneMapped: false }), 0, 0, 0.0049, false);
   screenMesh.castShadow = false;
   const scrLight = new THREE.PointLight(0xa8b6ff, 0.0, 0.6, 2); scrLight.position.set(0, 0, 0.06); phoneG.add(scrLight);
-  // Beide Haende halten das Handy: Handflaeche am Geraeterruecken, Finger dahinter, Daumen auf dem Bildschirm
-  const GRIP = {
-    index: [0.3, 0.55, 0.3], middle: [0.38, 0.62, 0.34], ring: [0.46, 0.7, 0.38], pinky: [0.56, 0.78, 0.42],
-    thumb: [0.12, 0.85, -1.2, 0.22, 0.14],
-  };
-  const phoneHands = [1, -1].map((s) => {
+  // Handy-Griff: pro Hand liegt nur der Daumen auf dem Bildschirm. Der Rest der Hand bleibt hinter dem
+  // Handy und geht unten nur weich ins Handgelenk ueber. Nichts ragt durch das Gehaeuse:
+  // Handy = x ±0.037, y ±0.077, z ±0.00475 (Bildschirm bei z = +0.0049).
+  const PHONE_HALF_W = 0.037;
+  for (const s of [1, -1]) {
     const h = makeHand({ side: s, skin: PAL.skin, sleeve: PAL.sleeve, cuff: PAL.cuff });
-    h.setPose(GRIP); phoneG.add(h.root);
-    return { h, s };
-  });
-  function placePhoneHands() {
-    for (const { h, s } of phoneHands) {
-      placeHand(h, h.thumbTip, V(s * 0.013, -0.028, 0.0125), V(-s * 0.42, 1, -0.05), V(s * 0.25, 0, -1));
-    }
+    h.setPose({ index: [0, 0, 0], middle: [0, 0, 0], ring: [0, 0, 0], pinky: [0, 0, 0] });
+    h.parts.fingerGroups.forEach((g) => (g.visible = false)); // Finger liegen verdeckt hinter dem Handy
+    h.parts.thumbGroup.visible = false;                         // Daumen wird als Bogen um die Kante gebaut
+    h.parts.hypo.visible = false;                               // Kleinfingerballen wuerde unter dem Handy hervorschauen
+    phoneG.add(h.root);
+    // Daumenballen sitzt hinter der unteren Handyecke; Finger zeigen schraeg nach oben hinter das Handy,
+    // der Unterarm kommt von unten/vorne (Richtung Kamera).
+    placeHand(h, h.parts.thenar, V(s * 0.045, -0.06, -0.017), V(-s * 0.4, 1, -0.14), V(s * 0.1, 0, -1));
+    const R = PHONE_HALF_W + 0.0092;                 // Abstand zur Kante (Gehaeuse + Daumenradius)
+    const pts = [
+      V(s * 0.041, -0.06, -0.011),                   // Ansatz am Daumenballen (hinter dem Handy)
+      V(s * R, -0.054, -0.001),                      // neben der Seitenkante, Gehaeusehoehe
+      V(s * (R - 0.001), -0.046, 0.0124),            // neben der Kante, vor dem Bildschirm
+      V(s * 0.031, -0.035, 0.0131),                  // ueber die Kante auf den Bildschirm
+      V(s * 0.0195, -0.024, 0.0125),                 // Daumenkuppe
+    ];
+    makeThumb(phoneG, { skin: PAL.skin, radii: [0.0088, 0.0084, 0.0078, 0.0071] }).set(pts, V(0, 0, 1));
   }
-  placePhoneHands();
   phoneG.visible = false;
 
   function drawScreen(t) {

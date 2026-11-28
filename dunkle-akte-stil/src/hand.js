@@ -42,7 +42,8 @@ function taperPalm(geo) {
   return geo;
 }
 
-export function makeHand({ side = 1, skin = 0xe3b896, nail = 0xf1d3c7, sleeve = 0x2d4034, cuff = 0x223027, forearmLen = 0.26, sleeveLen = 0.55 } = {}) {
+export function makeHand({ side = 1, skin = 0xe3b896, nail = 0xf1d3c7, sleeve = 0x2d4034, cuff = 0x223027, forearmLen = 0.26, sleeveLen = 0.55, slim = 0.86 } = {}) {
+  const k = slim; // < 1 = schlankere Hand (Finger, Handflaeche, Handgelenk)
   const mSkin = new THREE.MeshStandardMaterial({ color: skin, roughness: 0.68, metalness: 0 });
   const mNail = new THREE.MeshStandardMaterial({ color: nail, roughness: 0.3, metalness: 0 });
   const mSleeve = new THREE.MeshStandardMaterial({ color: sleeve, roughness: 0.92, metalness: 0, flatShading: true });
@@ -54,16 +55,16 @@ export function makeHand({ side = 1, skin = 0xe3b896, nail = 0xf1d3c7, sleeve = 
   if (side < 0) root.scale.x = -1;
 
   // Mittelhand
-  const palm = mesh(taperPalm(new RoundedBoxGeometry(0.076, 0.022, 0.094, 5, 0.0105)), mSkin, hand);
+  const palm = mesh(taperPalm(new RoundedBoxGeometry(0.072, 0.021 * k, 0.094, 5, 0.0098 * k)), mSkin, hand);
   palm.position.set(0.0, 0.0, 0.047);
   // Daumenballen + Kleinfingerballen
   const thenar = mesh(new THREE.SphereGeometry(1, 20, 14), mSkin, hand);
-  thenar.position.set(0.019, -0.006, 0.032); thenar.scale.set(0.017, 0.012, 0.03); thenar.rotation.y = 0.35;
+  thenar.position.set(0.018, -0.005, 0.032); thenar.scale.set(0.016 * k, 0.011 * k, 0.029); thenar.rotation.y = 0.35;
   const hypo = mesh(new THREE.SphereGeometry(1, 16, 12), mSkin, hand);
-  hypo.position.set(-0.024, -0.006, 0.04); hypo.scale.set(0.011, 0.009, 0.028);
+  hypo.position.set(-0.022, -0.005, 0.04); hypo.scale.set(0.01 * k, 0.008 * k, 0.027);
   // Handgelenk (weicher Uebergang)
   const wrist = mesh(new THREE.SphereGeometry(1, 20, 14), mSkin, hand);
-  wrist.position.set(0, -0.001, 0.004); wrist.scale.set(0.029, 0.0165, 0.022);
+  wrist.position.set(0, -0.001, 0.004); wrist.scale.set(0.027 * k, 0.0155 * k, 0.022);
 
   // Finger
   const fingers = {};
@@ -71,18 +72,19 @@ export function makeHand({ side = 1, skin = 0xe3b896, nail = 0xf1d3c7, sleeve = 
     let parent = hand; const chain = [];
     for (let i = 0; i < 3; i++) {
       const j = new THREE.Group();
-      if (i === 0) j.position.set(f.base[0], f.base[1], f.base[2]); else j.position.set(0, 0, f.len[i - 1]);
+      if (i === 0) j.position.set(f.base[0] * 0.95, f.base[1], f.base[2]); else j.position.set(0, 0, f.len[i - 1]);
       parent.add(j);
-      const seg = mesh(new THREE.CapsuleGeometry(f.rad[i], f.len[i], 8, 16), mSkin, j);
+      const r = f.rad[i] * k;
+      const seg = mesh(new THREE.CapsuleGeometry(r, f.len[i], 8, 16), mSkin, j);
       seg.rotation.x = Math.PI / 2; seg.position.z = f.len[i] / 2;
       seg.scale.set(1.08, 1, 0.9); // Finger leicht oval
       if (i === 2) {
         const n = mesh(new THREE.SphereGeometry(1, 14, 10), mNail, j);
-        n.position.set(0, f.rad[2] * 0.66, f.len[2] * 0.62); n.scale.set(f.rad[2] * 0.78, f.rad[2] * 0.3, f.rad[2] * 1.05);
+        n.position.set(0, r * 0.66, f.len[2] * 0.62); n.scale.set(r * 0.78, r * 0.3, r * 1.05);
       }
       chain.push(j); parent = j;
     }
-    const tip = new THREE.Object3D(); tip.position.set(0, 0, f.len[2] + f.rad[2] * 0.9); chain[2].add(tip);
+    const tip = new THREE.Object3D(); tip.position.set(0, 0, f.len[2] + f.rad[2] * k * 0.9); chain[2].add(tip);
     fingers[name] = { chain, tip, splay: f.splay };
   }
   // Daumen (Sattelgelenk mit Gier/Nick/Roll, dann 2 Beugegelenke)
@@ -93,24 +95,25 @@ export function makeHand({ side = 1, skin = 0xe3b896, nail = 0xf1d3c7, sleeve = 
     for (let i = 0; i < 3; i++) {
       const j = i === 0 ? cmc : new THREE.Group();
       if (i > 0) { j.position.set(0, 0, THUMB.len[i - 1]); parent.add(j); }
-      const seg = mesh(new THREE.CapsuleGeometry(THUMB.rad[i], THUMB.len[i], 8, 16), mSkin, j);
+      const r = THUMB.rad[i] * k;
+      const seg = mesh(new THREE.CapsuleGeometry(r, THUMB.len[i], 8, 16), mSkin, j);
       seg.rotation.x = Math.PI / 2; seg.position.z = THUMB.len[i] / 2; seg.scale.set(1.1, 1, 0.92);
       if (i === 2) {
         const n = mesh(new THREE.SphereGeometry(1, 14, 10), mNail, j);
-        n.position.set(0, THUMB.rad[2] * 0.66, THUMB.len[2] * 0.6); n.scale.set(THUMB.rad[2] * 0.8, THUMB.rad[2] * 0.3, THUMB.rad[2] * 1.0);
+        n.position.set(0, r * 0.66, THUMB.len[2] * 0.6); n.scale.set(r * 0.8, r * 0.3, r * 1.0);
       }
       if (i > 0) tChain.push(j);
       parent = j;
     }
   }
-  const thumbTip = new THREE.Object3D(); thumbTip.position.set(0, 0, THUMB.len[2] + THUMB.rad[2] * 0.9); tChain[2].add(thumbTip);
+  const thumbTip = new THREE.Object3D(); thumbTip.position.set(0, 0, THUMB.len[2] + THUMB.rad[2] * k * 0.9); tChain[2].add(thumbTip);
 
   // Unterarm (fast ganz im Aermel) + Aermel bis zum Handgelenk (Hoodie/Jacke wie im Original)
-  const fa = mesh(new THREE.CylinderGeometry(0.026, 0.033, forearmLen, 20), mSkin, root);
+  const fa = mesh(new THREE.CylinderGeometry(0.025 * k, 0.032 * k, forearmLen, 20), mSkin, root);
   fa.rotation.x = Math.PI / 2; fa.position.z = -forearmLen / 2 + 0.004; fa.scale.set(1.18, 1, 0.82);
-  const cf = mesh(new THREE.CylinderGeometry(0.038, 0.041, 0.03, 20), mCuff, root);
+  const cf = mesh(new THREE.CylinderGeometry(0.036, 0.039, 0.03, 20), mCuff, root);
   cf.rotation.x = Math.PI / 2; cf.position.z = -0.03; cf.scale.set(1.12, 1, 0.92);
-  const sl = mesh(new THREE.CylinderGeometry(0.042, 0.058, sleeveLen, 20), mSleeve, root);
+  const sl = mesh(new THREE.CylinderGeometry(0.04, 0.056, sleeveLen, 20), mSleeve, root);
   sl.rotation.x = Math.PI / 2; sl.position.z = -0.044 - sleeveLen / 2; sl.scale.set(1.1, 1, 0.95);
 
   function setPose(p) {
@@ -127,7 +130,41 @@ export function makeHand({ side = 1, skin = 0xe3b896, nail = 0xf1d3c7, sleeve = 
     hand.rotation.set(p.wristFlex || 0, p.wristDev || 0, 0);
   }
   setPose(POSES.relaxed);
-  return { root, setPose, fingers, thumbTip };
+  const parts = { fingerGroups: Object.values(fingers).map((f) => f.chain[0]), thumbGroup: cmc, thenar, hypo, palm, materials: { mSkin, mNail } };
+  return { root, setPose, fingers, thumbTip, parts };
+}
+
+// Freier Daumen als Bogen durch N Punkte [Ansatz, ..., Spitze] im Raum von "parent" (radii: je Segment).
+// Fuer Griffe, bei denen der Daumen exakt um eine Kante herum gefuehrt werden muss (z.B. Handy),
+// damit nichts durch Objekte hindurch ragt. "up" = Richtung, in die der Nagel zeigt.
+export function makeThumb(parent, { skin = 0xe3b896, nail = 0xe9c3b4, radii = [0.0092, 0.0088, 0.008, 0.0072] } = {}) {
+  const mSkin = new THREE.MeshStandardMaterial({ color: skin, roughness: 0.68, metalness: 0 });
+  const mNail = new THREE.MeshStandardMaterial({ color: nail, roughness: 0.3, metalness: 0 });
+  const add = (g, m) => { const me = new THREE.Mesh(g, m); me.castShadow = true; me.receiveShadow = true; parent.add(me); return me; };
+  const n = radii.length;
+  const segs = radii.map((r, i) => add(new THREE.CylinderGeometry(i < n - 1 ? radii[i + 1] : r * 0.96, r, 1, 18), mSkin));
+  const ballR = [radii[0], ...radii.map((r, i) => (i < n - 1 ? radii[i + 1] : r * 0.96))];
+  const balls = ballR.map((r) => add(new THREE.SphereGeometry(r, 18, 14), mSkin));
+  const nailM = add(new THREE.SphereGeometry(1, 14, 10), mNail);
+  const Y = new THREE.Vector3(0, 1, 0);
+  function set(pts, up) {
+    for (let i = 0; i < n; i++) {
+      const a = pts[i], b = pts[i + 1];
+      const d = new THREE.Vector3().subVectors(b, a); const len = d.length();
+      segs[i].position.copy(a).addScaledVector(d, 0.5); segs[i].scale.set(1, len, 1);
+      segs[i].quaternion.setFromUnitVectors(Y, d.normalize());
+    }
+    pts.forEach((p, i) => balls[i].position.copy(p));
+    // Nagel auf dem letzten Glied
+    const dir = new THREE.Vector3().subVectors(pts[n], pts[n - 1]).normalize();
+    const y = up.clone().addScaledVector(dir, -up.dot(dir)).normalize();
+    const x = new THREE.Vector3().crossVectors(y, dir).normalize();
+    nailM.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(x, y, dir));
+    const r = radii[n - 1];
+    nailM.position.copy(pts[n]).addScaledVector(dir, -r * 1.05).addScaledVector(y, r * 0.8);
+    nailM.scale.set(r * 0.72, r * 0.26, r * 1.05);
+  }
+  return { set, meshes: [...segs, ...balls, nailM] };
 }
 
 // Hand so platzieren, dass ein bestimmter Punkt (z.B. Zeigefingerspitze) auf "target" liegt.

@@ -90,7 +90,12 @@ Analysiert am 28.11.2026 anhand von „Ich dachte, Mama wäre zu Hause 😨… B
   - Nicht klobig oder wie Roblox.
   - Schlanke Finger mit drei Gliedern und Fingernägeln, Daumenballen, schmales Handgelenk.
   - Der Ärmel (Hoodie/Jacke) geht bis zum Handgelenk, keine nackten dicken Unterarme.
-  - Umgesetzt in `src/hand.js` (posierbar: zeigen, Handy halten, eigene Posen).
+  - **Handy halten:**
+    - Pro Hand liegt nur der Daumen auf dem Bildschirm.
+    - Der Rest der Hand bleibt hinter dem Handy und schaut seitlich nicht heraus.
+    - Unter dem Handy nur ein weicher Übergang über die Handballen zum Ärmel.
+    - Nichts darf durch das Handy ragen: Der Daumen läuft außen um die Kante.
+  - Umgesetzt in `src/hand.js`: `makeHand` (posierbar) und `makeThumb` (Daumen-Bogen um Kanten).
 - **Handy-UI groß im Bild:**
   - Sperrbildschirm mit Benachrichtigung (iOS-Look)
   - Chatverlauf (graue/blaue Blasen)
