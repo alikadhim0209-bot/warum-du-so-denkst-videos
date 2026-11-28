@@ -44,18 +44,23 @@ function nailTexture() {
   NAIL_TEX = new THREE.CanvasTexture(c); NAIL_TEX.colorSpace = THREE.SRGBColorSpace;
   return NAIL_TEX;
 }
-export function nailGeometry(rx, ry, w, L, z0, lift = 0.0003) {
-  const geo = new THREE.PlaneGeometry(w, L, 12, 8);
+// capZ = Stelle, an der die runde Kuppe beginnt (davor Zylinder, danach Halbkugel mit Radius rz).
+export function nailGeometry(rx, ry, w, L, z0, capZ, rz, lift = 0.0003) {
+  const geo = new THREE.PlaneGeometry(w, L, 12, 10);
   const p = geo.attributes.position;
   const rm = Math.max(rx, ry);
   for (let i = 0; i < p.count; i++) {
     const sx = p.getX(i), sy = p.getY(i);
+    const z = z0 + L / 2 + sy;
+    const u = Math.max(0, (z - capZ) / rz);
+    const k = Math.sqrt(Math.max(0, 1 - u * u)); // auf der Kuppe nach unten gewoelbt
     const a = sx / rm;
-    p.setXYZ(i, (rx + lift) * Math.sin(a), (ry + lift) * Math.cos(a), z0 + L / 2 + sy);
+    p.setXYZ(i, (rx * k + lift) * Math.sin(a), (ry * k + lift) * Math.cos(a), z);
   }
   geo.computeVertexNormals();
   return geo;
 }
+const NAIL_FRONT = 0.62; // freier Nagelrand: so weit (in Radien) hinter dem Kuppenmittelpunkt nach vorne
 function nailMaterial() {
   return new THREE.MeshStandardMaterial({ map: nailTexture(), alphaTest: 0.5, roughness: 0.32, metalness: 0, side: THREE.DoubleSide,
     polygonOffset: true, polygonOffsetFactor: -1 });
@@ -116,7 +121,7 @@ export function makeHand({ side = 1, skin = 0xe3b896, nail = 0xf1d3c7, sleeve = 
       if (i === 2) {
         // Nagel: klein, weit vorne (endet kurz vor der Kuppe), liegt auf der Fingeroberflaeche
         const L = r * 1.3;
-        const n = new THREE.Mesh(nailGeometry(r * 1.08, r * 0.9, r * 1.25, L, f.len[2] - L + r * 0.15), mNail); j.add(n);
+        const n = new THREE.Mesh(nailGeometry(r * 1.08, r * 0.9, r * 1.25, L, f.len[2] + r * NAIL_FRONT - L, f.len[2], r), mNail); j.add(n);
       }
       chain.push(j); parent = j;
     }
@@ -136,7 +141,7 @@ export function makeHand({ side = 1, skin = 0xe3b896, nail = 0xf1d3c7, sleeve = 
       seg.rotation.x = Math.PI / 2; seg.position.z = THUMB.len[i] / 2; seg.scale.set(1.1, 1, 0.92);
       if (i === 2) {
         const L = r * 1.3;
-        const n = new THREE.Mesh(nailGeometry(r * 1.1, r * 0.92, r * 1.3, L, THUMB.len[2] - L + r * 0.15), mNail); j.add(n);
+        const n = new THREE.Mesh(nailGeometry(r * 1.1, r * 0.92, r * 1.3, L, THUMB.len[2] + r * NAIL_FRONT - L, THUMB.len[2], r), mNail); j.add(n);
       }
       if (i > 0) tChain.push(j);
       parent = j;
@@ -183,7 +188,7 @@ export function makeThumb(parent, { skin = 0xe3b896, nail = 0xe9c3b4, radii = [0
   const balls = ballR.map((r) => add(new THREE.SphereGeometry(r, 24, 18), mSkin));
   // Nagel als gebogene Platte im Spitzen-Koordinatensystem (z = Fingerrichtung, Ursprung = Kuppenmittelpunkt)
   const rTip = radii[n - 1] * 0.96, nailL = rTip * 1.35;
-  const nailM = new THREE.Mesh(nailGeometry(rTip, rTip, rTip * 1.3, nailL, -nailL + rTip * 0.12), mNail); parent.add(nailM);
+  const nailM = new THREE.Mesh(nailGeometry(rTip, rTip, rTip * 1.3, nailL, rTip * NAIL_FRONT - nailL, 0, rTip), mNail); parent.add(nailM);
   const Y = new THREE.Vector3(0, 1, 0);
   function set(pts, up) {
     for (let i = 0; i < n; i++) {
