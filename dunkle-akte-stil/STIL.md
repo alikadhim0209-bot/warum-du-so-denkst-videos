@@ -86,6 +86,11 @@ Analysiert am 28.11.2026 anhand von „Ich dachte, Mama wäre zu Hause 😨… B
 - **Ich-Perspektive (POV):**
   - Man sieht die eigenen Hände: am Handy, an der Tür, am Lenkrad.
   - Blick durch Lamellentüren, Treppen hinunter, durchs Heckfenster.
+- **Hände müssen wie echte menschliche Hände aussehen** (Feedback vom Kanal-Inhaber).
+  - Nicht klobig oder wie Roblox.
+  - Schlanke Finger mit drei Gliedern und Fingernägeln, Daumenballen, schmales Handgelenk.
+  - Der Ärmel (Hoodie/Jacke) geht bis zum Handgelenk, keine nackten dicken Unterarme.
+  - Umgesetzt in `src/hand.js` (posierbar: zeigen, Handy halten, eigene Posen).
 - **Handy-UI groß im Bild:**
   - Sperrbildschirm mit Benachrichtigung (iOS-Look)
   - Chatverlauf (graue/blaue Blasen)

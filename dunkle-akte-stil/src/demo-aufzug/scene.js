@@ -1,6 +1,7 @@
 // Demo "Der 13. Stock" – Low-Poly-3D in Ich-Perspektive (Dunkle_Akte-Stil)
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { makeHand, placeHand, POSES } from '/hand.js';
 
 const W = 1080, H = 1920;
 
@@ -40,7 +41,7 @@ function between(mesh, a, b) {
 
 const PAL = {
   steel: 0x4c5262, steelL: 0x5f6676, steelD: 0x2a2e37, seam: 0x1a1c22, cabFloor: 0x231f1e, ceiling: 0x262931, rail: 0x8c93a1,
-  skin: 0xc98f66, sleeve: 0x2d4034, cuff: 0x223027,
+  skin: 0xdcae8c, sleeve: 0x2d4034, cuff: 0x223027,
   wall: 0x29304a, wains: 0x1b2030, carpet: 0x4a1b20, carpetEdge: 0x2b1013, door: 0x382822, frame: 0x221915, brass: 0xb08a43,
   hallCeil: 0x1a1d26, mSkin: 0x948d82, jacket: 0x4a0f12, gold: 0x8f7336, trousers: 0x121216,
 };
@@ -401,15 +402,9 @@ export async function build({ canvas, plan }) {
   // ================= POV-HAENDE =================
   const mSkin = M(PAL.skin, { flatShading: false, roughness: 0.8 });
   const mSleeve = M(PAL.sleeve), mCuff = M(PAL.cuff);
-  // (1) Zeigehand fuer den Knopf: Fingerspitze im Ursprung, zeigt entlang +z
-  const point = new THREE.Group(); scene.add(point);
-  { const f = add(point, CAP(0.0095, 0.05), mSkin, 0, 0, -0.035); f.rotation.x = Math.PI / 2;
-    add(point, RB(0.06, 0.03, 0.034, 0.013), mSkin, -0.004, -0.013, -0.082);
-    add(point, RB(0.08, 0.034, 0.092, 0.015), mSkin, -0.002, -0.004, -0.115);
-    const th = add(point, CAP(0.011, 0.034), mSkin, 0.042, -0.006, -0.1); th.rotation.set(Math.PI / 2, 0.55, 0);
-    const wr = add(point, CY(0.032, 0.035, 0.07), mSkin, 0, -0.004, -0.18); wr.rotation.x = Math.PI / 2;
-    const cf = add(point, CY(0.052, 0.054, 0.04), mCuff, 0, -0.004, -0.215); cf.rotation.x = Math.PI / 2;
-    const sl = add(point, CY(0.054, 0.064, 0.55), mSleeve, 0, -0.004, -0.5); sl.rotation.x = Math.PI / 2; }
+  // (1) Zeigehand fuer den Knopf (menschliche Hand aus hand.js)
+  const point = makeHand({ side: 1, skin: PAL.skin, sleeve: PAL.sleeve, cuff: PAL.cuff });
+  point.setPose(POSES.point); scene.add(point.root);
 
   // (2) Handy mit beiden Haenden (haengt an der Kamera)
   const phoneG = new THREE.Group(); camera.add(phoneG);
@@ -418,22 +413,22 @@ export async function build({ canvas, plan }) {
   const screenMesh = add(phoneG, new THREE.PlaneGeometry(0.0685, 0.148), new THREE.MeshBasicMaterial({ map: scr.tex, transparent: true, toneMapped: false }), 0, 0, 0.0049, false);
   screenMesh.castShadow = false;
   const scrLight = new THREE.PointLight(0xa8b6ff, 0.0, 0.6, 2); scrLight.position.set(0, 0, 0.06); phoneG.add(scrLight);
-  // Glied (Zylinder) zwischen zwei Punkten im Raum des Elternobjekts
-  const limb = (parent, a, b, r1, r2, mat, cap = false) => {
-    const me = new THREE.Mesh(CY(r2, r1, 1, 14), mat); me.castShadow = true; me.receiveShadow = true; parent.add(me); between(me, a, b);
-    if (cap) add(parent, new THREE.SphereGeometry(r2, 14, 10), mat, b.x, b.y, b.z);
-    return me;
+  // Beide Haende halten das Handy: Handflaeche am Geraeterruecken, Finger dahinter, Daumen auf dem Bildschirm
+  const GRIP = {
+    index: [0.3, 0.55, 0.3], middle: [0.38, 0.62, 0.34], ring: [0.46, 0.7, 0.38], pinky: [0.56, 0.78, 0.42],
+    thumb: [0.12, 0.85, -1.2, 0.22, 0.14],
   };
-  for (const s of [-1, 1]) {
-    // Handballen hinter dem Handy, Daumen vorne auf der unteren Bildschirmecke, Fingerkuppen am Rand
-    const palm = add(phoneG, RB(0.056, 0.088, 0.03, 0.013), mSkin, s * 0.033, -0.06, -0.021); palm.rotation.z = s * -0.15;
-    const thenar = add(phoneG, new THREE.SphereGeometry(0.02, 16, 12), mSkin, s * 0.04, -0.072, -0.002); thenar.scale.set(1, 1.3, 0.9);
-    limb(phoneG, V(s * 0.041, -0.07, 0.006), V(s * 0.021, -0.041, 0.0105), 0.0105, 0.0092, mSkin, true);
-    for (let k = 0; k < 3; k++) add(phoneG, RB(0.013, 0.017, 0.022, 0.006), mSkin, s * 0.0405, -0.018 - k * 0.019, -0.007);
-    limb(phoneG, V(s * 0.045, -0.095, -0.024), V(s * 0.068, -0.155, -0.058), 0.026, 0.025, mSkin);
-    limb(phoneG, V(s * 0.066, -0.15, -0.055), V(s * 0.075, -0.175, -0.068), 0.046, 0.046, mCuff);
-    limb(phoneG, V(s * 0.074, -0.172, -0.066), V(s * 0.13, -0.42, -0.2), 0.05, 0.06, mSleeve);
+  const phoneHands = [1, -1].map((s) => {
+    const h = makeHand({ side: s, skin: PAL.skin, sleeve: PAL.sleeve, cuff: PAL.cuff });
+    h.setPose(GRIP); phoneG.add(h.root);
+    return { h, s };
+  });
+  function placePhoneHands() {
+    for (const { h, s } of phoneHands) {
+      placeHand(h, h.thumbTip, V(s * 0.013, -0.028, 0.0125), V(-s * 0.42, 1, -0.05), V(s * 0.25, 0, -1));
+    }
   }
+  placePhoneHands();
   phoneG.visible = false;
 
   function drawScreen(t) {
@@ -527,7 +522,7 @@ export async function build({ canvas, plan }) {
     drawDisplay(floor, t, glitch);
 
     // ---- Kamera + Haende je nach Szene ----
-    point.visible = false; phoneG.visible = false; scrLight.intensity = 0;
+    point.root.visible = false; phoneG.visible = false; scrLight.intensity = 0;
     let fov = 66;
     const moving = t > P.moveStart && t < P.stop;
     const vib = moving ? Math.sin(t * 61) * 0.0012 + Math.sin(t * 37) * 0.0008 : 0;
@@ -537,7 +532,7 @@ export async function build({ canvas, plan }) {
       // Szene A: Blick aufs Bedienfeld, Hand drueckt 12
       const tt = t - P.shotA[0];
       setCam(V(0.12 + wob(t, 1) * 0.008, 1.6 + wob(t, 2) * 0.006 + vib, 0.08 - tt * 0.02), V(0.78, 1.28, -0.52), wob(t, 5) * 0.01);
-      point.visible = t < 1.75;
+      point.root.visible = t < 1.75;
       const start = V(0.62, 0.92, 0.02);
       const target = BTN12.clone().add(V(-0.004, 0, 0));
       let pos;
@@ -545,9 +540,8 @@ export async function build({ canvas, plan }) {
       else if (t < P.press + 0.3) pos = target.clone().add(V(t < P.press + 0.1 ? 0.004 : 0, 0, 0));
       else pos = target.clone().lerp(start, easeInOut((t - P.press - 0.3) / 0.6));
       const shoulder = camera.position.clone().add(V(0.12, -0.42, 0.22));
-      point.position.copy(pos);
       tmp.subVectors(pos, shoulder).normalize();
-      point.lookAt(pos.clone().add(tmp));
+      placeHand(point, point.fingers.index.tip, pos, tmp, V(-0.5, 1, 0.2));
     } else if (t < P.shotB[1]) {
       // Szene B: Stockwerksanzeige
       const tt = (t - P.shotB[0]) / (P.shotB[1] - P.shotB[0]);
