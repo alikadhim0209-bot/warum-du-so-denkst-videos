@@ -26,6 +26,41 @@ export const POSES = {
   },
 };
 
+// Fingernagel: duenne, gebogene Platte, die exakt auf der (elliptischen) Fingeroberflaeche liegt.
+// Form per Alpha-Textur (abgerundet), freier Rand vorne. z0 = Beginn (Nagelhaut), L = Laenge entlang des Fingers.
+let NAIL_TEX = null;
+function nailTexture() {
+  if (NAIL_TEX) return NAIL_TEX;
+  const c = document.createElement('canvas'); c.width = 128; c.height = 160;
+  const g = c.getContext('2d');
+  g.clearRect(0, 0, 128, 160);
+  // Nagelbett (hinten flacher Bogen, vorne rund)
+  g.beginPath();
+  g.moveTo(10, 150); g.quadraticCurveTo(64, 126, 118, 150);
+  g.lineTo(118, 60); g.quadraticCurveTo(118, 8, 64, 6); g.quadraticCurveTo(10, 8, 10, 60); g.closePath();
+  const gr = g.createLinearGradient(0, 0, 0, 160);
+  gr.addColorStop(0, '#f6e1d6'); gr.addColorStop(0.18, '#efcfc2'); gr.addColorStop(0.75, '#e6b9a9'); gr.addColorStop(1, '#ecc8ba');
+  g.fillStyle = gr; g.fill();
+  NAIL_TEX = new THREE.CanvasTexture(c); NAIL_TEX.colorSpace = THREE.SRGBColorSpace;
+  return NAIL_TEX;
+}
+export function nailGeometry(rx, ry, w, L, z0, lift = 0.0003) {
+  const geo = new THREE.PlaneGeometry(w, L, 12, 8);
+  const p = geo.attributes.position;
+  const rm = Math.max(rx, ry);
+  for (let i = 0; i < p.count; i++) {
+    const sx = p.getX(i), sy = p.getY(i);
+    const a = sx / rm;
+    p.setXYZ(i, (rx + lift) * Math.sin(a), (ry + lift) * Math.cos(a), z0 + L / 2 + sy);
+  }
+  geo.computeVertexNormals();
+  return geo;
+}
+function nailMaterial() {
+  return new THREE.MeshStandardMaterial({ map: nailTexture(), alphaTest: 0.5, roughness: 0.32, metalness: 0, side: THREE.DoubleSide,
+    polygonOffset: true, polygonOffsetFactor: -1 });
+}
+
 function taperPalm(geo) {
   // Handflaeche zum Handgelenk hin schmaler, an den Kanten etwas duenner
   const p = geo.attributes.position;
@@ -45,7 +80,7 @@ function taperPalm(geo) {
 export function makeHand({ side = 1, skin = 0xe3b896, nail = 0xf1d3c7, sleeve = 0x2d4034, cuff = 0x223027, forearmLen = 0.26, sleeveLen = 0.55, slim = 0.86 } = {}) {
   const k = slim; // < 1 = schlankere Hand (Finger, Handflaeche, Handgelenk)
   const mSkin = new THREE.MeshStandardMaterial({ color: skin, roughness: 0.68, metalness: 0 });
-  const mNail = new THREE.MeshStandardMaterial({ color: nail, roughness: 0.3, metalness: 0 });
+  const mNail = nailMaterial();
   const mSleeve = new THREE.MeshStandardMaterial({ color: sleeve, roughness: 0.92, metalness: 0, flatShading: true });
   const mCuff = new THREE.MeshStandardMaterial({ color: cuff, roughness: 0.92, metalness: 0, flatShading: true });
   const mesh = (g, m, parent) => { const me = new THREE.Mesh(g, m); me.castShadow = true; me.receiveShadow = true; parent.add(me); return me; };
@@ -79,8 +114,9 @@ export function makeHand({ side = 1, skin = 0xe3b896, nail = 0xf1d3c7, sleeve = 
       seg.rotation.x = Math.PI / 2; seg.position.z = f.len[i] / 2;
       seg.scale.set(1.08, 1, 0.9); // Finger leicht oval
       if (i === 2) {
-        const n = mesh(new THREE.SphereGeometry(1, 14, 10), mNail, j);
-        n.position.set(0, r * 0.66, f.len[2] * 0.62); n.scale.set(r * 0.78, r * 0.3, r * 1.05);
+        // Nagel: klein, weit vorne (endet kurz vor der Kuppe), liegt auf der Fingeroberflaeche
+        const L = r * 1.3;
+        const n = new THREE.Mesh(nailGeometry(r * 1.08, r * 0.9, r * 1.25, L, f.len[2] - L + r * 0.15), mNail); j.add(n);
       }
       chain.push(j); parent = j;
     }
@@ -99,8 +135,8 @@ export function makeHand({ side = 1, skin = 0xe3b896, nail = 0xf1d3c7, sleeve = 
       const seg = mesh(new THREE.CapsuleGeometry(r, THUMB.len[i], 8, 16), mSkin, j);
       seg.rotation.x = Math.PI / 2; seg.position.z = THUMB.len[i] / 2; seg.scale.set(1.1, 1, 0.92);
       if (i === 2) {
-        const n = mesh(new THREE.SphereGeometry(1, 14, 10), mNail, j);
-        n.position.set(0, r * 0.66, THUMB.len[2] * 0.6); n.scale.set(r * 0.8, r * 0.3, r * 1.0);
+        const L = r * 1.3;
+        const n = new THREE.Mesh(nailGeometry(r * 1.1, r * 0.92, r * 1.3, L, THUMB.len[2] - L + r * 0.15), mNail); j.add(n);
       }
       if (i > 0) tChain.push(j);
       parent = j;
@@ -139,13 +175,15 @@ export function makeHand({ side = 1, skin = 0xe3b896, nail = 0xf1d3c7, sleeve = 
 // damit nichts durch Objekte hindurch ragt. "up" = Richtung, in die der Nagel zeigt.
 export function makeThumb(parent, { skin = 0xe3b896, nail = 0xe9c3b4, radii = [0.0092, 0.0088, 0.008, 0.0072] } = {}) {
   const mSkin = new THREE.MeshStandardMaterial({ color: skin, roughness: 0.68, metalness: 0 });
-  const mNail = new THREE.MeshStandardMaterial({ color: nail, roughness: 0.3, metalness: 0 });
+  const mNail = nailMaterial();
   const add = (g, m) => { const me = new THREE.Mesh(g, m); me.castShadow = true; me.receiveShadow = true; parent.add(me); return me; };
   const n = radii.length;
-  const segs = radii.map((r, i) => add(new THREE.CylinderGeometry(i < n - 1 ? radii[i + 1] : r * 0.96, r, 1, 18), mSkin));
+  const segs = radii.map((r, i) => add(new THREE.CylinderGeometry(i < n - 1 ? radii[i + 1] : r * 0.96, r, 1, 24), mSkin));
   const ballR = [radii[0], ...radii.map((r, i) => (i < n - 1 ? radii[i + 1] : r * 0.96))];
-  const balls = ballR.map((r) => add(new THREE.SphereGeometry(r, 18, 14), mSkin));
-  const nailM = add(new THREE.SphereGeometry(1, 14, 10), mNail);
+  const balls = ballR.map((r) => add(new THREE.SphereGeometry(r, 24, 18), mSkin));
+  // Nagel als gebogene Platte im Spitzen-Koordinatensystem (z = Fingerrichtung, Ursprung = Kuppenmittelpunkt)
+  const rTip = radii[n - 1] * 0.96, nailL = rTip * 1.35;
+  const nailM = new THREE.Mesh(nailGeometry(rTip, rTip, rTip * 1.3, nailL, -nailL + rTip * 0.12), mNail); parent.add(nailM);
   const Y = new THREE.Vector3(0, 1, 0);
   function set(pts, up) {
     for (let i = 0; i < n; i++) {
@@ -160,9 +198,7 @@ export function makeThumb(parent, { skin = 0xe3b896, nail = 0xe9c3b4, radii = [0
     const y = up.clone().addScaledVector(dir, -up.dot(dir)).normalize();
     const x = new THREE.Vector3().crossVectors(y, dir).normalize();
     nailM.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(x, y, dir));
-    const r = radii[n - 1];
-    nailM.position.copy(pts[n]).addScaledVector(dir, -r * 1.05).addScaledVector(y, r * 0.8);
-    nailM.scale.set(r * 0.72, r * 0.26, r * 1.05);
+    nailM.position.copy(pts[n]);
   }
   return { set, meshes: [...segs, ...balls, nailM] };
 }
