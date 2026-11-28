@@ -1,12 +1,12 @@
 ---
 name: horror
-description: Erstellt einen kompletten Folklore-Horror-Short (9:16, ca. 175 s, Deutsch oder Englisch) exakt im vermessenen Stil der drei Referenzvideos (Pocong / Hachishakusama / Teke Teke) – Skript nach 8-Beat-Formel, Erzählstimme „Toni“ über ElevenLabs, flache 2D-Animation mit Papierpuppen-Figuren und detaillierten Monstern, Monster-Akte-Titelkarte mit Gefahrenleiste, „Die Legende“-Segment, Karaoke-Untertitel, Moll-Drone und Effekte. Verwenden bei /horror sowie bei „Horrorgeschichte / Gruselgeschichte / Horror-Short im Stil machen“.
+description: Erstellt einen kompletten Folklore-Horror-Short (9:16, ca. 175 s, Deutsch oder Englisch) exakt im vermessenen Stil der drei Referenzvideos (Pocong / Hachishakusama / Teke Teke) – Skript nach 8-Beat-Formel, Erzählstimme „Vincent Crowe“ über ElevenLabs, flache 2D-Animation mit Papierpuppen-Figuren und detaillierten Monstern, Monster-Akte-Titelkarte mit Gefahrenleiste, „Die Legende“-Segment, Karaoke-Untertitel, Moll-Drone und Effekte. Verwenden bei /horror sowie bei „Horrorgeschichte / Gruselgeschichte / Horror-Short im Stil machen“.
 ---
 
 # /horror – Folklore-Horror-Short im Referenz-Stil
 
 **Eingabe:** `/horror <Idee, Legende oder eigene Geschichte> [en] [kurz]`  → `$ARGUMENTS`
-- ohne Sprachangabe: **Deutsch** (Stimme Toni). `en` → Englisch (Stimme Atlas).
+- ohne Sprachangabe: **Deutsch** (Stimme Vincent Crowe). `en` → Englisch (Stimme Atlas).
 - `kurz` → nur ein ~10-s-Teaser (Hook + Monster + Titelkarte), wie `horror-mittagsfrau-10s/`.
 - Stil ist fest, **Thema frei**: Nur der Stil der Referenzen wird kopiert, nie deren Monster/Geschichten.
 
@@ -66,7 +66,8 @@ Regelbruch → Begegnung → Überleben durch die Regel → Twist mit Schockwort
 - Text = Inhalt von `horror-<slug>/tts.txt` (aus `prep`). Kosten ≈ Zeichen × 2 Takes (voller Short ≈ 4.400–5.000 Credits;
   Creator-Plan 131.000/Monat). Vorher `estimate_only: true`; **nie** wiederholt aufrufen.
 - `mcp__ElevenLabs__creative_create_flow` → `creative_generate_speech` mit `model_id: eleven_v4`,
-  `voice_id`: **DE `PrI7Ao5YWhQJ6bOfhWu1` (Toni – Corporate, E-Learning & Storytelling)**, EN `3YzGaTGef0x5PLEK9yGq` (Atlas).
+  `voice_id`: **DE `18X2yBovneA0q06wd8E9` (Vincent Crowe – Dark & Haunting Tales)**, EN `3YzGaTGef0x5PLEK9yGq` (Atlas).
+  Alternative DE: `PrI7Ao5YWhQJ6bOfhWu1` (Toni) – nur wenn der Nutzer sie ausdrücklich will.
   Danach `creative_get_flow_run_status` pollen bis `all_completed`.
 - Take wählen: den tieferen/ruhigeren (bei Unsicherheit Take 1) – `content_url` mit `curl -o horror-<slug>/voice.mp3` laden.
   Dem Nutzer sagen, welcher Take genommen wurde.

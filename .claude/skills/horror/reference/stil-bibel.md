@@ -134,7 +134,7 @@ Teke Teke (Navy #121d32 / Koralle #fa7e82). Die Akzentfarbe ist zugleich die Unt
 
 | Wert | Referenz | Soll |
 |---|---|---|
-| Stimme | tief, männlich, ruhig erzählend, Grundton Ø 103–110 Hz | DE: ElevenLabs „Toni“ (PrI7Ao5YWhQJ6bOfhWu1), EN: „Atlas“ (3YzGaTGef0x5PLEK9yGq) |
+| Stimme | tief, männlich, ruhig erzählend, Grundton Ø 103–110 Hz | DE: ElevenLabs „Vincent Crowe – Dark & Haunting Tales“ (18X2yBovneA0q06wd8E9, Grundton ≈ 92 Hz); Alternative „Toni“ (PrI7Ao5YWhQJ6bOfhWu1). EN: „Atlas“ (3YzGaTGef0x5PLEK9yGq) |
 | Pause nach Satz | Ø 0,8 s | durch Satzzeichen / Zeilenumbrüche im TTS-Text |
 | Pause nach Komma | Ø 0,43 s | – |
 | Gesamtlautheit | −15,4 … −17,2 LUFS | −16 LUFS integriert, True Peak ≤ −1 dBTP |
