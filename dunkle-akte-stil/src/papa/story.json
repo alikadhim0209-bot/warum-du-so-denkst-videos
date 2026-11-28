@@ -1,0 +1,1571 @@
+{
+ "title": "Papa ist nicht Papa",
+ "voice": "de-DE-ChristophNeural",
+ "rate": "+5%",
+ "pitch": "-5Hz",
+ "lead_in": 0.25,
+ "lines": [
+  {
+   "text": "Es ist drei Uhr nachts.",
+   "chunks": [
+    "ES IST *DREI*",
+    "UHR NACHTS."
+   ],
+   "gap_after": 0.32,
+   "tag": "hook"
+  },
+  {
+   "text": "Draußen mäht jemand den Rasen.",
+   "chunks": [
+    "DRAUSSEN MÄHT JEMAND",
+    "DEN *RASEN.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "hook"
+  },
+  {
+   "text": "Du schaust aus dem Fenster.",
+   "chunks": [
+    "DU SCHAUST AUS",
+    "DEM FENSTER."
+   ],
+   "gap_after": 0.32,
+   "tag": "hook"
+  },
+  {
+   "text": "Es ist Papa.",
+   "chunks": [
+    "ES IST *PAPA.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "hook"
+  },
+  {
+   "text": "Er trägt seine Grillschürze. Und Socken in Sandalen.",
+   "chunks": [
+    "ER TRÄGT",
+    "SEINE GRILLSCHÜRZE.",
+    "UND SOCKEN",
+    "IN SANDALEN."
+   ],
+   "gap_after": 0.32,
+   "tag": "hook"
+  },
+  {
+   "text": "Er winkt dir zu.",
+   "chunks": [
+    "ER WINKT",
+    "DIR ZU."
+   ],
+   "gap_after": 0.32,
+   "tag": "hook"
+  },
+  {
+   "text": "Aber Papa ist auf Montage.",
+   "chunks": [
+    "ABER PAPA IST",
+    "AUF *MONTAGE.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "hook"
+  },
+  {
+   "text": "In Hamburg. Seit Montag.",
+   "chunks": [
+    "IN *HAMBURG.*",
+    "SEIT MONTAG."
+   ],
+   "gap_after": 0.7,
+   "tag": "hook"
+  },
+  {
+   "text": "Dein Handy vibriert.",
+   "chunks": [
+    "DEIN HANDY *VIBRIERT.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "phone1"
+  },
+  {
+   "text": "Eine Nachricht. Von Papa.",
+   "chunks": [
+    "EINE NACHRICHT.",
+    "VON PAPA."
+   ],
+   "gap_after": 0.32,
+   "tag": "phone1"
+  },
+  {
+   "text": "Kann nicht schlafen. Alles gut bei euch?",
+   "chunks": [
+    "„KANN NICHT *SCHLAFEN.*",
+    "ALLES GUT",
+    "BEI EUCH?“"
+   ],
+   "gap_after": 0.32,
+   "tag": "msg1",
+   "quote": true,
+   "voice": "de-DE-KillianNeural",
+   "rate": "+0%",
+   "pitch": "-2Hz",
+   "speaker": "papa"
+  },
+  {
+   "text": "Du tippst: „Du mähst doch gerade den Rasen.“",
+   "chunks": [
+    "DU TIPPST:",
+    "„DU MÄHST DOCH",
+    "GERADE DEN RASEN.“"
+   ],
+   "gap_after": 0.32,
+   "tag": "phone1"
+  },
+  {
+   "text": "Drei Punkte. Sie verschwinden. Sie kommen wieder.",
+   "chunks": [
+    "DREI PUNKTE.",
+    "SIE *VERSCHWINDEN.*",
+    "SIE KOMMEN WIEDER."
+   ],
+   "gap_after": 0.32,
+   "tag": "phone1"
+  },
+  {
+   "text": "Unser Rasenmäher ist seit Sommer kaputt.",
+   "chunks": [
+    "„UNSER RASENMÄHER IST",
+    "SEIT SOMMER *KAPUTT.*“"
+   ],
+   "gap_after": 0.32,
+   "tag": "msg2",
+   "quote": true,
+   "voice": "de-DE-KillianNeural",
+   "rate": "+0%",
+   "pitch": "-2Hz",
+   "speaker": "papa"
+  },
+  {
+   "text": "Mach nicht die Tür auf.",
+   "chunks": [
+    "„MACH *NICHT* DIE",
+    "TÜR AUF.“"
+   ],
+   "gap_after": 0.32,
+   "tag": "msg2",
+   "quote": true,
+   "voice": "de-DE-KillianNeural",
+   "rate": "+0%",
+   "pitch": "-2Hz",
+   "speaker": "papa"
+  },
+  {
+   "text": "Frag ihn, wie unser Hund hieß.",
+   "chunks": [
+    "„FRAG IHN, WIE",
+    "UNSER *HUND* HIESS.“"
+   ],
+   "gap_after": 0.7,
+   "tag": "msg2",
+   "quote": true,
+   "voice": "de-DE-KillianNeural",
+   "rate": "+0%",
+   "pitch": "-2Hz",
+   "speaker": "papa"
+  },
+  {
+   "text": "Der Rasenmäher geht aus.",
+   "chunks": [
+    "DER RASENMÄHER",
+    "GEHT *AUS.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "test"
+  },
+  {
+   "text": "Stille.",
+   "chunks": [
+    "STILLE."
+   ],
+   "gap_after": 0.32,
+   "tag": "test"
+  },
+  {
+   "text": "Du öffnest das Fenster einen Spalt.",
+   "chunks": [
+    "DU ÖFFNEST DAS",
+    "FENSTER EINEN *SPALT.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "test"
+  },
+  {
+   "text": "„Papa? Wie hieß unser Hund?“",
+   "chunks": [
+    "„PAPA?",
+    "WIE HIESS",
+    "UNSER HUND?“"
+   ],
+   "gap_after": 0.32,
+   "tag": "test"
+  },
+  {
+   "text": "Er lacht. Genau wie Papa. Erst über sich selbst.",
+   "chunks": [
+    "ER LACHT.",
+    "GENAU WIE PAPA.",
+    "ERST *ÜBER*",
+    "SICH SELBST."
+   ],
+   "gap_after": 0.32,
+   "tag": "test"
+  },
+  {
+   "text": "Keks, Kumpel. Er hieß Keks.",
+   "chunks": [
+    "„*KEKS,* KUMPEL.",
+    "ER HIESS KEKS.“"
+   ],
+   "gap_after": 0.32,
+   "tag": "test1",
+   "quote": true,
+   "voice": "de-DE-ConradNeural",
+   "rate": "-12%",
+   "pitch": "-14Hz",
+   "speaker": "monster"
+  },
+  {
+   "text": "Das stimmt.",
+   "chunks": [
+    "DAS *STIMMT.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "test"
+  },
+  {
+   "text": "Dann dreht er sich um.",
+   "chunks": [
+    "DANN DREHT ER",
+    "SICH UM."
+   ],
+   "gap_after": 0.32,
+   "tag": "test"
+  },
+  {
+   "text": "Und sein Hals wächst.",
+   "chunks": [
+    "UND SEIN",
+    "HALS *WÄCHST.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "test"
+  },
+  {
+   "text": "Über die Hecke. Über den Zaun.",
+   "chunks": [
+    "ÜBER DIE HECKE.",
+    "ÜBER DEN ZAUN."
+   ],
+   "gap_after": 0.32,
+   "tag": "test"
+  },
+  {
+   "text": "Bis sein Kopf vor dem Fenster im ersten Stock hängt.",
+   "chunks": [
+    "BIS SEIN KOPF",
+    "VOR DEM FENSTER",
+    "IM ERSTEN",
+    "*STOCK* HÄNGT."
+   ],
+   "gap_after": 0.32,
+   "tag": "test"
+  },
+  {
+   "text": "Machst du Papa auf, Kumpel?",
+   "chunks": [
+    "„MACHST DU PAPA",
+    "*AUF,* KUMPEL?“"
+   ],
+   "gap_after": 0.7,
+   "tag": "test1",
+   "quote": true,
+   "voice": "de-DE-ConradNeural",
+   "rate": "-12%",
+   "pitch": "-14Hz",
+   "speaker": "monster"
+  },
+  {
+   "text": "Du knallst das Fenster zu.",
+   "chunks": [
+    "DU KNALLST DAS",
+    "FENSTER *ZU.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Du rennst zu Lea. Deine kleine Schwester.",
+   "chunks": [
+    "DU RENNST",
+    "ZU LEA.",
+    "DEINE KLEINE *SCHWESTER.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Sie schläft. Du hältst ihr den Mund zu.",
+   "chunks": [
+    "SIE SCHLÄFT.",
+    "DU HÄLTST IHR",
+    "DEN *MUND* ZU."
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Unten geht der Fernseher an.",
+   "chunks": [
+    "UNTEN GEHT DER",
+    "*FERNSEHER* AN."
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Ihr schleicht zur Treppe.",
+   "chunks": [
+    "IHR SCHLEICHT",
+    "ZUR TREPPE."
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Auf dem Sofa liegt jemand. Fernbedienung in der Hand.",
+   "chunks": [
+    "AUF DEM SOFA",
+    "LIEGT JEMAND.",
+    "FERNBEDIENUNG IN",
+    "DER HAND."
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Er schnarcht.",
+   "chunks": [
+    "ER *SCHNARCHT.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Es ist Papa. Wieder.",
+   "chunks": [
+    "ES IST PAPA.",
+    "*WIEDER.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Das Schnarchen hört auf.",
+   "chunks": [
+    "DAS SCHNARCHEN",
+    "HÖRT *AUF.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Ich schlafe nicht. Ich ruhe nur die Augen aus.",
+   "chunks": [
+    "„ICH SCHLAFE NICHT.",
+    "ICH RUHE NUR",
+    "DIE *AUGEN* AUS.“"
+   ],
+   "gap_after": 0.32,
+   "tag": "sofa",
+   "quote": true,
+   "voice": "de-DE-ConradNeural",
+   "rate": "-12%",
+   "pitch": "-14Hz",
+   "speaker": "monster"
+  },
+  {
+   "text": "Seine Augen gehen auf. Sie sind schwarz.",
+   "chunks": [
+    "SEINE AUGEN",
+    "GEHEN AUF.",
+    "SIE SIND *SCHWARZ.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Ganz schwarz.",
+   "chunks": [
+    "GANZ SCHWARZ."
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Ihr rennt in die Abstellkammer.",
+   "chunks": [
+    "IHR RENNT IN",
+    "DIE *ABSTELLKAMMER.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Du schließt ab. Ihr atmet nicht.",
+   "chunks": [
+    "DU SCHLIESST AB.",
+    "IHR ATMET *NICHT.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Schritte im Flur. Langsam.",
+   "chunks": [
+    "SCHRITTE IM FLUR.",
+    "LANGSAM."
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Dann nichts mehr.",
+   "chunks": [
+    "DANN NICHTS MEHR."
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Dann eine Stimme. Direkt vor der Tür.",
+   "chunks": [
+    "DANN EINE STIMME.",
+    "DIREKT VOR",
+    "DER TÜR."
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Ich zähle bis drei.",
+   "chunks": [
+    "„ICH ZÄHLE",
+    "BIS *DREI.*“"
+   ],
+   "gap_after": 0.32,
+   "tag": "count",
+   "quote": true,
+   "voice": "de-DE-ConradNeural",
+   "rate": "-12%",
+   "pitch": "-14Hz",
+   "speaker": "monster"
+  },
+  {
+   "text": "Eins.",
+   "chunks": [
+    "„EINS.“"
+   ],
+   "gap_after": 0.32,
+   "tag": "count",
+   "quote": true,
+   "voice": "de-DE-ConradNeural",
+   "rate": "-12%",
+   "pitch": "-14Hz",
+   "speaker": "monster"
+  },
+  {
+   "text": "Zwei.",
+   "chunks": [
+    "„ZWEI.“"
+   ],
+   "gap_after": 0.32,
+   "tag": "count",
+   "quote": true,
+   "voice": "de-DE-ConradNeural",
+   "rate": "-12%",
+   "pitch": "-14Hz",
+   "speaker": "monster"
+  },
+  {
+   "text": "Zweieinhalb.",
+   "chunks": [
+    "„ZWEIEINHALB.“"
+   ],
+   "gap_after": 0.32,
+   "tag": "count",
+   "quote": true,
+   "voice": "de-DE-ConradNeural",
+   "rate": "-12%",
+   "pitch": "-14Hz",
+   "speaker": "monster"
+  },
+  {
+   "text": "Genau wie Papa. Er kommt nie bis drei.",
+   "chunks": [
+    "GENAU WIE PAPA.",
+    "ER KOMMT NIE",
+    "BIS *DREI.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Die Klinke bewegt sich. Ganz langsam.",
+   "chunks": [
+    "DIE KLINKE",
+    "BEWEGT SICH.",
+    "GANZ *LANGSAM.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Dann lässt sie los.",
+   "chunks": [
+    "DANN LÄSST",
+    "SIE LOS."
+   ],
+   "gap_after": 0.32,
+   "tag": "flight"
+  },
+  {
+   "text": "Lea zittert. Du hältst sie fest.",
+   "chunks": [
+    "LEA ZITTERT.",
+    "DU HÄLTST",
+    "SIE FEST."
+   ],
+   "gap_after": 0.7,
+   "tag": "flight"
+  },
+  {
+   "text": "Dein Handy leuchtet. Eine Sprachnachricht.",
+   "chunks": [
+    "DEIN HANDY LEUCHTET.",
+    "EINE *SPRACHNACHRICHT.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "voice"
+  },
+  {
+   "text": "Hör mir zu. Ich sitze im Auto. Ich komme.",
+   "chunks": [
+    "„HÖR MIR ZU.",
+    "ICH SITZE",
+    "IM *AUTO.*",
+    "ICH KOMME.“"
+   ],
+   "gap_after": 0.32,
+   "tag": "voicemsg",
+   "quote": true,
+   "voice": "de-DE-KillianNeural",
+   "rate": "+0%",
+   "pitch": "-2Hz",
+   "speaker": "papa"
+  },
+  {
+   "text": "Aber im Hintergrund hörst du etwas.",
+   "chunks": [
+    "ABER IM HINTERGRUND",
+    "HÖRST DU ETWAS."
+   ],
+   "gap_after": 0.32,
+   "tag": "voice"
+  },
+  {
+   "text": "Einen Rasenmäher.",
+   "chunks": [
+    "EINEN *RASENMÄHER.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "voice"
+  },
+  {
+   "text": "Wer schreibt dir da wirklich?",
+   "chunks": [
+    "WER SCHREIBT DIR",
+    "DA WIRKLICH?"
+   ],
+   "gap_after": 0.32,
+   "tag": "voice"
+  },
+  {
+   "text": "Du schreibst zurück: „Beweis, dass du es bist.“",
+   "chunks": [
+    "DU SCHREIBST ZURÜCK:",
+    "„BEWEIS, DASS DU",
+    "ES BIST.“"
+   ],
+   "gap_after": 0.32,
+   "tag": "voice"
+  },
+  {
+   "text": "Du hast Angst vor dem Keller. Seit du vier bist.",
+   "chunks": [
+    "„DU HAST ANGST",
+    "VOR DEM *KELLER.*",
+    "SEIT DU",
+    "VIER BIST.“"
+   ],
+   "gap_after": 0.32,
+   "tag": "msg3",
+   "quote": true,
+   "voice": "de-DE-KillianNeural",
+   "rate": "+0%",
+   "pitch": "-2Hz",
+   "speaker": "papa"
+  },
+  {
+   "text": "Das weiß niemand.",
+   "chunks": [
+    "DAS WEISS *NIEMAND.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "voice"
+  },
+  {
+   "text": "Außer Papa.",
+   "chunks": [
+    "AUSSER PAPA."
+   ],
+   "gap_after": 0.32,
+   "tag": "voice"
+  },
+  {
+   "text": "Oder etwas, das ihn sehr lange beobachtet hat.",
+   "chunks": [
+    "ODER ETWAS, DAS",
+    "IHN SEHR LANGE",
+    "*BEOBACHTET* HAT."
+   ],
+   "gap_after": 0.7,
+   "tag": "voice"
+  },
+  {
+   "text": "Lea zieht an deinem Ärmel.",
+   "chunks": [
+    "LEA ZIEHT AN",
+    "DEINEM ÄRMEL."
+   ],
+   "gap_after": 0.32,
+   "tag": "betray"
+  },
+  {
+   "text": "Papa hat gesagt, ich soll aufmachen.",
+   "chunks": [
+    "„PAPA HAT GESAGT,",
+    "ICH SOLL *AUFMACHEN.*“"
+   ],
+   "gap_after": 0.32,
+   "tag": "betrayl",
+   "quote": true,
+   "voice": "de-DE-GiselaNeural",
+   "rate": "+0%",
+   "pitch": "+0Hz",
+   "speaker": "lea"
+  },
+  {
+   "text": "Bevor du sie halten kannst, dreht sie den Schlüssel.",
+   "chunks": [
+    "BEVOR DU SIE",
+    "HALTEN KANNST, DREHT",
+    "SIE DEN *SCHLÜSSEL.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "betray"
+  },
+  {
+   "text": "Die Tür geht auf.",
+   "chunks": [
+    "DIE TÜR",
+    "GEHT AUF."
+   ],
+   "gap_after": 0.32,
+   "tag": "betray"
+  },
+  {
+   "text": "In der Küche brennt Licht.",
+   "chunks": [
+    "IN DER KÜCHE",
+    "BRENNT LICHT."
+   ],
+   "gap_after": 0.32,
+   "tag": "betray"
+  },
+  {
+   "text": "Am Tisch sitzt der dritte Papa.",
+   "chunks": [
+    "AM TISCH SITZT",
+    "DER *DRITTE* PAPA."
+   ],
+   "gap_after": 0.32,
+   "tag": "betray"
+  },
+  {
+   "text": "Er liest Zeitung. Kopfüber.",
+   "chunks": [
+    "ER LIEST ZEITUNG.",
+    "*KOPFÜBER.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "betray"
+  },
+  {
+   "text": "Neben ihm blubbert die Kaffeemaschine.",
+   "chunks": [
+    "NEBEN IHM BLUBBERT",
+    "DIE KAFFEEMASCHINE."
+   ],
+   "gap_after": 0.32,
+   "tag": "betray"
+  },
+  {
+   "text": "Er schaut nicht auf.",
+   "chunks": [
+    "ER SCHAUT",
+    "NICHT AUF."
+   ],
+   "gap_after": 0.32,
+   "tag": "betray"
+  },
+  {
+   "text": "Wer hat im Flur das Licht angelassen?",
+   "chunks": [
+    "„WER HAT IM",
+    "FLUR DAS",
+    "LICHT *ANGELASSEN?*“"
+   ],
+   "gap_after": 0.32,
+   "tag": "kitchen",
+   "quote": true,
+   "voice": "de-DE-ConradNeural",
+   "rate": "-12%",
+   "pitch": "-14Hz",
+   "speaker": "monster"
+  },
+  {
+   "text": "Strom kostet Geld, Kumpel.",
+   "chunks": [
+    "„STROM KOSTET",
+    "*GELD,* KUMPEL.“"
+   ],
+   "gap_after": 0.32,
+   "tag": "kitchen",
+   "quote": true,
+   "voice": "de-DE-ConradNeural",
+   "rate": "-12%",
+   "pitch": "-14Hz",
+   "speaker": "monster"
+  },
+  {
+   "text": "Deine Stimme zittert. „Wo ist Mama?“",
+   "chunks": [
+    "DEINE STIMME ZITTERT.",
+    "„WO IST *MAMA?*“"
+   ],
+   "gap_after": 0.32,
+   "tag": "betray"
+  },
+  {
+   "text": "Er blättert um.",
+   "chunks": [
+    "ER BLÄTTERT UM."
+   ],
+   "gap_after": 0.32,
+   "tag": "betray"
+  },
+  {
+   "text": "Frag deine Mutter.",
+   "chunks": [
+    "„FRAG DEINE *MUTTER.*“"
+   ],
+   "gap_after": 0.32,
+   "tag": "kitchen",
+   "quote": true,
+   "voice": "de-DE-ConradNeural",
+   "rate": "-12%",
+   "pitch": "-14Hz",
+   "speaker": "monster"
+  },
+  {
+   "text": "Das sagt Papa immer.",
+   "chunks": [
+    "DAS SAGT",
+    "PAPA IMMER."
+   ],
+   "gap_after": 0.32,
+   "tag": "betray"
+  },
+  {
+   "text": "Aber Mama ist bei Oma. Seit drei Tagen.",
+   "chunks": [
+    "ABER MAMA IST",
+    "BEI OMA.",
+    "SEIT *DREI* TAGEN."
+   ],
+   "gap_after": 0.32,
+   "tag": "betray"
+  },
+  {
+   "text": "Das Licht geht aus.",
+   "chunks": [
+    "DAS LICHT",
+    "GEHT *AUS.*"
+   ],
+   "gap_after": 0.7,
+   "tag": "betray"
+  },
+  {
+   "text": "Stromausfall.",
+   "chunks": [
+    "STROMAUSFALL."
+   ],
+   "gap_after": 0.32,
+   "tag": "shock"
+  },
+  {
+   "text": "Stille.",
+   "chunks": [
+    "STILLE."
+   ],
+   "gap_after": 0.32,
+   "tag": "shock"
+  },
+  {
+   "text": "Dann flackert die Lampe.",
+   "chunks": [
+    "DANN FLACKERT",
+    "DIE LAMPE."
+   ],
+   "gap_after": 0.32,
+   "tag": "shock"
+  },
+  {
+   "text": "Er steht direkt vor dir.",
+   "chunks": [
+    "ER STEHT DIREKT",
+    "VOR DIR."
+   ],
+   "gap_after": 0.32,
+   "tag": "shock"
+  },
+  {
+   "text": "Sein Kopf knickt zur Seite.",
+   "chunks": [
+    "SEIN KOPF *KNICKT*",
+    "ZUR SEITE."
+   ],
+   "gap_after": 0.32,
+   "tag": "shock"
+  },
+  {
+   "text": "Sein Mund reißt auf. Viel zu weit.",
+   "chunks": [
+    "SEIN MUND",
+    "REISST *AUF.*",
+    "VIEL ZU WEIT."
+   ],
+   "gap_after": 0.32,
+   "tag": "shock"
+  },
+  {
+   "text": "Du packst Papas Bohrmaschine vom Regal.",
+   "chunks": [
+    "DU PACKST PAPAS",
+    "*BOHRMASCHINE* VOM REGAL."
+   ],
+   "gap_after": 0.32,
+   "tag": "shock"
+  },
+  {
+   "text": "Sie heult auf. Er kreischt.",
+   "chunks": [
+    "SIE HEULT AUF.",
+    "ER *KREISCHT.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "shock"
+  },
+  {
+   "text": "Du ziehst Lea zum Küchenfenster.",
+   "chunks": [
+    "DU ZIEHST LEA",
+    "ZUM KÜCHENFENSTER."
+   ],
+   "gap_after": 0.32,
+   "tag": "shock"
+  },
+  {
+   "text": "Ihr springt in den Garten.",
+   "chunks": [
+    "IHR SPRINGT IN",
+    "DEN *GARTEN.*"
+   ],
+   "gap_after": 0.7,
+   "tag": "shock"
+  },
+  {
+   "text": "Nasses Gras. Barfuß. Du wählst.",
+   "chunks": [
+    "NASSES GRAS.",
+    "BARFUSS.",
+    "DU *WÄHLST.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Eins. Eins. Zwei.",
+   "chunks": [
+    "EINS.",
+    "EINS.",
+    "*ZWEI.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Notruf. Wo ist der Notfall?",
+   "chunks": [
+    "„NOTRUF.",
+    "WO IST",
+    "DER *NOTFALL?*“"
+   ],
+   "gap_after": 0.32,
+   "tag": "call",
+   "quote": true,
+   "voice": "de-DE-KatjaNeural",
+   "rate": "+4%",
+   "pitch": "+0Hz",
+   "speaker": "notruf"
+  },
+  {
+   "text": "„Bei uns im Garten. Mein Papa. Er ist dreimal da.“",
+   "chunks": [
+    "„BEI UNS",
+    "IM GARTEN.",
+    "MEIN PAPA.",
+    "ER IST",
+    "*DREIMAL* DA.“"
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Bleib am Telefon. Ein Streifenwagen ist unterwegs.",
+   "chunks": [
+    "„BLEIB AM TELEFON.",
+    "EIN STREIFENWAGEN",
+    "IST *UNTERWEGS.*“"
+   ],
+   "gap_after": 0.32,
+   "tag": "call",
+   "quote": true,
+   "voice": "de-DE-KatjaNeural",
+   "rate": "+4%",
+   "pitch": "+0Hz",
+   "speaker": "notruf"
+  },
+  {
+   "text": "Ist jemand verletzt?",
+   "chunks": [
+    "„IST JEMAND VERLETZT?“"
+   ],
+   "gap_after": 0.32,
+   "tag": "call",
+   "quote": true,
+   "voice": "de-DE-KatjaNeural",
+   "rate": "+4%",
+   "pitch": "+0Hz",
+   "speaker": "notruf"
+  },
+  {
+   "text": "„Noch nicht.“",
+   "chunks": [
+    "„NOCH *NICHT.*“"
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Hinter euch geht die Terrassentür auf.",
+   "chunks": [
+    "HINTER EUCH GEHT",
+    "DIE TERRASSENTÜR AUF."
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Drei Papas kommen heraus.",
+   "chunks": [
+    "DREI PAPAS",
+    "KOMMEN HERAUS."
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Gleiche Schürze. Gleiche Sandalen. Gleiches Lächeln.",
+   "chunks": [
+    "GLEICHE SCHÜRZE.",
+    "GLEICHE SANDALEN.",
+    "GLEICHES *LÄCHELN.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Sie winken. Alle gleichzeitig.",
+   "chunks": [
+    "SIE WINKEN.",
+    "ALLE *GLEICHZEITIG.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Kommt rein, Kinder. Es gibt Würstchen.",
+   "chunks": [
+    "„KOMMT REIN, KINDER.",
+    "ES GIBT *WÜRSTCHEN.*“"
+   ],
+   "gap_after": 0.32,
+   "tag": "call2",
+   "quote": true,
+   "voice": "de-DE-ConradNeural",
+   "rate": "-12%",
+   "pitch": "-14Hz",
+   "speaker": "monster"
+  },
+  {
+   "text": "Ihr rennt zum Gartentor.",
+   "chunks": [
+    "IHR RENNT",
+    "ZUM GARTENTOR."
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Es ist abgeschlossen.",
+   "chunks": [
+    "ES IST *ABGESCHLOSSEN.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Papa schließt es jeden Abend ab. Wegen der Einbrecher.",
+   "chunks": [
+    "PAPA SCHLIESST ES",
+    "JEDEN ABEND AB.",
+    "WEGEN DER *EINBRECHER.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Du kletterst hoch. Du ziehst Lea nach.",
+   "chunks": [
+    "DU KLETTERST HOCH.",
+    "DU ZIEHST",
+    "LEA NACH."
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Etwas packt deinen Knöchel.",
+   "chunks": [
+    "ETWAS PACKT",
+    "DEINEN *KNÖCHEL.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Eine Hand. Mit Papas Ehering.",
+   "chunks": [
+    "EINE HAND.",
+    "MIT PAPAS *EHERING.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Du trittst zu. Einmal. Zweimal.",
+   "chunks": [
+    "DU TRITTST ZU.",
+    "EINMAL.",
+    "ZWEIMAL."
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Die Hand lässt los.",
+   "chunks": [
+    "DIE HAND",
+    "LÄSST LOS."
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Ihr fallt auf den Gehweg.",
+   "chunks": [
+    "IHR FALLT AUF",
+    "DEN GEHWEG."
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Blaulicht an der Straße.",
+   "chunks": [
+    "BLAULICHT AN",
+    "DER STRASSE."
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Ein Polizist steigt aus. Taschenlampe in der Hand.",
+   "chunks": [
+    "EIN POLIZIST",
+    "STEIGT AUS.",
+    "TASCHENLAMPE IN",
+    "DER HAND."
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Seid ihr die Kinder, die angerufen haben? Wo sind eure Eltern?",
+   "chunks": [
+    "„SEID IHR DIE",
+    "KINDER, DIE",
+    "ANGERUFEN HABEN?",
+    "WO SIND",
+    "EURE *ELTERN?*“"
+   ],
+   "gap_after": 0.32,
+   "tag": "cop",
+   "quote": true,
+   "voice": "de-DE-FlorianMultilingualNeural",
+   "rate": "+0%",
+   "pitch": "-4Hz",
+   "speaker": "polizei"
+  },
+  {
+   "text": "Du zeigst nur in den Garten.",
+   "chunks": [
+    "DU ZEIGST NUR",
+    "IN DEN GARTEN."
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Der Lichtkegel trifft die drei Papas.",
+   "chunks": [
+    "DER LICHTKEGEL TRIFFT",
+    "DIE DREI *PAPAS.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Sie bleiben stehen. Dann gehen sie rückwärts.",
+   "chunks": [
+    "SIE BLEIBEN STEHEN.",
+    "DANN GEHEN",
+    "SIE *RÜCKWÄRTS.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Zurück ins Dunkel. Zurück in die Garage.",
+   "chunks": [
+    "ZURÜCK INS DUNKEL.",
+    "ZURÜCK IN",
+    "DIE *GARAGE.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Der Polizist geht hinterher.",
+   "chunks": [
+    "DER POLIZIST",
+    "GEHT HINTERHER."
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Das Garagentor schließt sich.",
+   "chunks": [
+    "DAS GARAGENTOR",
+    "SCHLIESST SICH."
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Seine Taschenlampe flackert.",
+   "chunks": [
+    "SEINE TASCHENLAMPE *FLACKERT.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Dann ein Schrei.",
+   "chunks": [
+    "DANN EIN SCHREI."
+   ],
+   "gap_after": 0.32,
+   "tag": "help"
+  },
+  {
+   "text": "Dann nichts.",
+   "chunks": [
+    "DANN *NICHTS.*"
+   ],
+   "gap_after": 0.7,
+   "tag": "help"
+  },
+  {
+   "text": "Das Funkgerät im Streifenwagen rauscht.",
+   "chunks": [
+    "DAS FUNKGERÄT IM",
+    "STREIFENWAGEN RAUSCHT."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Du schaust zur Garage.",
+   "chunks": [
+    "DU SCHAUST",
+    "ZUR GARAGE."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Drinnen geht das Licht an.",
+   "chunks": [
+    "DRINNEN GEHT DAS",
+    "LICHT AN."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Du hörst Papas Lieblingslied. Aus dem alten Radio.",
+   "chunks": [
+    "DU HÖRST",
+    "PAPAS LIEBLINGSLIED.",
+    "AUS DEM",
+    "ALTEN *RADIO.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Und ein Zischen. Wie Würstchen auf dem Rost.",
+   "chunks": [
+    "UND EIN ZISCHEN.",
+    "WIE WÜRSTCHEN AUF",
+    "DEM ROST."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Sie grillen. Mitten in der Nacht.",
+   "chunks": [
+    "SIE *GRILLEN.*",
+    "MITTEN IN",
+    "DER NACHT."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Jemand ruft: „Essen ist fertig!“",
+   "chunks": [
+    "JEMAND RUFT:",
+    "„ESSEN IST *FERTIG!*“"
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Und du weißt, was da drin steht.",
+   "chunks": [
+    "UND DU WEISST,",
+    "WAS DA",
+    "DRIN STEHT."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Papas Grill. Und vier Gasflaschen.",
+   "chunks": [
+    "PAPAS *GRILL.*",
+    "UND VIER GASFLASCHEN."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Papa hat immer gesagt: „Fass die Gasflaschen nie an.“",
+   "chunks": [
+    "PAPA HAT",
+    "IMMER GESAGT:",
+    "„FASS DIE GASFLASCHEN",
+    "*NIE* AN.“"
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Du drehst alle Ventile auf.",
+   "chunks": [
+    "DU DREHST ALLE",
+    "VENTILE AUF."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Es zischt.",
+   "chunks": [
+    "ES *ZISCHT.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Durch den Spalt unter dem Tor siehst du Füße. Socken in Sandalen.",
+   "chunks": [
+    "DURCH DEN SPALT",
+    "UNTER DEM TOR",
+    "SIEHST DU FÜSSE.",
+    "SOCKEN IN SANDALEN."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Ganz viele.",
+   "chunks": [
+    "GANZ VIELE."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Du nimmst den Grillanzünder.",
+   "chunks": [
+    "DU NIMMST",
+    "DEN GRILLANZÜNDER."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Lea hält sich die Ohren zu.",
+   "chunks": [
+    "LEA HÄLT SICH",
+    "DIE *OHREN* ZU."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Du wirfst ihn unters Tor.",
+   "chunks": [
+    "DU WIRFST IHN",
+    "UNTERS TOR."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Die Garage explodiert.",
+   "chunks": [
+    "DIE GARAGE *EXPLODIERT.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "boom"
+  },
+  {
+   "text": "Flammen schießen in den Himmel.",
+   "chunks": [
+    "FLAMMEN SCHIESSEN IN",
+    "DEN HIMMEL."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Drinnen kreischt etwas. Mit vielen Stimmen.",
+   "chunks": [
+    "DRINNEN KREISCHT ETWAS.",
+    "MIT VIELEN *STIMMEN.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Dann wird es still.",
+   "chunks": [
+    "DANN WIRD",
+    "ES STILL."
+   ],
+   "gap_after": 0.32,
+   "tag": "final"
+  },
+  {
+   "text": "Nur das Feuer knistert.",
+   "chunks": [
+    "NUR DAS",
+    "FEUER *KNISTERT.*"
+   ],
+   "gap_after": 0.7,
+   "tag": "final"
+  },
+  {
+   "text": "Am Morgen hält ein Taxi vor dem Haus.",
+   "chunks": [
+    "AM MORGEN HÄLT",
+    "EIN TAXI VOR",
+    "DEM HAUS."
+   ],
+   "gap_after": 0.32,
+   "tag": "end"
+  },
+  {
+   "text": "Papa steigt aus. Der echte.",
+   "chunks": [
+    "PAPA STEIGT AUS.",
+    "DER *ECHTE.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "end"
+  },
+  {
+   "text": "Er sieht die Garage. Er sieht euch.",
+   "chunks": [
+    "ER SIEHT",
+    "DIE GARAGE.",
+    "ER SIEHT EUCH."
+   ],
+   "gap_after": 0.32,
+   "tag": "end"
+  },
+  {
+   "text": "Er hält euch ganz fest.",
+   "chunks": [
+    "ER HÄLT EUCH",
+    "GANZ FEST."
+   ],
+   "gap_after": 0.32,
+   "tag": "end"
+  },
+  {
+   "text": "Es ist vorbei, Kumpel.",
+   "chunks": [
+    "„ES IST",
+    "*VORBEI,* KUMPEL.“"
+   ],
+   "gap_after": 0.32,
+   "tag": "endp",
+   "quote": true,
+   "voice": "de-DE-KillianNeural",
+   "rate": "+0%",
+   "pitch": "-2Hz",
+   "speaker": "papa"
+  },
+  {
+   "text": "Lea schaut ihn lange an.",
+   "chunks": [
+    "LEA SCHAUT IHN",
+    "LANGE AN."
+   ],
+   "gap_after": 0.32,
+   "tag": "end"
+  },
+  {
+   "text": "Papa? Wie hieß unser Hund?",
+   "chunks": [
+    "„PAPA?",
+    "WIE HIESS",
+    "UNSER *HUND?*“"
+   ],
+   "gap_after": 0.32,
+   "tag": "endl",
+   "quote": true,
+   "voice": "de-DE-GiselaNeural",
+   "rate": "+0%",
+   "pitch": "+0Hz",
+   "speaker": "lea"
+  },
+  {
+   "text": "Papa lächelt.",
+   "chunks": [
+    "PAPA LÄCHELT."
+   ],
+   "gap_after": 0.32,
+   "tag": "end"
+  },
+  {
+   "text": "Ein bisschen zu lange.",
+   "chunks": [
+    "EIN BISSCHEN",
+    "ZU *LANGE.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "end"
+  },
+  {
+   "text": "Keks.",
+   "chunks": [
+    "„*KEKS.*“"
+   ],
+   "gap_after": 0.32,
+   "tag": "endp",
+   "quote": true,
+   "voice": "de-DE-KillianNeural",
+   "rate": "+0%",
+   "pitch": "-2Hz",
+   "speaker": "papa"
+  },
+  {
+   "text": "Und hinter dem Haus springt ein Rasenmäher an.",
+   "chunks": [
+    "UND HINTER DEM",
+    "HAUS SPRINGT EIN",
+    "RASENMÄHER *AN.*"
+   ],
+   "gap_after": 0.32,
+   "tag": "end"
+  }
+ ]
+}
