@@ -232,9 +232,11 @@ export async function build({ canvas, plan }) {
     c.fillStyle = '#d8c08a'; c.font = '700 132px Inter'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('13', 160, 108);
     sign.tex.needsUpdate = true;
   }
-  const SIGN_Z = -3.5;
-  add(hall, new THREE.PlaneGeometry(0.42, 0.26), new THREE.MeshStandardMaterial({ map: sign.tex, roughness: 0.6 }), 0, 2.2, SIGN_Z, false);
-  for (const x of [-0.15, 0.15]) add(hall, CY(0.004, 0.004, 0.3, 4), M(0x111111), x, 2.46, SIGN_Z, false);
+  // seitlich aufgehaengt, damit es von der Aufzugtuer aus nicht hinter einer Lampe sitzt
+  const SIGN_X = -0.62, SIGN_Z = -3.9;
+  const signMesh = add(hall, new THREE.PlaneGeometry(0.42, 0.26), new THREE.MeshStandardMaterial({ map: sign.tex, roughness: 0.6 }), SIGN_X, 2.22, SIGN_Z, false);
+  signMesh.rotation.y = 0.2;
+  for (const dx of [-0.15, 0.15]) add(hall, CY(0.004, 0.004, 0.3, 4), M(0x111111), SIGN_X + dx * Math.cos(0.2), 2.48, SIGN_Z - dx * Math.sin(0.2), false);
   // Haengelampen
   const bulbs = [];
   for (const z of [-2.9, -6.3]) {
@@ -242,8 +244,11 @@ export async function build({ canvas, plan }) {
     const shade = add(hall, new THREE.ConeGeometry(0.17, 0.14, 14, 1, true), M(0x2a2622, { side: THREE.DoubleSide }), 0, HH - 0.46, z, false);
     const bulbMat = new THREE.MeshBasicMaterial({ color: 0xffd79a });
     add(hall, new THREE.SphereGeometry(0.045, 12, 10), bulbMat, 0, HH - 0.52, z, false).castShadow = false;
-    const L = new THREE.PointLight(0xffc982, 4.5, 0, 2); L.position.set(0, HH - 0.56, z); scene.add(L);
-    bulbs.push({ L, bulbMat, base: 4.5, shade });
+    // Lichtkegel nach unten (Schirm), Decke bleibt dunkel; dazu ein schwaches Streulicht
+    const L = new THREE.SpotLight(0xffc982, 14, 0, 1.0, 0.65, 2);
+    L.position.set(0, HH - 0.5, z); L.target.position.set(0, 0, z); scene.add(L, L.target);
+    const spill = new THREE.PointLight(0xffc982, 0.3, 0, 2); spill.position.set(0, HH - 0.62, z); scene.add(spill);
+    bulbs.push({ L, spill, bulbMat, base: 14, spillBase: 0.3, shade });
   }
   // Mondlicht durchs Fenster (wirft lange Schatten Richtung Kamera)
   const moon = new THREE.SpotLight(0x8aa0ff, 22, 0, 0.62, 0.9, 1.4);
@@ -509,10 +514,11 @@ export async function build({ canvas, plan }) {
         if (inR(t, P.blackout)) k = 0;
         if (t >= P.jump) k = i === 0 ? (hash(Math.floor(t * 18) * 1.9) > 0.35 ? 1.2 : 0.2) : 0.0;
       }
-      b.L.intensity = b.base * k; b.bulbMat.color.setRGB(Math.min(1, 0.15 + k), Math.min(1, 0.12 + 0.84 * k), Math.min(1, 0.08 + 0.6 * k));
+      b.L.intensity = b.base * k; b.spill.intensity = b.spillBase * k;
+      b.bulbMat.color.setRGB(Math.min(1, 0.15 + k), Math.min(1, 0.12 + 0.84 * k), Math.min(1, 0.08 + 0.6 * k));
     });
     moon.intensity = hallOn && !inR(t, P.blackout) ? 22 : 0;
-    moon.visible = hallOn; bulbs.forEach((b) => (b.L.visible = hallOn));
+    moon.visible = hallOn; bulbs.forEach((b) => { b.L.visible = hallOn; b.spill.visible = hallOn; });
 
     // ---- Gestalt ----
     const showFar = hallOn && t < P.blackout[0];
