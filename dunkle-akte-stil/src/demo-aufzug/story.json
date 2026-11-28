@@ -1,0 +1,14 @@
+{
+  "title": "Der 13. Stock",
+  "voice": "de-DE-ChristophNeural",
+  "rate": "+5%",
+  "pitch": "-5Hz",
+  "lead_in": 0.25,
+  "lines": [
+    {"text": "Dein Haus hat zwölf Stockwerke.", "chunks": ["DEIN HAUS HAT", "*ZWÖLF* STOCKWERKE."], "gap_after": 0.22, "tag": "setup"},
+    {"text": "Der Aufzug hält im dreizehnten.", "chunks": ["DER AUFZUG", "HÄLT IM", "*DREIZEHNTEN.*"], "gap_after": 0.55, "tag": "twist"},
+    {"text": "Dein Handy vibriert.", "chunks": ["DEIN HANDY", "*VIBRIERT.*"], "gap_after": 0.22, "tag": "phone"},
+    {"text": "Steig nicht aus.", "chunks": ["„STEIG *NICHT* AUS.“"], "quote": true, "gap_after": 0.45, "tag": "message"},
+    {"text": "Die Türen gehen auf.", "chunks": ["DIE TÜREN", "GEHEN *AUF.*"], "gap_after": 0.2, "tag": "doors"}
+  ]
+}

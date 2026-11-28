@@ -1,0 +1,12 @@
+{
+  "name": "dunkle-akte-renderer",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Renderer fuer Dunkle_Akte-Horrorvideos (Three.js + Playwright)",
+  "dependencies": {
+    "three": "0.170.0",
+    "@fontsource/anton": "5.1.0",
+    "@fontsource/space-mono": "5.1.0",
+    "@fontsource/inter": "5.1.0"
+  }
+}
