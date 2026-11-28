@@ -95,7 +95,15 @@ Analysiert am 28.11.2026 anhand von „Ich dachte, Mama wäre zu Hause 😨… B
     - Der Rest der Hand bleibt hinter dem Handy und schaut seitlich nicht heraus.
     - Unter dem Handy nur ein weicher Übergang über die Handballen zum Ärmel.
     - Nichts darf durch das Handy ragen: Der Daumen läuft außen um die Kante.
+  - **Fingernägel:**
+    - klein und ganz vorne an der Kuppe, der freie Rand kurz vor der Spitze
+    - liegen als gebogene Platte auf der Wölbung
+    - keine aufgesetzten Ovale
   - Umgesetzt in `src/hand.js`: `makeHand` (posierbar) und `makeThumb` (Daumen-Bogen um Kanten).
+- **Licht:**
+  - Hängelampen leuchten nach unten (Lichtkegel), die Decke bleibt dunkel.
+  - Aus Kamerasicht darf nichts wie ein Rahmen oder Viereck um eine Lampe wirken. Schilder hängen seitlich.
+- **Wesen mittelnah zeigen** (Oberkörper, Hals, Gesicht lesbar). Extreme Nahaufnahmen wirken comichaft.
 - **Handy-UI groß im Bild:**
   - Sperrbildschirm mit Benachrichtigung (iOS-Look)
   - Chatverlauf (graue/blaue Blasen)
@@ -157,7 +165,24 @@ ffmpeg -framerate 30 -i $B/frames/f_%04d.png -i $B/mix.wav -c:v libx264 -crf 17 
 - `<story>/scene.js`: die 3D-Szenen der jeweiligen Geschichte.
 - Edge-TTS braucht im Proxy die CA-Datei: `SSL_CERT_FILE=/root/.ccr/ca-bundle.crt`.
 
-## 9. Offene Punkte (vor dem ersten 6-Minuten-Video klären)
+## 9. Abnahme-Checkliste (vor jedem Abschicken)
 
-1. **Stimme:** Welche Stimme nutzt der Kanal (z.B. ElevenLabs + Stimmname)? Die Demo nutzt Microsoft „Christoph“ als Platzhalter. Für mehrere Dialogstimmen ist ElevenLabs deutlich besser. Dafür braucht es einen API-Schlüssel.
+- [ ] Hände menschlich und schlank, Ärmel bis zum Handgelenk
+- [ ] Am Handy nur die Daumen sichtbar, Rest dahinter, nichts ragt durchs Handy
+- [ ] Nägel klein, ganz vorne an der Kuppe
+- [ ] Lampen leuchten nach unten, kein Viereck oder Rahmen um ein Licht
+- [ ] Wesen mittelnah und lesbar, kein comichafter Kopf
+- [ ] Untertitel: 1–3 Wörter, ein rotes Schlüsselwort, Dialog in „…“, alles Deutsch
+- [ ] „FULL STORY“ durchgehend, Ende korrekt („THE END“ bzw. „TEIL n FOLGT“)
+- [ ] Sprache verständlich (Whisper-Transkript stimmt), Musik leiser unter der Stimme
+- [ ] 1080×1920, 30 fps, Länge passt
+
+Der Slash-Befehl **`/dunkle-akte`** (`.claude/skills/dunkle-akte/SKILL.md`) fasst Stil, Ablauf und alle Regeln für neue Chats zusammen.
+
+## 10. Offene Punkte (vor dem ersten 6-Minuten-Video klären)
+
+1. **Stimme:** Welche Stimme nutzt der Kanal? Die Demo nutzt Microsoft „Christoph“ als Platzhalter.
+   - Ist der ElevenLabs-Connector verbunden, die Sprecherspur dort erzeugen (`creative_list_voices` → `creative_generate_speech`).
+   - Danach `src/align.py` für die Wort-Timings ausführen.
+   - ElevenLabs eignet sich auch für mehrere Dialogstimmen.
 2. **Ton des Originals:** Wenn die Videodatei einmal ins Repo gelegt wird (z.B. `referenz/original.mp4`), lassen sich Stimme, Musik und Lautstärken 1:1 abgleichen.
