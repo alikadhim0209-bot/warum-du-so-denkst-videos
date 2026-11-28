@@ -1,0 +1,10 @@
+# Zwischendateien der Beispiele/Projekte
+**/stills/
+**/.segments/
+**/video_silent.mp4
+**/mix.wav
+**/mix_raw.wav
+**/voice_paced.wav
+**/tts.txt
+beispiel/*/timing.json
+__pycache__/

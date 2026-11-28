@@ -1,0 +1,7 @@
+{
+  "key": "D",
+  "ambience": "field",
+  "bed_db_below_voice": 9.0,
+  "amb_db_below_voice": 19.0,
+  "sfx_gain": { "bell": -3.0, "phone": -4.0 }
+}

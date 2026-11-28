@@ -1,0 +1,42 @@
+# DIE MITTAGSFRAU – vollständiges Beispiel-Skript nach der 8-Beat-Formel (Ziel: 370–400 Wörter ≈ 172 s)
+# [#id] = neue Einstellung · {sfx:name} = Effekt auf dem nächsten Wort · {@name} = Zeitmarke · {drop} = Stille-Loch
+# ---------------------------------------------------------------- 1 HOOK (Regel + Folge)
+[#hook] In der Lausitz lernt jedes Kind eine Regel.
+[#hook2] Wenn mittags die {sfx:bell}Kirchenglocke schlägt, verlass sofort das Feld.
+[#hook3] Denn wer dann noch zwischen den Ähren steht, bekommt {@turn}Besuch.
+# ---------------------------------------------------------------- 2 NAME + TITELKARTE
+[#title] Die Sorben nennen sie Pšezpołdnica. Wir nennen sie einfach die {@name}Mittagsfrau.
+# ---------------------------------------------------------------- 3 SETUP (Ich-Erzähler, Ort, Begleiter)
+[#farm] Als ich elf war, verbrachte ich den Sommer bei meinen Großeltern im Spreewald.
+[#farm2] Ein kleines Dorf, ein alter Hof, und Felder bis zum Horizont.
+[#jonas] Mein Cousin Jonas wohnte gleich nebenan, und wir waren jeden Tag draußen.
+# ---------------------------------------------------------------- 4 DIE LEGENDE (Oma erzählt – Regeln!)
+[#kitchen] Am ersten Abend erzählte uns Oma beim Essen die Geschichte.
+[#leg1] Die Mittagsfrau ist groß und dürr, ganz in Weiß, und sie trägt eine rostige Sichel.
+[#leg2] Sie kommt nur in der heißesten Stunde des Tages, von zwölf bis eins.
+[#leg3] Wen sie dann im Feld erwischt, dem stellt sie eine Frage über Flachs.
+[#leg4] Wie man ihn sät. Wie man ihn erntet. Wie man ihn spinnt.
+[#leg5] Und man muss reden, eine ganze Stunde lang, ohne Pause, bis die Glocke eins schlägt.
+[#leg6] Wer schweigt, sagte Oma, dem nimmt sie den {sfx:whoosh}Kopf.
+# ---------------------------------------------------------------- 5 REGELBRUCH
+[#laugh] Jonas lachte. Ich auch.
+[#harvest] Zwei Wochen später halfen wir Opa bei der Ernte. Es war so heiß, dass die Luft über dem Feld flimmerte.
+[#lunch] Kurz vor zwölf rief Opa uns zum Essen. Jonas wollte nur noch schnell seinen Ball aus dem Korn holen.
+[#bell] {drop}Dann schlug die {sfx:bell}Glocke. Zwölf Mal.
+# ---------------------------------------------------------------- 6 BEGEGNUNG (Nahaufnahme, 2 Grusel-Details)
+[#woman] Ich drehte mich um. Am anderen Ende des Feldes stand eine Frau in einem langen weißen Kleid.
+[#woman2] Sie war viel zu groß und viel zu still.
+[#close] Sie lief nicht auf uns zu. Sie stand einfach {sfx:sting}plötzlich vor Jonas.
+[#face] Ihr Gesicht war weiß wie Kalk, ihre Augen waren weit aufgerissen, und sie lächelte.
+[#ask] Dann beugte sie sich zu ihm hinunter und flüsterte: {@ask}Wie macht man Flachs?
+# ---------------------------------------------------------------- 7 ÜBERLEBEN (Regel aus Beat 4 rettet)
+[#silent] Jonas sagte nichts. Er zitterte am ganzen Körper, und die {sfx:scrape}Sichel hob sich langsam über seinen Kopf.
+[#talk] Da fing ich an zu reden. Über das Säen, über das Rösten, über das Spinnen, über alles, was Oma erzählt hatte.
+[#talk2] Und als mir nichts mehr einfiel, fing ich einfach wieder von vorne an.
+[#listen] Die Mittagsfrau hörte zu, eine ganze Stunde lang, und lächelte.
+[#one] Dann schlug die {sfx:bell}Glocke eins. Und sie war {@gone}weg.
+# ---------------------------------------------------------------- 8 TWIST / STACHEL
+[#after] Jonas hat seitdem kein einziges Wort mehr gesprochen. Die Ärzte sagen, es ist der Schock.
+[#phone] Aber letzte Woche hat Oma {sfx:phone}angerufen.
+[#window] Sie sagt, Jonas sitzt jetzt jeden Mittag am Fenster und schaut aufs Feld.
+[#end] {drop}Und er flüstert. Über {@last}Flachs.

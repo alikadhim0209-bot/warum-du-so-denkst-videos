@@ -1,0 +1,6 @@
+# Mittagsfrau – 10-Sekunden-Demo (Anfang eines Shorts im Folklore-Horror-Stil)
+# Format: [#shot-id] beginnt eine neue Einstellung · {sfx:name} Effekt auf dem nächsten Wort · {@beat} Zeitmarke
+# Zeilen mit # sind Kommentare und werden nicht gesprochen.
+[#hook] In der Lausitz gilt eine alte Regel.
+[#body] Wenn mittags die {sfx:bell}Glocke schlägt, verlass sofort das {@look}Feld.
+[#title] Denn dann kommt die {@name}Mittagsfrau.
